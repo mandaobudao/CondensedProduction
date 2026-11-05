@@ -17,33 +17,73 @@ namespace CondensedProduction
     public static class MultEngine
     {
         /// <summary>
-        /// 动态批量：min(设定倍率, 当前缓存可支撑的周期数)。
-        /// 设定 50 倍时，缓存够几倍就跑几倍（1~50 之间自适应），而不是必须攒满 50 才开动。
+        /// 消耗端批量（仅 requireCounts 读取点使用）：min(设定倍率, 当前缓存可支撑的周期数)。
+        /// 原版流程里 requireCounts 只在一个周期开始时（检查并扣除 served）读取，
+        /// 因此这里每次调用都是一个新周期的起点：按当前缓存重算 k 并锁存，
+        /// 本周期内产出端一律读取该锁存值，保证「吃多少料、出多少货」严格一致。
+        /// （原版在周期完成时先 replicating=false 再产出，随后同 tick 内立即检查下一周期，
+        ///  消耗与产出时 replicating 都是 false，无法用该标志区分两端，必须按读取的字段分流。）
         /// </summary>
-        private static int GetAsmKDyn(ref AssemblerComponent c)
+        private static int GetAsmKConsume(ref AssemblerComponent c)
         {
             int planet = MultStore.CurrentPlanetId;
             int kSet = planet >= 0 ? MultStore.GetSet(planet, c.entityId) : MultStore.GetCapK(c.entityId);
             if (kSet <= 1) return 1;
             return ResolveDyn(planet, c.entityId, kSet,
-                c.recipeExecuteData.requireCounts, c.served, c.replicating);
+                c.recipeExecuteData.requireCounts, c.served);
         }
 
-        private static int GetLabKDyn(ref LabComponent c)
+        private static int GetLabKConsume(ref LabComponent c)
         {
             int planet = MultStore.CurrentPlanetId;
             int kSet = planet >= 0 ? MultStore.GetSet(planet, c.entityId) : MultStore.GetCapK(c.entityId);
             if (kSet <= 1) return 1;
             return ResolveDyn(planet, c.entityId, kSet,
-                c.recipeExecuteData.requireCounts, c.served, c.replicating);
+                c.recipeExecuteData.requireCounts, c.served);
         }
+
+        /// <summary>
+        /// 产出端批量（仅 productCounts 读取点使用）：只读消耗端锁存的 k，绝不重算。
+        /// 产出时原料已被扣除，若按当前缓存重算会把 k 压低，导致「吃 1000 份料只出 1 份货」。
+        /// </summary>
+        private static int GetAsmKProduce(ref AssemblerComponent c)
+        {
+            int planet = MultStore.CurrentPlanetId;
+            int kSet = planet >= 0 ? MultStore.GetSet(planet, c.entityId) : MultStore.GetCapK(c.entityId);
+            if (kSet <= 1) return 1;
+            return ProduceK(planet, c.entityId, kSet);
+        }
+
+        private static int GetLabKProduce(ref LabComponent c)
+        {
+            int planet = MultStore.CurrentPlanetId;
+            int kSet = planet >= 0 ? MultStore.GetSet(planet, c.entityId) : MultStore.GetCapK(c.entityId);
+            if (kSet <= 1) return 1;
+            return ProduceK(planet, c.entityId, kSet);
+        }
+
+        private static int ProduceK(int planet, int entityId, int kSet)
+        {
+            int k = 0;
+            if (planet >= 0) k = MultStore.GetEff(planet, entityId);
+            else fallbackEff.TryGetValue(entityId, out k);
+            // 理论上产出前必定有过一次消耗（已锁存）。没有锁存记录说明是异常路径，
+            // 退回设定值比退回 1 更接近消耗端当时的选择。
+            if (k < 1) k = kSet;
+            if (k < 1) k = 1;
+            return k;
+        }
+
+        // 无行星上下文（非并行路径）时的锁存兜底，按 entityId 记录
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<int, int> fallbackEff =
+            new System.Collections.Concurrent.ConcurrentDictionary<int, int>();
 
         // 每线程每帧缓存：同一 tick 内同一建筑的 k 必须稳定，
         // 否则消耗过程中缓存下降会让同一次结算前后用的 k 不一致。
         [ThreadStatic] private static long tlsFrame = long.MinValue;
         [ThreadStatic] private static Dictionary<long, int> tlsK;
 
-        private static int ResolveDyn(int planet, int entityId, int kSet, int[] require, int[] served, bool replicating)
+        private static int ResolveDyn(int planet, int entityId, int kSet, int[] require, int[] served)
         {
             long frame = GameMain.gameTick;
             if (frame != tlsFrame || tlsK == null)
@@ -55,18 +95,6 @@ namespace CondensedProduction
             long key = (long)(planet + 2) * 1000000L + entityId;
             int cached;
             if (tlsK.TryGetValue(key, out cached)) return cached;
-
-            // 运行时限频：开工期间 k 不每 tick 重算（否则能耗随补料在一个周期内多次跳变），
-            // 但也不能永久锁死（连续运行的机器需要随缓存充足逐步升档），
-            // 因此开工期间每 30 tick 才允许重算一次（按 entityId 错开相位）。
-            if (replicating && frame % 30L != entityId % 30L)
-            {
-                int latched = MultStore.GetEff(planet, entityId);
-                if (latched < 1) latched = 1;
-                if (latched > kSet) latched = kSet;
-                tlsK[key] = latched;
-                return latched;
-            }
 
             int avail = kSet;
             if (require != null && served != null)
@@ -85,6 +113,7 @@ namespace CondensedProduction
             if (avail > kSet) avail = kSet;
             tlsK[key] = avail;
             MultStore.SetEff(planet, entityId, avail);
+            fallbackEff[entityId] = avail;
             return avail;
         }
 
@@ -192,18 +221,25 @@ namespace CondensedProduction
     /// </summary>
     public static class CountMultiplyTranspiler
     {
-        internal static IEnumerable<CodeInstruction> Apply(IEnumerable<CodeInstruction> instructions, MethodInfo getK)
+        internal static IEnumerable<CodeInstruction> Apply(IEnumerable<CodeInstruction> instructions,
+            MethodInfo getKConsume, MethodInfo getKProduce)
         {
             var list = new List<CodeInstruction>(instructions);
-            var tracked = new HashSet<int>(); // 持有计数数组的局部变量索引
+            var tracked = new Dictionary<int, MethodInfo>(); // 持有计数数组的局部变量索引 → 该用的 k 获取器
 
-            // 第一遍：找出存计数数组的局部变量
+            // 第一遍：找出存计数数组的局部变量，并按来源字段分流：
+            // requireCounts（周期开始时的检查与扣除）→ 消耗端获取器（允许重算并锁存）
+            // productCounts（周期完成时的产出与上限判断）→ 产出端获取器（只读锁存值）
             for (int i = 0; i + 2 < list.Count; i++)
             {
-                if (IsLdfld(list[i], "recipeExecuteData") && IsCountField(list[i + 1]))
+                if (IsLdfld(list[i], "recipeExecuteData"))
                 {
-                    int idx = GetStoreLocalIndex(list[i + 2]);
-                    if (idx >= 0) tracked.Add(idx);
+                    MethodInfo getter = CountFieldGetter(list[i + 1], getKConsume, getKProduce);
+                    if (getter != null)
+                    {
+                        int idx = GetStoreLocalIndex(list[i + 2]);
+                        if (idx >= 0) tracked[idx] = getter;
+                    }
                 }
             }
 
@@ -211,7 +247,8 @@ namespace CondensedProduction
             for (int i = 0; i < list.Count; i++)
             {
                 int loadIdx = GetLoadLocalIndex(list[i]);
-                if (loadIdx >= 0 && tracked.Contains(loadIdx))
+                MethodInfo getK;
+                if (loadIdx >= 0 && tracked.TryGetValue(loadIdx, out getK))
                 {
                     // 向前找配套的 ldelem.i4（中间只允许索引压栈指令）
                     int j = i + 1;
@@ -242,11 +279,15 @@ namespace CondensedProduction
             return (ci.opcode == OpCodes.Ldfld) && ci.operand is FieldInfo f && f.Name == name;
         }
 
-        private static bool IsCountField(CodeInstruction ci)
+        private static MethodInfo CountFieldGetter(CodeInstruction ci, MethodInfo consume, MethodInfo produce)
         {
-            return ci.opcode == OpCodes.Ldfld && ci.operand is FieldInfo f &&
-                (f.Name == "requireCounts" || f.Name == "productCounts") &&
-                f.DeclaringType != null && f.DeclaringType.Name == "RecipeExecuteData";
+            if (ci.opcode == OpCodes.Ldfld && ci.operand is FieldInfo f &&
+                f.DeclaringType != null && f.DeclaringType.Name == "RecipeExecuteData")
+            {
+                if (f.Name == "requireCounts") return consume;
+                if (f.Name == "productCounts") return produce;
+            }
+            return null;
         }
 
         private static bool IsIndexPush(CodeInstruction ci)
@@ -302,27 +343,29 @@ namespace CondensedProduction
         }
     }
 
-    /// <summary>组装机消耗/产出批量转译（按当前缓存自适应批量）。</summary>
+    /// <summary>组装机消耗/产出批量转译（消耗端自适应，产出端读锁存值）。</summary>
     public static class AssemblerBatchPatch
     {
-        private static readonly MethodInfo GetK =
-            typeof(MultEngine).GetMethod("GetAsmKDyn", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo GetKConsume =
+            typeof(MultEngine).GetMethod("GetAsmKConsume", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo GetKProduce =
+            typeof(MultEngine).GetMethod("GetAsmKProduce", BindingFlags.Static | BindingFlags.NonPublic);
 
         [HarmonyPatch(typeof(AssemblerComponent), "InternalUpdate")]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            foreach (var ci in CountMultiplyTranspiler.Apply(instructions, GetK))
+            foreach (var ci in CountMultiplyTranspiler.Apply(instructions, GetKConsume, GetKProduce))
             {
                 // 原版产物缓存上限是硬编码 100（熔炉类单产物与多产物分支各一处：
                 // produced[i] + productCounts[i] <= 100 否则停机）。
                 // 该常数不乘 k 的话，productCounts×k > 100（约 k>100）就永远无法再生产，
-                // 这就是「100 倍以上不运行」的根因。这里把它放大为 100×k。
+                // 这就是「100 倍以上不运行」的根因。这里把它放大为 100×k（产出端锁存值）。
                 if (ci.opcode == OpCodes.Ldc_I4_S && ci.operand is sbyte b && b == 100)
                 {
                     yield return ci;
                     yield return new CodeInstruction(OpCodes.Ldarg_0);
-                    yield return new CodeInstruction(OpCodes.Call, GetK);
+                    yield return new CodeInstruction(OpCodes.Call, GetKProduce);
                     yield return new CodeInstruction(OpCodes.Mul);
                     continue;
                 }
@@ -347,28 +390,30 @@ namespace CondensedProduction
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> AsmNeeds(IEnumerable<CodeInstruction> instructions)
         {
-            return CountMultiplyTranspiler.Apply(instructions, GetAsmK);
+            return CountMultiplyTranspiler.Apply(instructions, GetAsmK, GetAsmK);
         }
 
         [HarmonyPatch(typeof(LabComponent), "UpdateNeedsAssemble")]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> LabNeeds(IEnumerable<CodeInstruction> instructions)
         {
-            return CountMultiplyTranspiler.Apply(instructions, GetLabK);
+            return CountMultiplyTranspiler.Apply(instructions, GetLabK, GetLabK);
         }
     }
 
-    /// <summary>科研站（制造模式）消耗/产出批量转译（按当前缓存自适应批量）。</summary>
+    /// <summary>科研站（制造模式）消耗/产出批量转译（消耗端自适应，产出端读锁存值）。</summary>
     public static class LabBatchPatch
     {
-        private static readonly MethodInfo GetK =
-            typeof(MultEngine).GetMethod("GetLabKDyn", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo GetKConsume =
+            typeof(MultEngine).GetMethod("GetLabKConsume", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo GetKProduce =
+            typeof(MultEngine).GetMethod("GetLabKProduce", BindingFlags.Static | BindingFlags.NonPublic);
 
         [HarmonyPatch(typeof(LabComponent), "InternalUpdateAssemble")]
         [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            var list = new List<CodeInstruction>(CountMultiplyTranspiler.Apply(instructions, GetK));
+            var list = new List<CodeInstruction>(CountMultiplyTranspiler.Apply(instructions, GetKConsume, GetKProduce));
             for (int i = 0; i < list.Count; i++)
             {
                 yield return list[i];
@@ -383,7 +428,7 @@ namespace CondensedProduction
                     && list[i + 2].operand is FieldInfo f && f.Name == "speedOverride")
                 {
                     yield return new CodeInstruction(OpCodes.Ldarg_0);
-                    yield return new CodeInstruction(OpCodes.Call, GetK);
+                    yield return new CodeInstruction(OpCodes.Call, GetKProduce);
                     yield return new CodeInstruction(OpCodes.Mul);
                 }
             }

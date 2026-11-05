@@ -1,0 +1,10 @@
+{
+  "name": "CondensedProduction",
+  "version_number": "1.0.0",
+  "website_url": "https://github.com/YOUR_NAME/CondensedProduction",
+  "description": "浓缩生产：生产建筑可设最高 1000 倍率（等效 N 台合一），容器每格容量 ×100，传送带堆叠上限 255 层，生产建筑可开启无线供料由行星/星际物流站直供直收。",
+  "dependencies": [
+    "xiaoye97-BepInEx-5.4.11",
+    "CommonAPI-DSPModSave-1.2.2"
+  ]
+}

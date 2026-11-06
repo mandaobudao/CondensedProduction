@@ -1,0 +1,1952 @@
+﻿===== PlanetFactory::InsertInto(System.Int32,System.Int32,System.Int32,System.Byte,System.Byte,System.Byte&)
+  IL_0000  ldarg.s        remainInc
+  IL_0002  ldarg.s        itemInc
+  IL_0004  stind.i1       
+  IL_0005  ldarg.0        
+  IL_0006  ldfld          PlanetFactory::entityPool
+  IL_000B  ldarg.1        
+  IL_000C  ldelema        EntityData
+  IL_0011  ldfld          EntityData::beltId
+  IL_0016  stloc.0        
+  IL_0017  ldloc.0        
+  IL_0018  ldc.i4.0       
+  IL_0019  ble.s          IL_0038: ldarg.0
+  IL_001B  ldarg.0        
+  IL_001C  ldfld          PlanetFactory::cargoTraffic
+  IL_0021  ldloc.0        
+  IL_0022  ldarg.2        
+  IL_0023  ldarg.3        
+  IL_0024  ldarg.s        itemCount
+  IL_0026  ldarg.s        itemInc
+  IL_0028  callvirt       CargoTraffic::TryInsertItem
+  IL_002D  brfalse.s      IL_0036: ldc.i4.0
+  IL_002F  ldarg.s        remainInc
+  IL_0031  ldc.i4.0       
+  IL_0032  stind.i1       
+  IL_0033  ldarg.s        itemCount
+  IL_0035  ret            
+  IL_0036  ldc.i4.0       
+  IL_0037  ret            
+  IL_0038  ldarg.0        
+  IL_0039  ldfld          PlanetFactory::entityNeeds
+  IL_003E  ldarg.1        
+  IL_003F  ldelem.ref     
+  IL_0040  stloc.1        
+  IL_0041  ldarg.0        
+  IL_0042  ldfld          PlanetFactory::entityPool
+  IL_0047  ldarg.1        
+  IL_0048  ldelema        EntityData
+  IL_004D  ldfld          EntityData::assemblerId
+  IL_0052  stloc.2        
+  IL_0053  ldloc.2        
+  IL_0054  ldc.i4.0       
+  IL_0055  ble            IL_022f: ldarg.0
+  IL_005A  ldarg.0        
+  IL_005B  ldfld          PlanetFactory::factorySystem
+  IL_0060  ldfld          FactorySystem::assemblerPool
+  IL_0065  ldloc.2        
+  IL_0066  ldelema        AssemblerComponent
+  IL_006B  stloc.s        V_10
+  IL_006D  ldloc.1        
+  IL_006E  brfalse.s      IL_0079: ldc.i4.0
+  IL_0070  ldloc.s        V_10
+  IL_0072  ldfld          AssemblerComponent::recipeExecuteData
+  IL_0077  brtrue.s       IL_007b: ldarg.0
+  IL_0079  ldc.i4.0       
+  IL_007A  ret            
+  IL_007B  ldarg.0        
+  IL_007C  ldfld          PlanetFactory::entityMutexs
+  IL_0081  ldarg.1        
+  IL_0082  ldelem.ref     
+  IL_0083  stloc.s        V_11
+  IL_0085  ldc.i4.0       
+  IL_0086  stloc.s        V_12
+  IL_0088  ldloc.s        V_11
+  IL_008A  ldloca.s       V_12
+  IL_008C  call           Monitor::Enter
+  IL_0091  ldloc.s        V_10
+  IL_0093  ldfld          AssemblerComponent::recipeExecuteData
+  IL_0098  ldfld          RecipeExecuteData::requires
+  IL_009D  stloc.s        V_13
+  IL_009F  ldloc.s        V_13
+  IL_00A1  ldlen          
+  IL_00A2  conv.i4        
+  IL_00A3  stloc.s        V_14
+  IL_00A5  ldc.i4.0       
+  IL_00A6  ldloc.s        V_14
+  IL_00A8  bge.s          IL_00e4: ldc.i4.1
+  IL_00AA  ldloc.s        V_13
+  IL_00AC  ldc.i4.0       
+  IL_00AD  ldelem.i4      
+  IL_00AE  ldarg.3        
+  IL_00AF  bne.un.s       IL_00e4: ldc.i4.1
+  IL_00B1  ldloc.s        V_10
+  IL_00B3  ldfld          AssemblerComponent::served
+  IL_00B8  ldc.i4.0       
+  IL_00B9  ldelema        System.Int32
+  IL_00BE  dup            
+  IL_00BF  ldind.i4       
+  IL_00C0  ldarg.s        itemCount
+  IL_00C2  add            
+  IL_00C3  stind.i4       
+  IL_00C4  ldloc.s        V_10
+  IL_00C6  ldfld          AssemblerComponent::incServed
+  IL_00CB  ldc.i4.0       
+  IL_00CC  ldelema        System.Int32
+  IL_00D1  dup            
+  IL_00D2  ldind.i4       
+  IL_00D3  ldarg.s        itemInc
+  IL_00D5  add            
+  IL_00D6  stind.i4       
+  IL_00D7  ldarg.s        remainInc
+  IL_00D9  ldc.i4.0       
+  IL_00DA  stind.i1       
+  IL_00DB  ldarg.s        itemCount
+  IL_00DD  stloc.s        V_15
+  IL_00DF  leave          IL_08d0: ldloc.s V_15
+  IL_00E4  ldc.i4.1       
+  IL_00E5  ldloc.s        V_14
+  IL_00E7  bge.s          IL_0123: ldc.i4.2
+  IL_00E9  ldloc.s        V_13
+  IL_00EB  ldc.i4.1       
+  IL_00EC  ldelem.i4      
+  IL_00ED  ldarg.3        
+  IL_00EE  bne.un.s       IL_0123: ldc.i4.2
+  IL_00F0  ldloc.s        V_10
+  IL_00F2  ldfld          AssemblerComponent::served
+  IL_00F7  ldc.i4.1       
+  IL_00F8  ldelema        System.Int32
+  IL_00FD  dup            
+  IL_00FE  ldind.i4       
+  IL_00FF  ldarg.s        itemCount
+  IL_0101  add            
+  IL_0102  stind.i4       
+  IL_0103  ldloc.s        V_10
+  IL_0105  ldfld          AssemblerComponent::incServed
+  IL_010A  ldc.i4.1       
+  IL_010B  ldelema        System.Int32
+  IL_0110  dup            
+  IL_0111  ldind.i4       
+  IL_0112  ldarg.s        itemInc
+  IL_0114  add            
+  IL_0115  stind.i4       
+  IL_0116  ldarg.s        remainInc
+  IL_0118  ldc.i4.0       
+  IL_0119  stind.i1       
+  IL_011A  ldarg.s        itemCount
+  IL_011C  stloc.s        V_15
+  IL_011E  leave          IL_08d0: ldloc.s V_15
+  IL_0123  ldc.i4.2       
+  IL_0124  ldloc.s        V_14
+  IL_0126  bge.s          IL_0162: ldc.i4.3
+  IL_0128  ldloc.s        V_13
+  IL_012A  ldc.i4.2       
+  IL_012B  ldelem.i4      
+  IL_012C  ldarg.3        
+  IL_012D  bne.un.s       IL_0162: ldc.i4.3
+  IL_012F  ldloc.s        V_10
+  IL_0131  ldfld          AssemblerComponent::served
+  IL_0136  ldc.i4.2       
+  IL_0137  ldelema        System.Int32
+  IL_013C  dup            
+  IL_013D  ldind.i4       
+  IL_013E  ldarg.s        itemCount
+  IL_0140  add            
+  IL_0141  stind.i4       
+  IL_0142  ldloc.s        V_10
+  IL_0144  ldfld          AssemblerComponent::incServed
+  IL_0149  ldc.i4.2       
+  IL_014A  ldelema        System.Int32
+  IL_014F  dup            
+  IL_0150  ldind.i4       
+  IL_0151  ldarg.s        itemInc
+  IL_0153  add            
+  IL_0154  stind.i4       
+  IL_0155  ldarg.s        remainInc
+  IL_0157  ldc.i4.0       
+  IL_0158  stind.i1       
+  IL_0159  ldarg.s        itemCount
+  IL_015B  stloc.s        V_15
+  IL_015D  leave          IL_08d0: ldloc.s V_15
+  IL_0162  ldc.i4.3       
+  IL_0163  ldloc.s        V_14
+  IL_0165  bge.s          IL_01a1: ldc.i4.4
+  IL_0167  ldloc.s        V_13
+  IL_0169  ldc.i4.3       
+  IL_016A  ldelem.i4      
+  IL_016B  ldarg.3        
+  IL_016C  bne.un.s       IL_01a1: ldc.i4.4
+  IL_016E  ldloc.s        V_10
+  IL_0170  ldfld          AssemblerComponent::served
+  IL_0175  ldc.i4.3       
+  IL_0176  ldelema        System.Int32
+  IL_017B  dup            
+  IL_017C  ldind.i4       
+  IL_017D  ldarg.s        itemCount
+  IL_017F  add            
+  IL_0180  stind.i4       
+  IL_0181  ldloc.s        V_10
+  IL_0183  ldfld          AssemblerComponent::incServed
+  IL_0188  ldc.i4.3       
+  IL_0189  ldelema        System.Int32
+  IL_018E  dup            
+  IL_018F  ldind.i4       
+  IL_0190  ldarg.s        itemInc
+  IL_0192  add            
+  IL_0193  stind.i4       
+  IL_0194  ldarg.s        remainInc
+  IL_0196  ldc.i4.0       
+  IL_0197  stind.i1       
+  IL_0198  ldarg.s        itemCount
+  IL_019A  stloc.s        V_15
+  IL_019C  leave          IL_08d0: ldloc.s V_15
+  IL_01A1  ldc.i4.4       
+  IL_01A2  ldloc.s        V_14
+  IL_01A4  bge.s          IL_01e0: ldc.i4.5
+  IL_01A6  ldloc.s        V_13
+  IL_01A8  ldc.i4.4       
+  IL_01A9  ldelem.i4      
+  IL_01AA  ldarg.3        
+  IL_01AB  bne.un.s       IL_01e0: ldc.i4.5
+  IL_01AD  ldloc.s        V_10
+  IL_01AF  ldfld          AssemblerComponent::served
+  IL_01B4  ldc.i4.4       
+  IL_01B5  ldelema        System.Int32
+  IL_01BA  dup            
+  IL_01BB  ldind.i4       
+  IL_01BC  ldarg.s        itemCount
+  IL_01BE  add            
+  IL_01BF  stind.i4       
+  IL_01C0  ldloc.s        V_10
+  IL_01C2  ldfld          AssemblerComponent::incServed
+  IL_01C7  ldc.i4.4       
+  IL_01C8  ldelema        System.Int32
+  IL_01CD  dup            
+  IL_01CE  ldind.i4       
+  IL_01CF  ldarg.s        itemInc
+  IL_01D1  add            
+  IL_01D2  stind.i4       
+  IL_01D3  ldarg.s        remainInc
+  IL_01D5  ldc.i4.0       
+  IL_01D6  stind.i1       
+  IL_01D7  ldarg.s        itemCount
+  IL_01D9  stloc.s        V_15
+  IL_01DB  leave          IL_08d0: ldloc.s V_15
+  IL_01E0  ldc.i4.5       
+  IL_01E1  ldloc.s        V_14
+  IL_01E3  bge.s          IL_021f: leave.s IL_022d
+  IL_01E5  ldloc.s        V_13
+  IL_01E7  ldc.i4.5       
+  IL_01E8  ldelem.i4      
+  IL_01E9  ldarg.3        
+  IL_01EA  bne.un.s       IL_021f: leave.s IL_022d
+  IL_01EC  ldloc.s        V_10
+  IL_01EE  ldfld          AssemblerComponent::served
+  IL_01F3  ldc.i4.5       
+  IL_01F4  ldelema        System.Int32
+  IL_01F9  dup            
+  IL_01FA  ldind.i4       
+  IL_01FB  ldarg.s        itemCount
+  IL_01FD  add            
+  IL_01FE  stind.i4       
+  IL_01FF  ldloc.s        V_10
+  IL_0201  ldfld          AssemblerComponent::incServed
+  IL_0206  ldc.i4.5       
+  IL_0207  ldelema        System.Int32
+  IL_020C  dup            
+  IL_020D  ldind.i4       
+  IL_020E  ldarg.s        itemInc
+  IL_0210  add            
+  IL_0211  stind.i4       
+  IL_0212  ldarg.s        remainInc
+  IL_0214  ldc.i4.0       
+  IL_0215  stind.i1       
+  IL_0216  ldarg.s        itemCount
+  IL_0218  stloc.s        V_15
+  IL_021A  leave          IL_08d0: ldloc.s V_15
+  IL_021F  leave.s        IL_022d: ldc.i4.0
+  IL_0221  ldloc.s        V_12
+  IL_0223  brfalse.s      IL_022c: endfinally
+  IL_0225  ldloc.s        V_11
+  IL_0227  call           Monitor::Exit
+  IL_022C  endfinally     
+  IL_022D  ldc.i4.0       
+  IL_022E  ret            
+  IL_022F  ldarg.0        
+  IL_0230  ldfld          PlanetFactory::entityPool
+  IL_0235  ldarg.1        
+  IL_0236  ldelema        EntityData
+  IL_023B  ldfld          EntityData::ejectorId
+  IL_0240  stloc.3        
+  IL_0241  ldloc.3        
+  IL_0242  ldc.i4.0       
+  IL_0243  ble            IL_02d7: ldarg.0
+  IL_0248  ldloc.1        
+  IL_0249  brtrue.s       IL_024d: ldarg.0
+  IL_024B  ldc.i4.0       
+  IL_024C  ret            
+  IL_024D  ldarg.0        
+  IL_024E  ldfld          PlanetFactory::entityMutexs
+  IL_0253  ldarg.1        
+  IL_0254  ldelem.ref     
+  IL_0255  stloc.s        V_11
+  IL_0257  ldc.i4.0       
+  IL_0258  stloc.s        V_12
+  IL_025A  ldloc.s        V_11
+  IL_025C  ldloca.s       V_12
+  IL_025E  call           Monitor::Enter
+  IL_0263  ldloc.1        
+  IL_0264  ldc.i4.0       
+  IL_0265  ldelem.i4      
+  IL_0266  ldarg.3        
+  IL_0267  bne.un.s       IL_02c7: leave.s IL_02d5
+  IL_0269  ldarg.0        
+  IL_026A  ldfld          PlanetFactory::factorySystem
+  IL_026F  ldfld          FactorySystem::ejectorPool
+  IL_0274  ldloc.3        
+  IL_0275  ldelema        EjectorComponent
+  IL_027A  ldfld          EjectorComponent::bulletId
+  IL_027F  ldarg.3        
+  IL_0280  bne.un.s       IL_02c7: leave.s IL_02d5
+  IL_0282  ldarg.0        
+  IL_0283  ldfld          PlanetFactory::factorySystem
+  IL_0288  ldfld          FactorySystem::ejectorPool
+  IL_028D  ldloc.3        
+  IL_028E  ldelema        EjectorComponent
+  IL_0293  ldflda         EjectorComponent::bulletCount
+  IL_0298  dup            
+  IL_0299  ldind.i4       
+  IL_029A  ldarg.s        itemCount
+  IL_029C  add            
+  IL_029D  stind.i4       
+  IL_029E  ldarg.0        
+  IL_029F  ldfld          PlanetFactory::factorySystem
+  IL_02A4  ldfld          FactorySystem::ejectorPool
+  IL_02A9  ldloc.3        
+  IL_02AA  ldelema        EjectorComponent
+  IL_02AF  ldflda         EjectorComponent::bulletInc
+  IL_02B4  dup            
+  IL_02B5  ldind.i4       
+  IL_02B6  ldarg.s        itemInc
+  IL_02B8  add            
+  IL_02B9  stind.i4       
+  IL_02BA  ldarg.s        remainInc
+  IL_02BC  ldc.i4.0       
+  IL_02BD  stind.i1       
+  IL_02BE  ldarg.s        itemCount
+  IL_02C0  stloc.s        V_15
+  IL_02C2  leave          IL_08d0: ldloc.s V_15
+  IL_02C7  leave.s        IL_02d5: ldc.i4.0
+  IL_02C9  ldloc.s        V_12
+  IL_02CB  brfalse.s      IL_02d4: endfinally
+  IL_02CD  ldloc.s        V_11
+  IL_02CF  call           Monitor::Exit
+  IL_02D4  endfinally     
+  IL_02D5  ldc.i4.0       
+  IL_02D6  ret            
+  IL_02D7  ldarg.0        
+  IL_02D8  ldfld          PlanetFactory::entityPool
+  IL_02DD  ldarg.1        
+  IL_02DE  ldelema        EntityData
+  IL_02E3  ldfld          EntityData::siloId
+  IL_02E8  stloc.s        V_4
+  IL_02EA  ldloc.s        V_4
+  IL_02EC  ldc.i4.0       
+  IL_02ED  ble            IL_0384: ldarg.0
+  IL_02F2  ldloc.1        
+  IL_02F3  brtrue.s       IL_02f7: ldarg.0
+  IL_02F5  ldc.i4.0       
+  IL_02F6  ret            
+  IL_02F7  ldarg.0        
+  IL_02F8  ldfld          PlanetFactory::entityMutexs
+  IL_02FD  ldarg.1        
+  IL_02FE  ldelem.ref     
+  IL_02FF  stloc.s        V_11
+  IL_0301  ldc.i4.0       
+  IL_0302  stloc.s        V_12
+  IL_0304  ldloc.s        V_11
+  IL_0306  ldloca.s       V_12
+  IL_0308  call           Monitor::Enter
+  IL_030D  ldloc.1        
+  IL_030E  ldc.i4.0       
+  IL_030F  ldelem.i4      
+  IL_0310  ldarg.3        
+  IL_0311  bne.un.s       IL_0374: leave.s IL_0382
+  IL_0313  ldarg.0        
+  IL_0314  ldfld          PlanetFactory::factorySystem
+  IL_0319  ldfld          FactorySystem::siloPool
+  IL_031E  ldloc.s        V_4
+  IL_0320  ldelema        SiloComponent
+  IL_0325  ldfld          SiloComponent::bulletId
+  IL_032A  ldarg.3        
+  IL_032B  bne.un.s       IL_0374: leave.s IL_0382
+  IL_032D  ldarg.0        
+  IL_032E  ldfld          PlanetFactory::factorySystem
+  IL_0333  ldfld          FactorySystem::siloPool
+  IL_0338  ldloc.s        V_4
+  IL_033A  ldelema        SiloComponent
+  IL_033F  ldflda         SiloComponent::bulletCount
+  IL_0344  dup            
+  IL_0345  ldind.i4       
+  IL_0346  ldarg.s        itemCount
+  IL_0348  add            
+  IL_0349  stind.i4       
+  IL_034A  ldarg.0        
+  IL_034B  ldfld          PlanetFactory::factorySystem
+  IL_0350  ldfld          FactorySystem::siloPool
+  IL_0355  ldloc.s        V_4
+  IL_0357  ldelema        SiloComponent
+  IL_035C  ldflda         SiloComponent::bulletInc
+  IL_0361  dup            
+  IL_0362  ldind.i4       
+  IL_0363  ldarg.s        itemInc
+  IL_0365  add            
+  IL_0366  stind.i4       
+  IL_0367  ldarg.s        remainInc
+  IL_0369  ldc.i4.0       
+  IL_036A  stind.i1       
+  IL_036B  ldarg.s        itemCount
+  IL_036D  stloc.s        V_15
+  IL_036F  leave          IL_08d0: ldloc.s V_15
+  IL_0374  leave.s        IL_0382: ldc.i4.0
+  IL_0376  ldloc.s        V_12
+  IL_0378  brfalse.s      IL_0381: endfinally
+  IL_037A  ldloc.s        V_11
+  IL_037C  call           Monitor::Exit
+  IL_0381  endfinally     
+  IL_0382  ldc.i4.0       
+  IL_0383  ret            
+  IL_0384  ldarg.0        
+  IL_0385  ldfld          PlanetFactory::entityPool
+  IL_038A  ldarg.1        
+  IL_038B  ldelema        EntityData
+  IL_0390  ldfld          EntityData::labId
+  IL_0395  stloc.s        V_5
+  IL_0397  ldloc.s        V_5
+  IL_0399  ldc.i4.0       
+  IL_039A  ble            IL_04d2: ldarg.0
+  IL_039F  ldloc.1        
+  IL_03A0  brtrue.s       IL_03a4: ldarg.0
+  IL_03A2  ldc.i4.0       
+  IL_03A3  ret            
+  IL_03A4  ldarg.0        
+  IL_03A5  ldfld          PlanetFactory::entityMutexs
+  IL_03AA  ldarg.1        
+  IL_03AB  ldelem.ref     
+  IL_03AC  stloc.s        V_11
+  IL_03AE  ldc.i4.0       
+  IL_03AF  stloc.s        V_12
+  IL_03B1  ldloc.s        V_11
+  IL_03B3  ldloca.s       V_12
+  IL_03B5  call           Monitor::Enter
+  IL_03BA  ldarg.0        
+  IL_03BB  ldfld          PlanetFactory::factorySystem
+  IL_03C0  ldfld          FactorySystem::labPool
+  IL_03C5  ldloc.s        V_5
+  IL_03C7  ldelema        LabComponent
+  IL_03CC  stloc.s        V_16
+  IL_03CE  ldloc.s        V_16
+  IL_03D0  ldfld          LabComponent::researchMode
+  IL_03D5  brfalse.s      IL_0445: ldloc.s V_16
+  IL_03D7  ldloc.s        V_16
+  IL_03D9  ldfld          LabComponent::matrixServed
+  IL_03DE  stloc.s        V_17
+  IL_03E0  ldloc.s        V_16
+  IL_03E2  ldfld          LabComponent::matrixIncServed
+  IL_03E7  stloc.s        V_18
+  IL_03E9  ldloc.s        V_17
+  IL_03EB  brtrue.s       IL_03f5: ldarg.3
+  IL_03ED  ldc.i4.0       
+  IL_03EE  stloc.s        V_15
+  IL_03F0  leave          IL_08d0: ldloc.s V_15
+  IL_03F5  ldarg.3        
+  IL_03F6  ldc.i4         6001
+  IL_03FB  sub            
+  IL_03FC  stloc.s        V_19
+  IL_03FE  ldloc.s        V_19
+  IL_0400  ldc.i4.0       
+  IL_0401  blt            IL_04c2: leave.s IL_04d0
+  IL_0406  ldloc.s        V_19
+  IL_0408  ldc.i4.6       
+  IL_0409  bge            IL_04c2: leave.s IL_04d0
+  IL_040E  ldloc.s        V_17
+  IL_0410  ldloc.s        V_19
+  IL_0412  ldelema        System.Int32
+  IL_0417  dup            
+  IL_0418  ldind.i4       
+  IL_0419  ldc.i4         3600
+  IL_041E  ldarg.s        itemCount
+  IL_0420  mul            
+  IL_0421  add            
+  IL_0422  stind.i4       
+  IL_0423  ldloc.s        V_18
+  IL_0425  ldloc.s        V_19
+  IL_0427  ldelema        System.Int32
+  IL_042C  dup            
+  IL_042D  ldind.i4       
+  IL_042E  ldc.i4         3600
+  IL_0433  ldarg.s        itemInc
+  IL_0435  mul            
+  IL_0436  add            
+  IL_0437  stind.i4       
+  IL_0438  ldarg.s        remainInc
+  IL_043A  ldc.i4.0       
+  IL_043B  stind.i1       
+  IL_043C  ldarg.s        itemCount
+  IL_043E  stloc.s        V_15
+  IL_0440  leave          IL_08d0: ldloc.s V_15
+  IL_0445  ldloc.s        V_16
+  IL_0447  ldfld          LabComponent::recipeExecuteData
+  IL_044C  dup            
+  IL_044D  brtrue.s       IL_0453: ldfld System.Int32[] RecipeExecuteData::requires
+  IL_044F  pop            
+  IL_0450  ldnull         
+  IL_0451  br.s           IL_0458: stloc.s V_20
+  IL_0453  ldfld          RecipeExecuteData::requires
+  IL_0458  stloc.s        V_20
+  IL_045A  ldloc.s        V_16
+  IL_045C  ldfld          LabComponent::served
+  IL_0461  stloc.s        V_21
+  IL_0463  ldloc.s        V_16
+  IL_0465  ldfld          LabComponent::incServed
+  IL_046A  stloc.s        V_22
+  IL_046C  ldloc.s        V_20
+  IL_046E  brtrue.s       IL_0478: ldloc.s V_20
+  IL_0470  ldc.i4.0       
+  IL_0471  stloc.s        V_15
+  IL_0473  leave          IL_08d0: ldloc.s V_15
+  IL_0478  ldloc.s        V_20
+  IL_047A  ldlen          
+  IL_047B  conv.i4        
+  IL_047C  stloc.s        V_23
+  IL_047E  ldc.i4.0       
+  IL_047F  stloc.s        V_24
+  IL_0481  br.s           IL_04bc: ldloc.s V_24
+  IL_0483  ldloc.s        V_20
+  IL_0485  ldloc.s        V_24
+  IL_0487  ldelem.i4      
+  IL_0488  ldarg.3        
+  IL_0489  bne.un.s       IL_04b6: ldloc.s V_24
+  IL_048B  ldloc.s        V_21
+  IL_048D  ldloc.s        V_24
+  IL_048F  ldelema        System.Int32
+  IL_0494  dup            
+  IL_0495  ldind.i4       
+  IL_0496  ldarg.s        itemCount
+  IL_0498  add            
+  IL_0499  stind.i4       
+  IL_049A  ldloc.s        V_22
+  IL_049C  ldloc.s        V_24
+  IL_049E  ldelema        System.Int32
+  IL_04A3  dup            
+  IL_04A4  ldind.i4       
+  IL_04A5  ldarg.s        itemInc
+  IL_04A7  add            
+  IL_04A8  stind.i4       
+  IL_04A9  ldarg.s        remainInc
+  IL_04AB  ldc.i4.0       
+  IL_04AC  stind.i1       
+  IL_04AD  ldarg.s        itemCount
+  IL_04AF  stloc.s        V_15
+  IL_04B1  leave          IL_08d0: ldloc.s V_15
+  IL_04B6  ldloc.s        V_24
+  IL_04B8  ldc.i4.1       
+  IL_04B9  add            
+  IL_04BA  stloc.s        V_24
+  IL_04BC  ldloc.s        V_24
+  IL_04BE  ldloc.s        V_23
+  IL_04C0  blt.s          IL_0483: ldloc.s V_20
+  IL_04C2  leave.s        IL_04d0: ldc.i4.0
+  IL_04C4  ldloc.s        V_12
+  IL_04C6  brfalse.s      IL_04cf: endfinally
+  IL_04C8  ldloc.s        V_11
+  IL_04CA  call           Monitor::Exit
+  IL_04CF  endfinally     
+  IL_04D0  ldc.i4.0       
+  IL_04D1  ret            
+  IL_04D2  ldarg.0        
+  IL_04D3  ldfld          PlanetFactory::entityPool
+  IL_04D8  ldarg.1        
+  IL_04D9  ldelema        EntityData
+  IL_04DE  ldfld          EntityData::storageId
+  IL_04E3  stloc.s        V_6
+  IL_04E5  ldloc.s        V_6
+  IL_04E7  ldc.i4.0       
+  IL_04E8  ble            IL_05bb: ldarg.0
+  IL_04ED  ldarg.0        
+  IL_04EE  ldfld          PlanetFactory::factoryStorage
+  IL_04F3  ldfld          FactoryStorage::storagePool
+  IL_04F8  ldloc.s        V_6
+  IL_04FA  ldelem.ref     
+  IL_04FB  stloc.s        V_25
+  IL_04FD  br             IL_05b2: ldloc.s V_25
+  IL_0502  ldarg.0        
+  IL_0503  ldfld          PlanetFactory::entityMutexs
+  IL_0508  ldloc.s        V_25
+  IL_050A  ldfld          StorageComponent::entityId
+  IL_050F  ldelem.ref     
+  IL_0510  stloc.s        V_11
+  IL_0512  ldc.i4.0       
+  IL_0513  stloc.s        V_12
+  IL_0515  ldloc.s        V_11
+  IL_0517  ldloca.s       V_12
+  IL_0519  call           Monitor::Enter
+  IL_051E  ldloc.s        V_25
+  IL_0520  ldfld          StorageComponent::lastFullItem
+  IL_0525  ldarg.3        
+  IL_0526  beq.s          IL_059b: ldloc.s V_25
+  IL_0528  ldc.i4.0       
+  IL_0529  stloc.s        V_27
+  IL_052B  ldarg.0        
+  IL_052C  ldfld          PlanetFactory::entityPool
+  IL_0531  ldloc.s        V_25
+  IL_0533  ldfld          StorageComponent::entityId
+  IL_0538  ldelema        EntityData
+  IL_053D  ldfld          EntityData::battleBaseId
+  IL_0542  brtrue.s       IL_0557: ldloc.s V_25
+  IL_0544  ldloc.s        V_25
+  IL_0546  ldarg.3        
+  IL_0547  ldarg.s        itemCount
+  IL_0549  ldarg.s        itemInc
+  IL_054B  ldloca.s       V_26
+  IL_054D  ldc.i4.1       
+  IL_054E  callvirt       StorageComponent::AddItem
+  IL_0553  stloc.s        V_27
+  IL_0555  br.s           IL_0567: ldarg.s remainInc
+  IL_0557  ldloc.s        V_25
+  IL_0559  ldarg.3        
+  IL_055A  ldarg.s        itemCount
+  IL_055C  ldarg.s        itemInc
+  IL_055E  ldloca.s       V_26
+  IL_0560  callvirt       StorageComponent::AddItemFilteredBanOnly
+  IL_0565  stloc.s        V_27
+  IL_0567  ldarg.s        remainInc
+  IL_0569  ldloc.s        V_26
+  IL_056B  conv.u1        
+  IL_056C  stind.i1       
+  IL_056D  ldloc.s        V_27
+  IL_056F  ldarg.s        itemCount
+  IL_0571  bne.un.s       IL_057d: ldloc.s V_25
+  IL_0573  ldloc.s        V_25
+  IL_0575  ldc.i4.m1      
+  IL_0576  stfld          StorageComponent::lastFullItem
+  IL_057B  br.s           IL_0585: ldloc.s V_27
+  IL_057D  ldloc.s        V_25
+  IL_057F  ldarg.3        
+  IL_0580  stfld          StorageComponent::lastFullItem
+  IL_0585  ldloc.s        V_27
+  IL_0587  brtrue.s       IL_0592: ldloc.s V_27
+  IL_0589  ldloc.s        V_25
+  IL_058B  ldfld          StorageComponent::nextStorage
+  IL_0590  brtrue.s       IL_059b: ldloc.s V_25
+  IL_0592  ldloc.s        V_27
+  IL_0594  stloc.s        V_15
+  IL_0596  leave          IL_08d0: ldloc.s V_15
+  IL_059B  ldloc.s        V_25
+  IL_059D  ldfld          StorageComponent::nextStorage
+  IL_05A2  stloc.s        V_25
+  IL_05A4  leave.s        IL_05b2: ldloc.s V_25
+  IL_05A6  ldloc.s        V_12
+  IL_05A8  brfalse.s      IL_05b1: endfinally
+  IL_05AA  ldloc.s        V_11
+  IL_05AC  call           Monitor::Exit
+  IL_05B1  endfinally     
+  IL_05B2  ldloc.s        V_25
+  IL_05B4  brtrue         IL_0502: ldarg.0
+  IL_05B9  ldc.i4.0       
+  IL_05BA  ret            
+  IL_05BB  ldarg.0        
+  IL_05BC  ldfld          PlanetFactory::entityPool
+  IL_05C1  ldarg.1        
+  IL_05C2  ldelema        EntityData
+  IL_05C7  ldfld          EntityData::stationId
+  IL_05CC  stloc.s        V_7
+  IL_05CE  ldloc.s        V_7
+  IL_05D0  ldc.i4.0       
+  IL_05D1  ble            IL_06b6: ldarg.0
+  IL_05D6  ldloc.1        
+  IL_05D7  brtrue.s       IL_05db: ldarg.0
+  IL_05D9  ldc.i4.0       
+  IL_05DA  ret            
+  IL_05DB  ldarg.0        
+  IL_05DC  ldfld          PlanetFactory::transport
+  IL_05E1  ldfld          PlanetTransport::stationPool
+  IL_05E6  ldloc.s        V_7
+  IL_05E8  ldelem.ref     
+  IL_05E9  stloc.s        V_28
+  IL_05EB  ldarg.0        
+  IL_05EC  ldfld          PlanetFactory::entityMutexs
+  IL_05F1  ldarg.1        
+  IL_05F2  ldelem.ref     
+  IL_05F3  stloc.s        V_11
+  IL_05F5  ldc.i4.0       
+  IL_05F6  stloc.s        V_12
+  IL_05F8  ldloc.s        V_11
+  IL_05FA  ldloca.s       V_12
+  IL_05FC  call           Monitor::Enter
+  IL_0601  ldarg.3        
+  IL_0602  ldc.i4         1210
+  IL_0607  bne.un.s       IL_0636: ldloc.s V_28
+  IL_0609  ldloc.s        V_28
+  IL_060B  ldfld          StationComponent::warperCount
+  IL_0610  ldloc.s        V_28
+  IL_0612  ldfld          StationComponent::warperMaxCount
+  IL_0617  bge.s          IL_0636: ldloc.s V_28
+  IL_0619  ldloc.s        V_28
+  IL_061B  dup            
+  IL_061C  ldfld          StationComponent::warperCount
+  IL_0621  ldarg.s        itemCount
+  IL_0623  add            
+  IL_0624  stfld          StationComponent::warperCount
+  IL_0629  ldarg.s        remainInc
+  IL_062B  ldc.i4.0       
+  IL_062C  stind.i1       
+  IL_062D  ldarg.s        itemCount
+  IL_062F  stloc.s        V_15
+  IL_0631  leave          IL_08d0: ldloc.s V_15
+  IL_0636  ldloc.s        V_28
+  IL_0638  ldfld          StationComponent::storage
+  IL_063D  stloc.s        V_29
+  IL_063F  ldc.i4.0       
+  IL_0640  stloc.s        V_30
+  IL_0642  br.s           IL_0697: ldloc.s V_30
+  IL_0644  ldloc.1        
+  IL_0645  ldloc.s        V_30
+  IL_0647  ldelem.i4      
+  IL_0648  ldarg.3        
+  IL_0649  bne.un.s       IL_0691: ldloc.s V_30
+  IL_064B  ldloc.s        V_29
+  IL_064D  ldloc.s        V_30
+  IL_064F  ldelema        StationStore
+  IL_0654  ldfld          StationStore::itemId
+  IL_0659  ldarg.3        
+  IL_065A  bne.un.s       IL_0691: ldloc.s V_30
+  IL_065C  ldloc.s        V_29
+  IL_065E  ldloc.s        V_30
+  IL_0660  ldelema        StationStore
+  IL_0665  ldflda         StationStore::count
+  IL_066A  dup            
+  IL_066B  ldind.i4       
+  IL_066C  ldarg.s        itemCount
+  IL_066E  add            
+  IL_066F  stind.i4       
+  IL_0670  ldloc.s        V_29
+  IL_0672  ldloc.s        V_30
+  IL_0674  ldelema        StationStore
+  IL_0679  ldflda         StationStore::inc
+  IL_067E  dup            
+  IL_067F  ldind.i4       
+  IL_0680  ldarg.s        itemInc
+  IL_0682  add            
+  IL_0683  stind.i4       
+  IL_0684  ldarg.s        remainInc
+  IL_0686  ldc.i4.0       
+  IL_0687  stind.i1       
+  IL_0688  ldarg.s        itemCount
+  IL_068A  stloc.s        V_15
+  IL_068C  leave          IL_08d0: ldloc.s V_15
+  IL_0691  ldloc.s        V_30
+  IL_0693  ldc.i4.1       
+  IL_0694  add            
+  IL_0695  stloc.s        V_30
+  IL_0697  ldloc.s        V_30
+  IL_0699  ldloc.1        
+  IL_069A  ldlen          
+  IL_069B  conv.i4        
+  IL_069C  bge.s          IL_06a6: leave.s IL_06b4
+  IL_069E  ldloc.s        V_30
+  IL_06A0  ldloc.s        V_29
+  IL_06A2  ldlen          
+  IL_06A3  conv.i4        
+  IL_06A4  blt.s          IL_0644: ldloc.1
+  IL_06A6  leave.s        IL_06b4: ldc.i4.0
+  IL_06A8  ldloc.s        V_12
+  IL_06AA  brfalse.s      IL_06b3: endfinally
+  IL_06AC  ldloc.s        V_11
+  IL_06AE  call           Monitor::Exit
+  IL_06B3  endfinally     
+  IL_06B4  ldc.i4.0       
+  IL_06B5  ret            
+  IL_06B6  ldarg.0        
+  IL_06B7  ldfld          PlanetFactory::entityPool
+  IL_06BC  ldarg.1        
+  IL_06BD  ldelema        EntityData
+  IL_06C2  ldfld          EntityData::powerGenId
+  IL_06C7  stloc.s        V_8
+  IL_06C9  ldloc.s        V_8
+  IL_06CB  ldc.i4.0       
+  IL_06CC  ble            IL_07db: ldarg.0
+  IL_06D1  ldarg.0        
+  IL_06D2  ldfld          PlanetFactory::powerSystem
+  IL_06D7  ldfld          PowerSystem::genPool
+  IL_06DC  stloc.s        V_31
+  IL_06DE  ldarg.0        
+  IL_06DF  ldfld          PlanetFactory::entityMutexs
+  IL_06E4  ldarg.1        
+  IL_06E5  ldelem.ref     
+  IL_06E6  stloc.s        V_11
+  IL_06E8  ldc.i4.0       
+  IL_06E9  stloc.s        V_12
+  IL_06EB  ldloc.s        V_11
+  IL_06ED  ldloca.s       V_12
+  IL_06EF  call           Monitor::Enter
+  IL_06F4  ldarg.3        
+  IL_06F5  ldloc.s        V_31
+  IL_06F7  ldloc.s        V_8
+  IL_06F9  ldelema        PowerGeneratorComponent
+  IL_06FE  ldfld          PowerGeneratorComponent::fuelId
+  IL_0703  bne.un.s       IL_0756: ldloc.s V_31
+  IL_0705  ldloc.s        V_31
+  IL_0707  ldloc.s        V_8
+  IL_0709  ldelema        PowerGeneratorComponent
+  IL_070E  ldfld          PowerGeneratorComponent::fuelCount
+  IL_0713  ldc.i4.s       10
+  IL_0715  bge.s          IL_074e: ldc.i4.0
+  IL_0717  ldloc.s        V_31
+  IL_0719  ldloc.s        V_8
+  IL_071B  ldelema        PowerGeneratorComponent
+  IL_0720  ldflda         PowerGeneratorComponent::fuelCount
+  IL_0725  dup            
+  IL_0726  ldind.i2       
+  IL_0727  ldarg.s        itemCount
+  IL_0729  add            
+  IL_072A  conv.i2        
+  IL_072B  stind.i2       
+  IL_072C  ldloc.s        V_31
+  IL_072E  ldloc.s        V_8
+  IL_0730  ldelema        PowerGeneratorComponent
+  IL_0735  ldflda         PowerGeneratorComponent::fuelInc
+  IL_073A  dup            
+  IL_073B  ldind.i2       
+  IL_073C  ldarg.s        itemInc
+  IL_073E  add            
+  IL_073F  conv.i2        
+  IL_0740  stind.i2       
+  IL_0741  ldarg.s        remainInc
+  IL_0743  ldc.i4.0       
+  IL_0744  stind.i1       
+  IL_0745  ldarg.s        itemCount
+  IL_0747  stloc.s        V_15
+  IL_0749  leave          IL_08d0: ldloc.s V_15
+  IL_074E  ldc.i4.0       
+  IL_074F  stloc.s        V_15
+  IL_0751  leave          IL_08d0: ldloc.s V_15
+  IL_0756  ldloc.s        V_31
+  IL_0758  ldloc.s        V_8
+  IL_075A  ldelema        PowerGeneratorComponent
+  IL_075F  ldfld          PowerGeneratorComponent::fuelId
+  IL_0764  brtrue.s       IL_07cb: leave.s IL_07d9
+  IL_0766  ldsfld         ItemProto::fuelNeeds
+  IL_076B  ldloc.s        V_31
+  IL_076D  ldloc.s        V_8
+  IL_076F  ldelema        PowerGeneratorComponent
+  IL_0774  ldfld          PowerGeneratorComponent::fuelMask
+  IL_0779  ldelem.ref     
+  IL_077A  stloc.1        
+  IL_077B  ldloc.1        
+  IL_077C  brfalse.s      IL_0782: ldc.i4.0
+  IL_077E  ldloc.1        
+  IL_077F  ldlen          
+  IL_0780  brtrue.s       IL_078a: ldc.i4.0
+  IL_0782  ldc.i4.0       
+  IL_0783  stloc.s        V_15
+  IL_0785  leave          IL_08d0: ldloc.s V_15
+  IL_078A  ldc.i4.0       
+  IL_078B  stloc.s        V_32
+  IL_078D  br.s           IL_07bc: ldloc.s V_32
+  IL_078F  ldloc.1        
+  IL_0790  ldloc.s        V_32
+  IL_0792  ldelem.i4      
+  IL_0793  ldarg.3        
+  IL_0794  bne.un.s       IL_07b6: ldloc.s V_32
+  IL_0796  ldloc.s        V_31
+  IL_0798  ldloc.s        V_8
+  IL_079A  ldelema        PowerGeneratorComponent
+  IL_079F  ldarg.3        
+  IL_07A0  ldarg.s        itemCount
+  IL_07A2  ldarg.s        itemInc
+  IL_07A4  call           PowerGeneratorComponent::SetNewFuel
+  IL_07A9  ldarg.s        remainInc
+  IL_07AB  ldc.i4.0       
+  IL_07AC  stind.i1       
+  IL_07AD  ldarg.s        itemCount
+  IL_07AF  stloc.s        V_15
+  IL_07B1  leave          IL_08d0: ldloc.s V_15
+  IL_07B6  ldloc.s        V_32
+  IL_07B8  ldc.i4.1       
+  IL_07B9  add            
+  IL_07BA  stloc.s        V_32
+  IL_07BC  ldloc.s        V_32
+  IL_07BE  ldloc.1        
+  IL_07BF  ldlen          
+  IL_07C0  conv.i4        
+  IL_07C1  blt.s          IL_078f: ldloc.1
+  IL_07C3  ldc.i4.0       
+  IL_07C4  stloc.s        V_15
+  IL_07C6  leave          IL_08d0: ldloc.s V_15
+  IL_07CB  leave.s        IL_07d9: ldc.i4.0
+  IL_07CD  ldloc.s        V_12
+  IL_07CF  brfalse.s      IL_07d8: endfinally
+  IL_07D1  ldloc.s        V_11
+  IL_07D3  call           Monitor::Exit
+  IL_07D8  endfinally     
+  IL_07D9  ldc.i4.0       
+  IL_07DA  ret            
+  IL_07DB  ldarg.0        
+  IL_07DC  ldfld          PlanetFactory::entityPool
+  IL_07E1  ldarg.1        
+  IL_07E2  ldelema        EntityData
+  IL_07E7  ldfld          EntityData::splitterId
+  IL_07EC  stloc.s        V_9
+  IL_07EE  ldloc.s        V_9
+  IL_07F0  ldc.i4.0       
+  IL_07F1  ble            IL_08ce: ldc.i4.0
+  IL_07F6  ldarg.2        
+  IL_07F7  brtrue.s       IL_082d: ldarg.2
+  IL_07F9  ldarg.0        
+  IL_07FA  ldfld          PlanetFactory::cargoTraffic
+  IL_07FF  ldarg.0        
+  IL_0800  ldfld          PlanetFactory::cargoTraffic
+  IL_0805  ldfld          CargoTraffic::splitterPool
+  IL_080A  ldloc.s        V_9
+  IL_080C  ldelema        SplitterComponent
+  IL_0811  ldfld          SplitterComponent::beltA
+  IL_0816  ldc.i4.0       
+  IL_0817  ldarg.3        
+  IL_0818  ldarg.s        itemCount
+  IL_081A  ldarg.s        itemInc
+  IL_081C  callvirt       CargoTraffic::TryInsertItem
+  IL_0821  brfalse        IL_08cc: ldc.i4.0
+  IL_0826  ldarg.s        remainInc
+  IL_0828  ldc.i4.0       
+  IL_0829  stind.i1       
+  IL_082A  ldarg.s        itemCount
+  IL_082C  ret            
+  IL_082D  ldarg.2        
+  IL_082E  ldc.i4.1       
+  IL_082F  bne.un.s       IL_0862: ldarg.2
+  IL_0831  ldarg.0        
+  IL_0832  ldfld          PlanetFactory::cargoTraffic
+  IL_0837  ldarg.0        
+  IL_0838  ldfld          PlanetFactory::cargoTraffic
+  IL_083D  ldfld          CargoTraffic::splitterPool
+  IL_0842  ldloc.s        V_9
+  IL_0844  ldelema        SplitterComponent
+  IL_0849  ldfld          SplitterComponent::beltB
+  IL_084E  ldc.i4.0       
+  IL_084F  ldarg.3        
+  IL_0850  ldarg.s        itemCount
+  IL_0852  ldarg.s        itemInc
+  IL_0854  callvirt       CargoTraffic::TryInsertItem
+  IL_0859  brfalse.s      IL_08cc: ldc.i4.0
+  IL_085B  ldarg.s        remainInc
+  IL_085D  ldc.i4.0       
+  IL_085E  stind.i1       
+  IL_085F  ldarg.s        itemCount
+  IL_0861  ret            
+  IL_0862  ldarg.2        
+  IL_0863  ldc.i4.2       
+  IL_0864  bne.un.s       IL_0897: ldarg.2
+  IL_0866  ldarg.0        
+  IL_0867  ldfld          PlanetFactory::cargoTraffic
+  IL_086C  ldarg.0        
+  IL_086D  ldfld          PlanetFactory::cargoTraffic
+  IL_0872  ldfld          CargoTraffic::splitterPool
+  IL_0877  ldloc.s        V_9
+  IL_0879  ldelema        SplitterComponent
+  IL_087E  ldfld          SplitterComponent::beltC
+  IL_0883  ldc.i4.0       
+  IL_0884  ldarg.3        
+  IL_0885  ldarg.s        itemCount
+  IL_0887  ldarg.s        itemInc
+  IL_0889  callvirt       CargoTraffic::TryInsertItem
+  IL_088E  brfalse.s      IL_08cc: ldc.i4.0
+  IL_0890  ldarg.s        remainInc
+  IL_0892  ldc.i4.0       
+  IL_0893  stind.i1       
+  IL_0894  ldarg.s        itemCount
+  IL_0896  ret            
+  IL_0897  ldarg.2        
+  IL_0898  ldc.i4.3       
+  IL_0899  bne.un.s       IL_08cc: ldc.i4.0
+  IL_089B  ldarg.0        
+  IL_089C  ldfld          PlanetFactory::cargoTraffic
+  IL_08A1  ldarg.0        
+  IL_08A2  ldfld          PlanetFactory::cargoTraffic
+  IL_08A7  ldfld          CargoTraffic::splitterPool
+  IL_08AC  ldloc.s        V_9
+  IL_08AE  ldelema        SplitterComponent
+  IL_08B3  ldfld          SplitterComponent::beltD
+  IL_08B8  ldc.i4.0       
+  IL_08B9  ldarg.3        
+  IL_08BA  ldarg.s        itemCount
+  IL_08BC  ldarg.s        itemInc
+  IL_08BE  callvirt       CargoTraffic::TryInsertItem
+  IL_08C3  brfalse.s      IL_08cc: ldc.i4.0
+  IL_08C5  ldarg.s        remainInc
+  IL_08C7  ldc.i4.0       
+  IL_08C8  stind.i1       
+  IL_08C9  ldarg.s        itemCount
+  IL_08CB  ret            
+  IL_08CC  ldc.i4.0       
+  IL_08CD  ret            
+  IL_08CE  ldc.i4.0       
+  IL_08CF  ret            
+  IL_08D0  ldloc.s        V_15
+  IL_08D2  ret            
+===== PlanetFactory::InsertInto(System.UInt32,System.Int32,System.Int32,System.Byte,System.Byte,System.Byte&)
+  IL_0000  ldarg.s        remainInc
+  IL_0002  ldarg.s        itemInc
+  IL_0004  stind.i1       
+  IL_0005  ldarg.1        
+  IL_0006  ldc.i4         16777215
+  IL_000B  and            
+  IL_000C  stloc.0        
+  IL_000D  ldarg.1        
+  IL_000E  ldc.i4         -16777216
+  IL_0013  and            
+  IL_0014  stloc.1        
+  IL_0015  ldloc.1        
+  IL_0016  ldc.i4         67108864
+  IL_001B  bgt.un.s       IL_0058: ldloc.1
+  IL_001D  ldloc.1        
+  IL_001E  ldc.i4         33554432
+  IL_0023  bgt.un.s       IL_003d: ldloc.1
+  IL_0025  ldloc.1        
+  IL_0026  ldc.i4         16777216
+  IL_002B  beq.s          IL_0096: ldarg.0
+  IL_002D  ldloc.1        
+  IL_002E  ldc.i4         33554432
+  IL_0033  beq            IL_00ce: ldarg.0
+  IL_0038  br             IL_0849: ldc.i4.0
+  IL_003D  ldloc.1        
+  IL_003E  ldc.i4         50331648
+  IL_0043  beq            IL_02af: ldarg.0
+  IL_0048  ldloc.1        
+  IL_0049  ldc.i4         67108864
+  IL_004E  beq            IL_0374: ldarg.0
+  IL_0053  br             IL_0849: ldc.i4.0
+  IL_0058  ldloc.1        
+  IL_0059  ldc.i4         100663296
+  IL_005E  bgt.un.s       IL_007b: ldloc.1
+  IL_0060  ldloc.1        
+  IL_0061  ldc.i4         83886080
+  IL_0066  beq            IL_0439: ldarg.0
+  IL_006B  ldloc.1        
+  IL_006C  ldc.i4         100663296
+  IL_0071  beq            IL_0506: ldarg.0
+  IL_0076  br             IL_0849: ldc.i4.0
+  IL_007B  ldloc.1        
+  IL_007C  ldc.i4         117440512
+  IL_0081  beq            IL_0603: ldarg.0
+  IL_0086  ldloc.1        
+  IL_0087  ldc.i4         134217728
+  IL_008C  beq            IL_0753: ldarg.0
+  IL_0091  br             IL_0849: ldc.i4.0
+  IL_0096  ldarg.0        
+  IL_0097  ldfld          PlanetFactory::cargoTraffic
+  IL_009C  ldfld          CargoTraffic::beltPool
+  IL_00A1  ldloc.0        
+  IL_00A2  ldelema        BeltComponent
+  IL_00A7  ldfld          BeltComponent::id
+  IL_00AC  ldc.i4.0       
+  IL_00AD  bgt.s          IL_00b1: ldarg.0
+  IL_00AF  ldc.i4.0       
+  IL_00B0  ret            
+  IL_00B1  ldarg.0        
+  IL_00B2  ldfld          PlanetFactory::cargoTraffic
+  IL_00B7  ldloc.0        
+  IL_00B8  ldarg.2        
+  IL_00B9  ldarg.3        
+  IL_00BA  ldarg.s        itemCount
+  IL_00BC  ldarg.s        itemInc
+  IL_00BE  callvirt       CargoTraffic::TryInsertItem
+  IL_00C3  brfalse.s      IL_00cc: ldc.i4.0
+  IL_00C5  ldarg.s        remainInc
+  IL_00C7  ldc.i4.0       
+  IL_00C8  stind.i1       
+  IL_00C9  ldarg.s        itemCount
+  IL_00CB  ret            
+  IL_00CC  ldc.i4.0       
+  IL_00CD  ret            
+  IL_00CE  ldarg.0        
+  IL_00CF  ldfld          PlanetFactory::factorySystem
+  IL_00D4  ldfld          FactorySystem::assemblerPool
+  IL_00D9  ldloc.0        
+  IL_00DA  ldelema        AssemblerComponent
+  IL_00DF  stloc.2        
+  IL_00E0  ldloc.2        
+  IL_00E1  ldfld          AssemblerComponent::id
+  IL_00E6  ldc.i4.0       
+  IL_00E7  bgt.s          IL_00eb: ldloc.2
+  IL_00E9  ldc.i4.0       
+  IL_00EA  ret            
+  IL_00EB  ldloc.2        
+  IL_00EC  ldfld          AssemblerComponent::entityId
+  IL_00F1  stloc.3        
+  IL_00F2  ldloc.2        
+  IL_00F3  ldfld          AssemblerComponent::recipeExecuteData
+  IL_00F8  dup            
+  IL_00F9  brtrue.s       IL_00ff: ldfld System.Int32[] RecipeExecuteData::requires
+  IL_00FB  pop            
+  IL_00FC  ldnull         
+  IL_00FD  br.s           IL_0104: stloc.s V_4
+  IL_00FF  ldfld          RecipeExecuteData::requires
+  IL_0104  stloc.s        V_4
+  IL_0106  ldloc.s        V_4
+  IL_0108  brtrue.s       IL_010c: ldarg.0
+  IL_010A  ldc.i4.0       
+  IL_010B  ret            
+  IL_010C  ldarg.0        
+  IL_010D  ldfld          PlanetFactory::entityNeeds
+  IL_0112  ldloc.3        
+  IL_0113  ldelem.ref     
+  IL_0114  pop            
+  IL_0115  ldarg.0        
+  IL_0116  ldfld          PlanetFactory::entityMutexs
+  IL_011B  ldloc.3        
+  IL_011C  ldelem.ref     
+  IL_011D  stloc.s        V_5
+  IL_011F  ldc.i4.0       
+  IL_0120  stloc.s        V_6
+  IL_0122  ldloc.s        V_5
+  IL_0124  ldloca.s       V_6
+  IL_0126  call           Monitor::Enter
+  IL_012B  ldloc.s        V_4
+  IL_012D  ldlen          
+  IL_012E  conv.i4        
+  IL_012F  stloc.s        V_7
+  IL_0131  ldc.i4.0       
+  IL_0132  ldloc.s        V_7
+  IL_0134  bge.s          IL_016e: ldc.i4.1
+  IL_0136  ldloc.s        V_4
+  IL_0138  ldc.i4.0       
+  IL_0139  ldelem.i4      
+  IL_013A  ldarg.3        
+  IL_013B  bne.un.s       IL_016e: ldc.i4.1
+  IL_013D  ldloc.2        
+  IL_013E  ldfld          AssemblerComponent::served
+  IL_0143  ldc.i4.0       
+  IL_0144  ldelema        System.Int32
+  IL_0149  dup            
+  IL_014A  ldind.i4       
+  IL_014B  ldarg.s        itemCount
+  IL_014D  add            
+  IL_014E  stind.i4       
+  IL_014F  ldloc.2        
+  IL_0150  ldfld          AssemblerComponent::incServed
+  IL_0155  ldc.i4.0       
+  IL_0156  ldelema        System.Int32
+  IL_015B  dup            
+  IL_015C  ldind.i4       
+  IL_015D  ldarg.s        itemInc
+  IL_015F  add            
+  IL_0160  stind.i4       
+  IL_0161  ldarg.s        remainInc
+  IL_0163  ldc.i4.0       
+  IL_0164  stind.i1       
+  IL_0165  ldarg.s        itemCount
+  IL_0167  stloc.s        V_8
+  IL_0169  leave          IL_084b: ldloc.s V_8
+  IL_016E  ldc.i4.1       
+  IL_016F  ldloc.s        V_7
+  IL_0171  bge.s          IL_01ab: ldc.i4.2
+  IL_0173  ldloc.s        V_4
+  IL_0175  ldc.i4.1       
+  IL_0176  ldelem.i4      
+  IL_0177  ldarg.3        
+  IL_0178  bne.un.s       IL_01ab: ldc.i4.2
+  IL_017A  ldloc.2        
+  IL_017B  ldfld          AssemblerComponent::served
+  IL_0180  ldc.i4.1       
+  IL_0181  ldelema        System.Int32
+  IL_0186  dup            
+  IL_0187  ldind.i4       
+  IL_0188  ldarg.s        itemCount
+  IL_018A  add            
+  IL_018B  stind.i4       
+  IL_018C  ldloc.2        
+  IL_018D  ldfld          AssemblerComponent::incServed
+  IL_0192  ldc.i4.1       
+  IL_0193  ldelema        System.Int32
+  IL_0198  dup            
+  IL_0199  ldind.i4       
+  IL_019A  ldarg.s        itemInc
+  IL_019C  add            
+  IL_019D  stind.i4       
+  IL_019E  ldarg.s        remainInc
+  IL_01A0  ldc.i4.0       
+  IL_01A1  stind.i1       
+  IL_01A2  ldarg.s        itemCount
+  IL_01A4  stloc.s        V_8
+  IL_01A6  leave          IL_084b: ldloc.s V_8
+  IL_01AB  ldc.i4.2       
+  IL_01AC  ldloc.s        V_7
+  IL_01AE  bge.s          IL_01e8: ldc.i4.3
+  IL_01B0  ldloc.s        V_4
+  IL_01B2  ldc.i4.2       
+  IL_01B3  ldelem.i4      
+  IL_01B4  ldarg.3        
+  IL_01B5  bne.un.s       IL_01e8: ldc.i4.3
+  IL_01B7  ldloc.2        
+  IL_01B8  ldfld          AssemblerComponent::served
+  IL_01BD  ldc.i4.2       
+  IL_01BE  ldelema        System.Int32
+  IL_01C3  dup            
+  IL_01C4  ldind.i4       
+  IL_01C5  ldarg.s        itemCount
+  IL_01C7  add            
+  IL_01C8  stind.i4       
+  IL_01C9  ldloc.2        
+  IL_01CA  ldfld          AssemblerComponent::incServed
+  IL_01CF  ldc.i4.2       
+  IL_01D0  ldelema        System.Int32
+  IL_01D5  dup            
+  IL_01D6  ldind.i4       
+  IL_01D7  ldarg.s        itemInc
+  IL_01D9  add            
+  IL_01DA  stind.i4       
+  IL_01DB  ldarg.s        remainInc
+  IL_01DD  ldc.i4.0       
+  IL_01DE  stind.i1       
+  IL_01DF  ldarg.s        itemCount
+  IL_01E1  stloc.s        V_8
+  IL_01E3  leave          IL_084b: ldloc.s V_8
+  IL_01E8  ldc.i4.3       
+  IL_01E9  ldloc.s        V_7
+  IL_01EB  bge.s          IL_0225: ldc.i4.4
+  IL_01ED  ldloc.s        V_4
+  IL_01EF  ldc.i4.3       
+  IL_01F0  ldelem.i4      
+  IL_01F1  ldarg.3        
+  IL_01F2  bne.un.s       IL_0225: ldc.i4.4
+  IL_01F4  ldloc.2        
+  IL_01F5  ldfld          AssemblerComponent::served
+  IL_01FA  ldc.i4.3       
+  IL_01FB  ldelema        System.Int32
+  IL_0200  dup            
+  IL_0201  ldind.i4       
+  IL_0202  ldarg.s        itemCount
+  IL_0204  add            
+  IL_0205  stind.i4       
+  IL_0206  ldloc.2        
+  IL_0207  ldfld          AssemblerComponent::incServed
+  IL_020C  ldc.i4.3       
+  IL_020D  ldelema        System.Int32
+  IL_0212  dup            
+  IL_0213  ldind.i4       
+  IL_0214  ldarg.s        itemInc
+  IL_0216  add            
+  IL_0217  stind.i4       
+  IL_0218  ldarg.s        remainInc
+  IL_021A  ldc.i4.0       
+  IL_021B  stind.i1       
+  IL_021C  ldarg.s        itemCount
+  IL_021E  stloc.s        V_8
+  IL_0220  leave          IL_084b: ldloc.s V_8
+  IL_0225  ldc.i4.4       
+  IL_0226  ldloc.s        V_7
+  IL_0228  bge.s          IL_0262: ldc.i4.5
+  IL_022A  ldloc.s        V_4
+  IL_022C  ldc.i4.4       
+  IL_022D  ldelem.i4      
+  IL_022E  ldarg.3        
+  IL_022F  bne.un.s       IL_0262: ldc.i4.5
+  IL_0231  ldloc.2        
+  IL_0232  ldfld          AssemblerComponent::served
+  IL_0237  ldc.i4.4       
+  IL_0238  ldelema        System.Int32
+  IL_023D  dup            
+  IL_023E  ldind.i4       
+  IL_023F  ldarg.s        itemCount
+  IL_0241  add            
+  IL_0242  stind.i4       
+  IL_0243  ldloc.2        
+  IL_0244  ldfld          AssemblerComponent::incServed
+  IL_0249  ldc.i4.4       
+  IL_024A  ldelema        System.Int32
+  IL_024F  dup            
+  IL_0250  ldind.i4       
+  IL_0251  ldarg.s        itemInc
+  IL_0253  add            
+  IL_0254  stind.i4       
+  IL_0255  ldarg.s        remainInc
+  IL_0257  ldc.i4.0       
+  IL_0258  stind.i1       
+  IL_0259  ldarg.s        itemCount
+  IL_025B  stloc.s        V_8
+  IL_025D  leave          IL_084b: ldloc.s V_8
+  IL_0262  ldc.i4.5       
+  IL_0263  ldloc.s        V_7
+  IL_0265  bge.s          IL_029f: leave.s IL_02ad
+  IL_0267  ldloc.s        V_4
+  IL_0269  ldc.i4.5       
+  IL_026A  ldelem.i4      
+  IL_026B  ldarg.3        
+  IL_026C  bne.un.s       IL_029f: leave.s IL_02ad
+  IL_026E  ldloc.2        
+  IL_026F  ldfld          AssemblerComponent::served
+  IL_0274  ldc.i4.5       
+  IL_0275  ldelema        System.Int32
+  IL_027A  dup            
+  IL_027B  ldind.i4       
+  IL_027C  ldarg.s        itemCount
+  IL_027E  add            
+  IL_027F  stind.i4       
+  IL_0280  ldloc.2        
+  IL_0281  ldfld          AssemblerComponent::incServed
+  IL_0286  ldc.i4.5       
+  IL_0287  ldelema        System.Int32
+  IL_028C  dup            
+  IL_028D  ldind.i4       
+  IL_028E  ldarg.s        itemInc
+  IL_0290  add            
+  IL_0291  stind.i4       
+  IL_0292  ldarg.s        remainInc
+  IL_0294  ldc.i4.0       
+  IL_0295  stind.i1       
+  IL_0296  ldarg.s        itemCount
+  IL_0298  stloc.s        V_8
+  IL_029A  leave          IL_084b: ldloc.s V_8
+  IL_029F  leave.s        IL_02ad: ldc.i4.0
+  IL_02A1  ldloc.s        V_6
+  IL_02A3  brfalse.s      IL_02ac: endfinally
+  IL_02A5  ldloc.s        V_5
+  IL_02A7  call           Monitor::Exit
+  IL_02AC  endfinally     
+  IL_02AD  ldc.i4.0       
+  IL_02AE  ret            
+  IL_02AF  ldarg.0        
+  IL_02B0  ldfld          PlanetFactory::factorySystem
+  IL_02B5  ldfld          FactorySystem::ejectorPool
+  IL_02BA  ldloc.0        
+  IL_02BB  ldelema        EjectorComponent
+  IL_02C0  stloc.s        V_9
+  IL_02C2  ldloc.s        V_9
+  IL_02C4  ldfld          EjectorComponent::id
+  IL_02C9  ldc.i4.0       
+  IL_02CA  bgt.s          IL_02ce: ldloc.s V_9
+  IL_02CC  ldc.i4.0       
+  IL_02CD  ret            
+  IL_02CE  ldloc.s        V_9
+  IL_02D0  ldfld          EjectorComponent::entityId
+  IL_02D5  stloc.s        V_10
+  IL_02D7  ldarg.0        
+  IL_02D8  ldfld          PlanetFactory::entityNeeds
+  IL_02DD  ldloc.s        V_10
+  IL_02DF  ldelem.ref     
+  IL_02E0  stloc.s        V_11
+  IL_02E2  ldloc.s        V_11
+  IL_02E4  brtrue.s       IL_02e8: ldarg.0
+  IL_02E6  ldc.i4.0       
+  IL_02E7  ret            
+  IL_02E8  ldarg.0        
+  IL_02E9  ldfld          PlanetFactory::entityMutexs
+  IL_02EE  ldloc.s        V_10
+  IL_02F0  ldelem.ref     
+  IL_02F1  stloc.s        V_5
+  IL_02F3  ldc.i4.0       
+  IL_02F4  stloc.s        V_6
+  IL_02F6  ldloc.s        V_5
+  IL_02F8  ldloca.s       V_6
+  IL_02FA  call           Monitor::Enter
+  IL_02FF  ldloc.s        V_11
+  IL_0301  ldc.i4.0       
+  IL_0302  ldelem.i4      
+  IL_0303  ldarg.3        
+  IL_0304  bne.un.s       IL_0364: leave.s IL_0372
+  IL_0306  ldarg.0        
+  IL_0307  ldfld          PlanetFactory::factorySystem
+  IL_030C  ldfld          FactorySystem::ejectorPool
+  IL_0311  ldloc.0        
+  IL_0312  ldelema        EjectorComponent
+  IL_0317  ldfld          EjectorComponent::bulletId
+  IL_031C  ldarg.3        
+  IL_031D  bne.un.s       IL_0364: leave.s IL_0372
+  IL_031F  ldarg.0        
+  IL_0320  ldfld          PlanetFactory::factorySystem
+  IL_0325  ldfld          FactorySystem::ejectorPool
+  IL_032A  ldloc.0        
+  IL_032B  ldelema        EjectorComponent
+  IL_0330  ldflda         EjectorComponent::bulletCount
+  IL_0335  dup            
+  IL_0336  ldind.i4       
+  IL_0337  ldarg.s        itemCount
+  IL_0339  add            
+  IL_033A  stind.i4       
+  IL_033B  ldarg.0        
+  IL_033C  ldfld          PlanetFactory::factorySystem
+  IL_0341  ldfld          FactorySystem::ejectorPool
+  IL_0346  ldloc.0        
+  IL_0347  ldelema        EjectorComponent
+  IL_034C  ldflda         EjectorComponent::bulletInc
+  IL_0351  dup            
+  IL_0352  ldind.i4       
+  IL_0353  ldarg.s        itemInc
+  IL_0355  add            
+  IL_0356  stind.i4       
+  IL_0357  ldarg.s        remainInc
+  IL_0359  ldc.i4.0       
+  IL_035A  stind.i1       
+  IL_035B  ldarg.s        itemCount
+  IL_035D  stloc.s        V_8
+  IL_035F  leave          IL_084b: ldloc.s V_8
+  IL_0364  leave.s        IL_0372: ldc.i4.0
+  IL_0366  ldloc.s        V_6
+  IL_0368  brfalse.s      IL_0371: endfinally
+  IL_036A  ldloc.s        V_5
+  IL_036C  call           Monitor::Exit
+  IL_0371  endfinally     
+  IL_0372  ldc.i4.0       
+  IL_0373  ret            
+  IL_0374  ldarg.0        
+  IL_0375  ldfld          PlanetFactory::factorySystem
+  IL_037A  ldfld          FactorySystem::siloPool
+  IL_037F  ldloc.0        
+  IL_0380  ldelema        SiloComponent
+  IL_0385  stloc.s        V_12
+  IL_0387  ldloc.s        V_12
+  IL_0389  ldfld          SiloComponent::id
+  IL_038E  ldc.i4.0       
+  IL_038F  bgt.s          IL_0393: ldloc.s V_12
+  IL_0391  ldc.i4.0       
+  IL_0392  ret            
+  IL_0393  ldloc.s        V_12
+  IL_0395  ldfld          SiloComponent::entityId
+  IL_039A  stloc.s        V_13
+  IL_039C  ldarg.0        
+  IL_039D  ldfld          PlanetFactory::entityNeeds
+  IL_03A2  ldloc.s        V_13
+  IL_03A4  ldelem.ref     
+  IL_03A5  stloc.s        V_14
+  IL_03A7  ldloc.s        V_14
+  IL_03A9  brtrue.s       IL_03ad: ldarg.0
+  IL_03AB  ldc.i4.0       
+  IL_03AC  ret            
+  IL_03AD  ldarg.0        
+  IL_03AE  ldfld          PlanetFactory::entityMutexs
+  IL_03B3  ldloc.s        V_13
+  IL_03B5  ldelem.ref     
+  IL_03B6  stloc.s        V_5
+  IL_03B8  ldc.i4.0       
+  IL_03B9  stloc.s        V_6
+  IL_03BB  ldloc.s        V_5
+  IL_03BD  ldloca.s       V_6
+  IL_03BF  call           Monitor::Enter
+  IL_03C4  ldloc.s        V_14
+  IL_03C6  ldc.i4.0       
+  IL_03C7  ldelem.i4      
+  IL_03C8  ldarg.3        
+  IL_03C9  bne.un.s       IL_0429: leave.s IL_0437
+  IL_03CB  ldarg.0        
+  IL_03CC  ldfld          PlanetFactory::factorySystem
+  IL_03D1  ldfld          FactorySystem::siloPool
+  IL_03D6  ldloc.0        
+  IL_03D7  ldelema        SiloComponent
+  IL_03DC  ldfld          SiloComponent::bulletId
+  IL_03E1  ldarg.3        
+  IL_03E2  bne.un.s       IL_0429: leave.s IL_0437
+  IL_03E4  ldarg.0        
+  IL_03E5  ldfld          PlanetFactory::factorySystem
+  IL_03EA  ldfld          FactorySystem::siloPool
+  IL_03EF  ldloc.0        
+  IL_03F0  ldelema        SiloComponent
+  IL_03F5  ldflda         SiloComponent::bulletCount
+  IL_03FA  dup            
+  IL_03FB  ldind.i4       
+  IL_03FC  ldarg.s        itemCount
+  IL_03FE  add            
+  IL_03FF  stind.i4       
+  IL_0400  ldarg.0        
+  IL_0401  ldfld          PlanetFactory::factorySystem
+  IL_0406  ldfld          FactorySystem::siloPool
+  IL_040B  ldloc.0        
+  IL_040C  ldelema        SiloComponent
+  IL_0411  ldflda         SiloComponent::bulletInc
+  IL_0416  dup            
+  IL_0417  ldind.i4       
+  IL_0418  ldarg.s        itemInc
+  IL_041A  add            
+  IL_041B  stind.i4       
+  IL_041C  ldarg.s        remainInc
+  IL_041E  ldc.i4.0       
+  IL_041F  stind.i1       
+  IL_0420  ldarg.s        itemCount
+  IL_0422  stloc.s        V_8
+  IL_0424  leave          IL_084b: ldloc.s V_8
+  IL_0429  leave.s        IL_0437: ldc.i4.0
+  IL_042B  ldloc.s        V_6
+  IL_042D  brfalse.s      IL_0436: endfinally
+  IL_042F  ldloc.s        V_5
+  IL_0431  call           Monitor::Exit
+  IL_0436  endfinally     
+  IL_0437  ldc.i4.0       
+  IL_0438  ret            
+  IL_0439  ldarg.0        
+  IL_043A  ldfld          PlanetFactory::factoryStorage
+  IL_043F  ldfld          FactoryStorage::storagePool
+  IL_0444  ldloc.0        
+  IL_0445  ldelem.ref     
+  IL_0446  stloc.s        V_15
+  IL_0448  br             IL_04fd: ldloc.s V_15
+  IL_044D  ldarg.0        
+  IL_044E  ldfld          PlanetFactory::entityMutexs
+  IL_0453  ldloc.s        V_15
+  IL_0455  ldfld          StorageComponent::entityId
+  IL_045A  ldelem.ref     
+  IL_045B  stloc.s        V_5
+  IL_045D  ldc.i4.0       
+  IL_045E  stloc.s        V_6
+  IL_0460  ldloc.s        V_5
+  IL_0462  ldloca.s       V_6
+  IL_0464  call           Monitor::Enter
+  IL_0469  ldloc.s        V_15
+  IL_046B  ldfld          StorageComponent::lastFullItem
+  IL_0470  ldarg.3        
+  IL_0471  beq.s          IL_04e6: ldloc.s V_15
+  IL_0473  ldc.i4.0       
+  IL_0474  stloc.s        V_17
+  IL_0476  ldarg.0        
+  IL_0477  ldfld          PlanetFactory::entityPool
+  IL_047C  ldloc.s        V_15
+  IL_047E  ldfld          StorageComponent::entityId
+  IL_0483  ldelema        EntityData
+  IL_0488  ldfld          EntityData::battleBaseId
+  IL_048D  brtrue.s       IL_04a2: ldloc.s V_15
+  IL_048F  ldloc.s        V_15
+  IL_0491  ldarg.3        
+  IL_0492  ldarg.s        itemCount
+  IL_0494  ldarg.s        itemInc
+  IL_0496  ldloca.s       V_16
+  IL_0498  ldc.i4.1       
+  IL_0499  callvirt       StorageComponent::AddItem
+  IL_049E  stloc.s        V_17
+  IL_04A0  br.s           IL_04b2: ldarg.s remainInc
+  IL_04A2  ldloc.s        V_15
+  IL_04A4  ldarg.3        
+  IL_04A5  ldarg.s        itemCount
+  IL_04A7  ldarg.s        itemInc
+  IL_04A9  ldloca.s       V_16
+  IL_04AB  callvirt       StorageComponent::AddItemFilteredBanOnly
+  IL_04B0  stloc.s        V_17
+  IL_04B2  ldarg.s        remainInc
+  IL_04B4  ldloc.s        V_16
+  IL_04B6  conv.u1        
+  IL_04B7  stind.i1       
+  IL_04B8  ldloc.s        V_17
+  IL_04BA  ldarg.s        itemCount
+  IL_04BC  bne.un.s       IL_04c8: ldloc.s V_15
+  IL_04BE  ldloc.s        V_15
+  IL_04C0  ldc.i4.m1      
+  IL_04C1  stfld          StorageComponent::lastFullItem
+  IL_04C6  br.s           IL_04d0: ldloc.s V_17
+  IL_04C8  ldloc.s        V_15
+  IL_04CA  ldarg.3        
+  IL_04CB  stfld          StorageComponent::lastFullItem
+  IL_04D0  ldloc.s        V_17
+  IL_04D2  brtrue.s       IL_04dd: ldloc.s V_17
+  IL_04D4  ldloc.s        V_15
+  IL_04D6  ldfld          StorageComponent::nextStorage
+  IL_04DB  brtrue.s       IL_04e6: ldloc.s V_15
+  IL_04DD  ldloc.s        V_17
+  IL_04DF  stloc.s        V_8
+  IL_04E1  leave          IL_084b: ldloc.s V_8
+  IL_04E6  ldloc.s        V_15
+  IL_04E8  ldfld          StorageComponent::nextStorage
+  IL_04ED  stloc.s        V_15
+  IL_04EF  leave.s        IL_04fd: ldloc.s V_15
+  IL_04F1  ldloc.s        V_6
+  IL_04F3  brfalse.s      IL_04fc: endfinally
+  IL_04F5  ldloc.s        V_5
+  IL_04F7  call           Monitor::Exit
+  IL_04FC  endfinally     
+  IL_04FD  ldloc.s        V_15
+  IL_04FF  brtrue         IL_044d: ldarg.0
+  IL_0504  ldc.i4.0       
+  IL_0505  ret            
+  IL_0506  ldarg.0        
+  IL_0507  ldfld          PlanetFactory::transport
+  IL_050C  ldfld          PlanetTransport::stationPool
+  IL_0511  ldloc.0        
+  IL_0512  ldelem.ref     
+  IL_0513  stloc.s        V_18
+  IL_0515  ldloc.s        V_18
+  IL_0517  ldfld          StationComponent::id
+  IL_051C  ldc.i4.0       
+  IL_051D  bgt.s          IL_0521: ldloc.s V_18
+  IL_051F  ldc.i4.0       
+  IL_0520  ret            
+  IL_0521  ldloc.s        V_18
+  IL_0523  ldfld          StationComponent::entityId
+  IL_0528  stloc.s        V_19
+  IL_052A  ldarg.0        
+  IL_052B  ldfld          PlanetFactory::entityNeeds
+  IL_0530  ldloc.s        V_19
+  IL_0532  ldelem.ref     
+  IL_0533  stloc.s        V_20
+  IL_0535  ldarg.0        
+  IL_0536  ldfld          PlanetFactory::entityMutexs
+  IL_053B  ldloc.s        V_19
+  IL_053D  ldelem.ref     
+  IL_053E  stloc.s        V_5
+  IL_0540  ldc.i4.0       
+  IL_0541  stloc.s        V_6
+  IL_0543  ldloc.s        V_5
+  IL_0545  ldloca.s       V_6
+  IL_0547  call           Monitor::Enter
+  IL_054C  ldarg.3        
+  IL_054D  ldc.i4         1210
+  IL_0552  bne.un.s       IL_0581: ldloc.s V_18
+  IL_0554  ldloc.s        V_18
+  IL_0556  ldfld          StationComponent::warperCount
+  IL_055B  ldloc.s        V_18
+  IL_055D  ldfld          StationComponent::warperMaxCount
+  IL_0562  bge.s          IL_0581: ldloc.s V_18
+  IL_0564  ldloc.s        V_18
+  IL_0566  dup            
+  IL_0567  ldfld          StationComponent::warperCount
+  IL_056C  ldarg.s        itemCount
+  IL_056E  add            
+  IL_056F  stfld          StationComponent::warperCount
+  IL_0574  ldarg.s        remainInc
+  IL_0576  ldc.i4.0       
+  IL_0577  stind.i1       
+  IL_0578  ldarg.s        itemCount
+  IL_057A  stloc.s        V_8
+  IL_057C  leave          IL_084b: ldloc.s V_8
+  IL_0581  ldloc.s        V_18
+  IL_0583  ldfld          StationComponent::storage
+  IL_0588  stloc.s        V_21
+  IL_058A  ldc.i4.0       
+  IL_058B  stloc.s        V_22
+  IL_058D  br.s           IL_05e3: ldloc.s V_22
+  IL_058F  ldloc.s        V_20
+  IL_0591  ldloc.s        V_22
+  IL_0593  ldelem.i4      
+  IL_0594  ldarg.3        
+  IL_0595  bne.un.s       IL_05dd: ldloc.s V_22
+  IL_0597  ldloc.s        V_21
+  IL_0599  ldloc.s        V_22
+  IL_059B  ldelema        StationStore
+  IL_05A0  ldfld          StationStore::itemId
+  IL_05A5  ldarg.3        
+  IL_05A6  bne.un.s       IL_05dd: ldloc.s V_22
+  IL_05A8  ldloc.s        V_21
+  IL_05AA  ldloc.s        V_22
+  IL_05AC  ldelema        StationStore
+  IL_05B1  ldflda         StationStore::count
+  IL_05B6  dup            
+  IL_05B7  ldind.i4       
+  IL_05B8  ldarg.s        itemCount
+  IL_05BA  add            
+  IL_05BB  stind.i4       
+  IL_05BC  ldloc.s        V_21
+  IL_05BE  ldloc.s        V_22
+  IL_05C0  ldelema        StationStore
+  IL_05C5  ldflda         StationStore::inc
+  IL_05CA  dup            
+  IL_05CB  ldind.i4       
+  IL_05CC  ldarg.s        itemInc
+  IL_05CE  add            
+  IL_05CF  stind.i4       
+  IL_05D0  ldarg.s        remainInc
+  IL_05D2  ldc.i4.0       
+  IL_05D3  stind.i1       
+  IL_05D4  ldarg.s        itemCount
+  IL_05D6  stloc.s        V_8
+  IL_05D8  leave          IL_084b: ldloc.s V_8
+  IL_05DD  ldloc.s        V_22
+  IL_05DF  ldc.i4.1       
+  IL_05E0  add            
+  IL_05E1  stloc.s        V_22
+  IL_05E3  ldloc.s        V_22
+  IL_05E5  ldloc.s        V_20
+  IL_05E7  ldlen          
+  IL_05E8  conv.i4        
+  IL_05E9  bge.s          IL_05f3: leave.s IL_0601
+  IL_05EB  ldloc.s        V_22
+  IL_05ED  ldloc.s        V_21
+  IL_05EF  ldlen          
+  IL_05F0  conv.i4        
+  IL_05F1  blt.s          IL_058f: ldloc.s V_20
+  IL_05F3  leave.s        IL_0601: ldc.i4.0
+  IL_05F5  ldloc.s        V_6
+  IL_05F7  brfalse.s      IL_0600: endfinally
+  IL_05F9  ldloc.s        V_5
+  IL_05FB  call           Monitor::Exit
+  IL_0600  endfinally     
+  IL_0601  ldc.i4.0       
+  IL_0602  ret            
+  IL_0603  ldarg.0        
+  IL_0604  ldfld          PlanetFactory::factorySystem
+  IL_0609  ldfld          FactorySystem::labPool
+  IL_060E  ldloc.0        
+  IL_060F  ldelema        LabComponent
+  IL_0614  stloc.s        V_23
+  IL_0616  ldloc.s        V_23
+  IL_0618  ldfld          LabComponent::id
+  IL_061D  ldc.i4.0       
+  IL_061E  bgt.s          IL_0622: ldloc.s V_23
+  IL_0620  ldc.i4.0       
+  IL_0621  ret            
+  IL_0622  ldloc.s        V_23
+  IL_0624  ldfld          LabComponent::entityId
+  IL_0629  stloc.s        V_24
+  IL_062B  ldarg.0        
+  IL_062C  ldfld          PlanetFactory::entityNeeds
+  IL_0631  ldloc.s        V_24
+  IL_0633  ldelem.ref     
+  IL_0634  brtrue.s       IL_0638: ldarg.0
+  IL_0636  ldc.i4.0       
+  IL_0637  ret            
+  IL_0638  ldarg.0        
+  IL_0639  ldfld          PlanetFactory::entityMutexs
+  IL_063E  ldloc.s        V_24
+  IL_0640  ldelem.ref     
+  IL_0641  stloc.s        V_5
+  IL_0643  ldc.i4.0       
+  IL_0644  stloc.s        V_6
+  IL_0646  ldloc.s        V_5
+  IL_0648  ldloca.s       V_6
+  IL_064A  call           Monitor::Enter
+  IL_064F  ldloc.s        V_23
+  IL_0651  ldfld          LabComponent::researchMode
+  IL_0656  brfalse.s      IL_06c6: ldloc.s V_23
+  IL_0658  ldloc.s        V_23
+  IL_065A  ldfld          LabComponent::matrixServed
+  IL_065F  stloc.s        V_25
+  IL_0661  ldloc.s        V_23
+  IL_0663  ldfld          LabComponent::matrixIncServed
+  IL_0668  stloc.s        V_26
+  IL_066A  ldloc.s        V_25
+  IL_066C  brtrue.s       IL_0676: ldarg.3
+  IL_066E  ldc.i4.0       
+  IL_066F  stloc.s        V_8
+  IL_0671  leave          IL_084b: ldloc.s V_8
+  IL_0676  ldarg.3        
+  IL_0677  ldc.i4         6001
+  IL_067C  sub            
+  IL_067D  stloc.s        V_27
+  IL_067F  ldloc.s        V_27
+  IL_0681  ldc.i4.0       
+  IL_0682  blt            IL_0743: leave.s IL_0751
+  IL_0687  ldloc.s        V_27
+  IL_0689  ldc.i4.6       
+  IL_068A  bge            IL_0743: leave.s IL_0751
+  IL_068F  ldloc.s        V_25
+  IL_0691  ldloc.s        V_27
+  IL_0693  ldelema        System.Int32
+  IL_0698  dup            
+  IL_0699  ldind.i4       
+  IL_069A  ldc.i4         3600
+  IL_069F  ldarg.s        itemCount
+  IL_06A1  mul            
+  IL_06A2  add            
+  IL_06A3  stind.i4       
+  IL_06A4  ldloc.s        V_26
+  IL_06A6  ldloc.s        V_27
+  IL_06A8  ldelema        System.Int32
+  IL_06AD  dup            
+  IL_06AE  ldind.i4       
+  IL_06AF  ldc.i4         3600
+  IL_06B4  ldarg.s        itemInc
+  IL_06B6  mul            
+  IL_06B7  add            
+  IL_06B8  stind.i4       
+  IL_06B9  ldarg.s        remainInc
+  IL_06BB  ldc.i4.0       
+  IL_06BC  stind.i1       
+  IL_06BD  ldarg.s        itemCount
+  IL_06BF  stloc.s        V_8
+  IL_06C1  leave          IL_084b: ldloc.s V_8
+  IL_06C6  ldloc.s        V_23
+  IL_06C8  ldfld          LabComponent::recipeExecuteData
+  IL_06CD  dup            
+  IL_06CE  brtrue.s       IL_06d4: ldfld System.Int32[] RecipeExecuteData::requires
+  IL_06D0  pop            
+  IL_06D1  ldnull         
+  IL_06D2  br.s           IL_06d9: stloc.s V_28
+  IL_06D4  ldfld          RecipeExecuteData::requires
+  IL_06D9  stloc.s        V_28
+  IL_06DB  ldloc.s        V_23
+  IL_06DD  ldfld          LabComponent::served
+  IL_06E2  stloc.s        V_29
+  IL_06E4  ldloc.s        V_23
+  IL_06E6  ldfld          LabComponent::incServed
+  IL_06EB  stloc.s        V_30
+  IL_06ED  ldloc.s        V_28
+  IL_06EF  brtrue.s       IL_06f9: ldloc.s V_28
+  IL_06F1  ldc.i4.0       
+  IL_06F2  stloc.s        V_8
+  IL_06F4  leave          IL_084b: ldloc.s V_8
+  IL_06F9  ldloc.s        V_28
+  IL_06FB  ldlen          
+  IL_06FC  conv.i4        
+  IL_06FD  stloc.s        V_31
+  IL_06FF  ldc.i4.0       
+  IL_0700  stloc.s        V_32
+  IL_0702  br.s           IL_073d: ldloc.s V_32
+  IL_0704  ldloc.s        V_28
+  IL_0706  ldloc.s        V_32
+  IL_0708  ldelem.i4      
+  IL_0709  ldarg.3        
+  IL_070A  bne.un.s       IL_0737: ldloc.s V_32
+  IL_070C  ldloc.s        V_29
+  IL_070E  ldloc.s        V_32
+  IL_0710  ldelema        System.Int32
+  IL_0715  dup            
+  IL_0716  ldind.i4       
+  IL_0717  ldarg.s        itemCount
+  IL_0719  add            
+  IL_071A  stind.i4       
+  IL_071B  ldloc.s        V_30
+  IL_071D  ldloc.s        V_32
+  IL_071F  ldelema        System.Int32
+  IL_0724  dup            
+  IL_0725  ldind.i4       
+  IL_0726  ldarg.s        itemInc
+  IL_0728  add            
+  IL_0729  stind.i4       
+  IL_072A  ldarg.s        remainInc
+  IL_072C  ldc.i4.0       
+  IL_072D  stind.i1       
+  IL_072E  ldarg.s        itemCount
+  IL_0730  stloc.s        V_8
+  IL_0732  leave          IL_084b: ldloc.s V_8
+  IL_0737  ldloc.s        V_32
+  IL_0739  ldc.i4.1       
+  IL_073A  add            
+  IL_073B  stloc.s        V_32
+  IL_073D  ldloc.s        V_32
+  IL_073F  ldloc.s        V_31
+  IL_0741  blt.s          IL_0704: ldloc.s V_28
+  IL_0743  leave.s        IL_0751: ldc.i4.0
+  IL_0745  ldloc.s        V_6
+  IL_0747  brfalse.s      IL_0750: endfinally
+  IL_0749  ldloc.s        V_5
+  IL_074B  call           Monitor::Exit
+  IL_0750  endfinally     
+  IL_0751  ldc.i4.0       
+  IL_0752  ret            
+  IL_0753  ldarg.0        
+  IL_0754  ldfld          PlanetFactory::powerSystem
+  IL_0759  ldfld          PowerSystem::genPool
+  IL_075E  ldloc.0        
+  IL_075F  ldelema        PowerGeneratorComponent
+  IL_0764  stloc.s        V_33
+  IL_0766  ldloc.s        V_33
+  IL_0768  ldfld          PowerGeneratorComponent::id
+  IL_076D  ldc.i4.0       
+  IL_076E  bgt.s          IL_0772: ldloc.s V_33
+  IL_0770  ldc.i4.0       
+  IL_0771  ret            
+  IL_0772  ldloc.s        V_33
+  IL_0774  ldfld          PowerGeneratorComponent::entityId
+  IL_0779  stloc.s        V_34
+  IL_077B  ldarg.0        
+  IL_077C  ldfld          PlanetFactory::entityNeeds
+  IL_0781  ldloc.s        V_34
+  IL_0783  ldelem.ref     
+  IL_0784  stloc.s        V_35
+  IL_0786  ldarg.0        
+  IL_0787  ldfld          PlanetFactory::entityMutexs
+  IL_078C  ldloc.s        V_34
+  IL_078E  ldelem.ref     
+  IL_078F  stloc.s        V_5
+  IL_0791  ldc.i4.0       
+  IL_0792  stloc.s        V_6
+  IL_0794  ldloc.s        V_5
+  IL_0796  ldloca.s       V_6
+  IL_0798  call           Monitor::Enter
+  IL_079D  ldarg.3        
+  IL_079E  ldloc.s        V_33
+  IL_07A0  ldfld          PowerGeneratorComponent::fuelId
+  IL_07A5  bne.un.s       IL_07dd: ldloc.s V_33
+  IL_07A7  ldloc.s        V_33
+  IL_07A9  ldfld          PowerGeneratorComponent::fuelCount
+  IL_07AE  ldc.i4.s       10
+  IL_07B0  bge.s          IL_07d8: ldc.i4.0
+  IL_07B2  ldloc.s        V_33
+  IL_07B4  ldflda         PowerGeneratorComponent::fuelCount
+  IL_07B9  dup            
+  IL_07BA  ldind.i2       
+  IL_07BB  ldarg.s        itemCount
+  IL_07BD  add            
+  IL_07BE  conv.i2        
+  IL_07BF  stind.i2       
+  IL_07C0  ldloc.s        V_33
+  IL_07C2  ldflda         PowerGeneratorComponent::fuelInc
+  IL_07C7  dup            
+  IL_07C8  ldind.i2       
+  IL_07C9  ldarg.s        itemInc
+  IL_07CB  add            
+  IL_07CC  conv.i2        
+  IL_07CD  stind.i2       
+  IL_07CE  ldarg.s        remainInc
+  IL_07D0  ldc.i4.0       
+  IL_07D1  stind.i1       
+  IL_07D2  ldarg.s        itemCount
+  IL_07D4  stloc.s        V_8
+  IL_07D6  leave.s        IL_084b: ldloc.s V_8
+  IL_07D8  ldc.i4.0       
+  IL_07D9  stloc.s        V_8
+  IL_07DB  leave.s        IL_084b: ldloc.s V_8
+  IL_07DD  ldloc.s        V_33
+  IL_07DF  ldfld          PowerGeneratorComponent::fuelId
+  IL_07E4  brtrue.s       IL_0839: leave.s IL_0847
+  IL_07E6  ldsfld         ItemProto::fuelNeeds
+  IL_07EB  ldloc.s        V_33
+  IL_07ED  ldfld          PowerGeneratorComponent::fuelMask
+  IL_07F2  ldelem.ref     
+  IL_07F3  stloc.s        V_35
+  IL_07F5  ldloc.s        V_35
+  IL_07F7  brfalse.s      IL_07fe: ldc.i4.0
+  IL_07F9  ldloc.s        V_35
+  IL_07FB  ldlen          
+  IL_07FC  brtrue.s       IL_0803: ldc.i4.0
+  IL_07FE  ldc.i4.0       
+  IL_07FF  stloc.s        V_8
+  IL_0801  leave.s        IL_084b: ldloc.s V_8
+  IL_0803  ldc.i4.0       
+  IL_0804  stloc.s        V_36
+  IL_0806  br.s           IL_082c: ldloc.s V_36
+  IL_0808  ldloc.s        V_35
+  IL_080A  ldloc.s        V_36
+  IL_080C  ldelem.i4      
+  IL_080D  ldarg.3        
+  IL_080E  bne.un.s       IL_0826: ldloc.s V_36
+  IL_0810  ldloc.s        V_33
+  IL_0812  ldarg.3        
+  IL_0813  ldarg.s        itemCount
+  IL_0815  ldarg.s        itemInc
+  IL_0817  call           PowerGeneratorComponent::SetNewFuel
+  IL_081C  ldarg.s        remainInc
+  IL_081E  ldc.i4.0       
+  IL_081F  stind.i1       
+  IL_0820  ldarg.s        itemCount
+  IL_0822  stloc.s        V_8
+  IL_0824  leave.s        IL_084b: ldloc.s V_8
+  IL_0826  ldloc.s        V_36
+  IL_0828  ldc.i4.1       
+  IL_0829  add            
+  IL_082A  stloc.s        V_36
+  IL_082C  ldloc.s        V_36
+  IL_082E  ldloc.s        V_35
+  IL_0830  ldlen          
+  IL_0831  conv.i4        
+  IL_0832  blt.s          IL_0808: ldloc.s V_35
+  IL_0834  ldc.i4.0       
+  IL_0835  stloc.s        V_8
+  IL_0837  leave.s        IL_084b: ldloc.s V_8
+  IL_0839  leave.s        IL_0847: ldc.i4.0
+  IL_083B  ldloc.s        V_6
+  IL_083D  brfalse.s      IL_0846: endfinally
+  IL_083F  ldloc.s        V_5
+  IL_0841  call           Monitor::Exit
+  IL_0846  endfinally     
+  IL_0847  ldc.i4.0       
+  IL_0848  ret            
+  IL_0849  ldc.i4.0       
+  IL_084A  ret            
+  IL_084B  ldloc.s        V_8
+  IL_084D  ret            

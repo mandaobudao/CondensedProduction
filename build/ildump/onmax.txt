@@ -1,0 +1,64 @@
+﻿===== UIStationStorage::OnMaxSliderValueChange(System.Single)
+  IL_0000  ldarg.0        
+  IL_0001  ldfld          UIStationStorage::station
+  IL_0006  brfalse.s      IL_001d: ret
+  IL_0008  ldarg.0        
+  IL_0009  ldfld          UIStationStorage::index
+  IL_000E  ldarg.0        
+  IL_000F  ldfld          UIStationStorage::station
+  IL_0014  ldfld          StationComponent::storage
+  IL_0019  ldlen          
+  IL_001A  conv.i4        
+  IL_001B  blt.s          IL_001e: call ItemProtoSet LDB::get_items()
+  IL_001D  ret            
+  IL_001E  call           LDB::get_items
+  IL_0023  ldarg.0        
+  IL_0024  ldfld          UIStationStorage::stationWindow
+  IL_0029  ldfld          UIStationWindow::factory
+  IL_002E  ldfld          PlanetFactory::entityPool
+  IL_0033  ldarg.0        
+  IL_0034  ldfld          UIStationStorage::station
+  IL_0039  ldfld          StationComponent::entityId
+  IL_003E  ldelema        EntityData
+  IL_0043  ldfld          EntityData::protoId
+  IL_0048  callvirt       ProtoSet`1::Select
+  IL_004D  brtrue.s       IL_0050: ldarg.0
+  IL_004F  ret            
+  IL_0050  ldarg.0        
+  IL_0051  ldfld          UIStationStorage::stationWindow
+  IL_0056  ldfld          UIStationWindow::transport
+  IL_005B  ldarg.0        
+  IL_005C  ldfld          UIStationStorage::station
+  IL_0061  ldfld          StationComponent::id
+  IL_0066  ldarg.0        
+  IL_0067  ldfld          UIStationStorage::index
+  IL_006C  ldarg.0        
+  IL_006D  ldfld          UIStationStorage::station
+  IL_0072  ldfld          StationComponent::storage
+  IL_0077  ldarg.0        
+  IL_0078  ldfld          UIStationStorage::index
+  IL_007D  ldelema        StationStore
+  IL_0082  ldfld          StationStore::itemId
+  IL_0087  ldarg.1        
+  IL_0088  ldc.r4         100
+  IL_008D  mul            
+  IL_008E  ldc.r4         0.5
+  IL_0093  add            
+  IL_0094  conv.i4        
+  IL_0095  ldarg.0        
+  IL_0096  ldfld          UIStationStorage::station
+  IL_009B  ldfld          StationComponent::storage
+  IL_00A0  ldarg.0        
+  IL_00A1  ldfld          UIStationStorage::index
+  IL_00A6  ldelema        StationStore
+  IL_00AB  ldfld          StationStore::localLogic
+  IL_00B0  ldarg.0        
+  IL_00B1  ldfld          UIStationStorage::station
+  IL_00B6  ldfld          StationComponent::storage
+  IL_00BB  ldarg.0        
+  IL_00BC  ldfld          UIStationStorage::index
+  IL_00C1  ldelema        StationStore
+  IL_00C6  ldfld          StationStore::remoteLogic
+  IL_00CB  call           GameMain::get_mainPlayer
+  IL_00D0  callvirt       PlanetTransport::SetStationStorage
+  IL_00D5  ret            

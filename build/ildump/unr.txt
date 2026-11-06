@@ -1,0 +1,80 @@
+﻿===== LabComponent::UpdateNeedsResearch()
+  IL_0000  ldarg.0        
+  IL_0001  ldfld          LabComponent::needs
+  IL_0006  ldc.i4.0       
+  IL_0007  ldarg.0        
+  IL_0008  ldfld          LabComponent::matrixServed
+  IL_000D  ldc.i4.0       
+  IL_000E  ldelem.i4      
+  IL_000F  ldc.i4         36000
+  IL_0014  blt.s          IL_0019: ldc.i4 6001
+  IL_0016  ldc.i4.0       
+  IL_0017  br.s           IL_001e: stelem.i4
+  IL_0019  ldc.i4         6001
+  IL_001E  stelem.i4      
+  IL_001F  ldarg.0        
+  IL_0020  ldfld          LabComponent::needs
+  IL_0025  ldc.i4.1       
+  IL_0026  ldarg.0        
+  IL_0027  ldfld          LabComponent::matrixServed
+  IL_002C  ldc.i4.1       
+  IL_002D  ldelem.i4      
+  IL_002E  ldc.i4         36000
+  IL_0033  blt.s          IL_0038: ldc.i4 6002
+  IL_0035  ldc.i4.0       
+  IL_0036  br.s           IL_003d: stelem.i4
+  IL_0038  ldc.i4         6002
+  IL_003D  stelem.i4      
+  IL_003E  ldarg.0        
+  IL_003F  ldfld          LabComponent::needs
+  IL_0044  ldc.i4.2       
+  IL_0045  ldarg.0        
+  IL_0046  ldfld          LabComponent::matrixServed
+  IL_004B  ldc.i4.2       
+  IL_004C  ldelem.i4      
+  IL_004D  ldc.i4         36000
+  IL_0052  blt.s          IL_0057: ldc.i4 6003
+  IL_0054  ldc.i4.0       
+  IL_0055  br.s           IL_005c: stelem.i4
+  IL_0057  ldc.i4         6003
+  IL_005C  stelem.i4      
+  IL_005D  ldarg.0        
+  IL_005E  ldfld          LabComponent::needs
+  IL_0063  ldc.i4.3       
+  IL_0064  ldarg.0        
+  IL_0065  ldfld          LabComponent::matrixServed
+  IL_006A  ldc.i4.3       
+  IL_006B  ldelem.i4      
+  IL_006C  ldc.i4         36000
+  IL_0071  blt.s          IL_0076: ldc.i4 6004
+  IL_0073  ldc.i4.0       
+  IL_0074  br.s           IL_007b: stelem.i4
+  IL_0076  ldc.i4         6004
+  IL_007B  stelem.i4      
+  IL_007C  ldarg.0        
+  IL_007D  ldfld          LabComponent::needs
+  IL_0082  ldc.i4.4       
+  IL_0083  ldarg.0        
+  IL_0084  ldfld          LabComponent::matrixServed
+  IL_0089  ldc.i4.4       
+  IL_008A  ldelem.i4      
+  IL_008B  ldc.i4         36000
+  IL_0090  blt.s          IL_0095: ldc.i4 6005
+  IL_0092  ldc.i4.0       
+  IL_0093  br.s           IL_009a: stelem.i4
+  IL_0095  ldc.i4         6005
+  IL_009A  stelem.i4      
+  IL_009B  ldarg.0        
+  IL_009C  ldfld          LabComponent::needs
+  IL_00A1  ldc.i4.5       
+  IL_00A2  ldarg.0        
+  IL_00A3  ldfld          LabComponent::matrixServed
+  IL_00A8  ldc.i4.5       
+  IL_00A9  ldelem.i4      
+  IL_00AA  ldc.i4         36000
+  IL_00AF  blt.s          IL_00b4: ldc.i4 6006
+  IL_00B1  ldc.i4.0       
+  IL_00B2  br.s           IL_00b9: stelem.i4
+  IL_00B4  ldc.i4         6006
+  IL_00B9  stelem.i4      
+  IL_00BA  ret            

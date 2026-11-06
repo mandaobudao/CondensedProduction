@@ -1,0 +1,256 @@
+﻿===== StationComponent::TakeItem(System.Int32&,System.Int32&,System.Int32&)
+  IL_0000  ldarg.3        
+  IL_0001  ldc.i4.0       
+  IL_0002  stind.i4       
+  IL_0003  ldarg.1        
+  IL_0004  ldind.i4       
+  IL_0005  ldc.i4.0       
+  IL_0006  ble            IL_00e4: ldarg.1
+  IL_000B  ldarg.2        
+  IL_000C  ldind.i4       
+  IL_000D  ldc.i4.0       
+  IL_000E  ble            IL_00e4: ldarg.1
+  IL_0013  ldarg.0        
+  IL_0014  ldfld          StationComponent::storage
+  IL_0019  ldlen          
+  IL_001A  conv.i4        
+  IL_001B  stloc.0        
+  IL_001C  ldc.i4.0       
+  IL_001D  stloc.1        
+  IL_001E  br             IL_00dd: ldloc.1
+  IL_0023  ldarg.0        
+  IL_0024  ldfld          StationComponent::storage
+  IL_0029  stloc.2        
+  IL_002A  ldc.i4.0       
+  IL_002B  stloc.3        
+  IL_002C  ldloc.2        
+  IL_002D  ldloca.s       V_3
+  IL_002F  call           Monitor::Enter
+  IL_0034  ldarg.0        
+  IL_0035  ldfld          StationComponent::storage
+  IL_003A  ldloc.1        
+  IL_003B  ldelema        StationStore
+  IL_0040  ldfld          StationStore::itemId
+  IL_0045  ldarg.1        
+  IL_0046  ldind.i4       
+  IL_0047  bne.un         IL_00cd: leave.s IL_00d9
+  IL_004C  ldarg.0        
+  IL_004D  ldfld          StationComponent::storage
+  IL_0052  ldloc.1        
+  IL_0053  ldelema        StationStore
+  IL_0058  ldfld          StationStore::count
+  IL_005D  ldc.i4.0       
+  IL_005E  ble.s          IL_00cd: leave.s IL_00d9
+  IL_0060  ldarg.2        
+  IL_0061  ldarg.2        
+  IL_0062  ldind.i4       
+  IL_0063  ldarg.0        
+  IL_0064  ldfld          StationComponent::storage
+  IL_0069  ldloc.1        
+  IL_006A  ldelema        StationStore
+  IL_006F  ldfld          StationStore::count
+  IL_0074  blt.s          IL_0089: ldarg.2
+  IL_0076  ldarg.0        
+  IL_0077  ldfld          StationComponent::storage
+  IL_007C  ldloc.1        
+  IL_007D  ldelema        StationStore
+  IL_0082  ldfld          StationStore::count
+  IL_0087  br.s           IL_008b: stind.i4
+  IL_0089  ldarg.2        
+  IL_008A  ldind.i4       
+  IL_008B  stind.i4       
+  IL_008C  ldarg.1        
+  IL_008D  ldarg.0        
+  IL_008E  ldfld          StationComponent::storage
+  IL_0093  ldloc.1        
+  IL_0094  ldelema        StationStore
+  IL_0099  ldfld          StationStore::itemId
+  IL_009E  stind.i4       
+  IL_009F  ldarg.3        
+  IL_00A0  ldarg.0        
+  IL_00A1  ldarg.0        
+  IL_00A2  ldfld          StationComponent::storage
+  IL_00A7  ldloc.1        
+  IL_00A8  ldelema        StationStore
+  IL_00AD  ldflda         StationStore::count
+  IL_00B2  ldarg.0        
+  IL_00B3  ldfld          StationComponent::storage
+  IL_00B8  ldloc.1        
+  IL_00B9  ldelema        StationStore
+  IL_00BE  ldflda         StationStore::inc
+  IL_00C3  ldarg.2        
+  IL_00C4  ldind.i4       
+  IL_00C5  call           StationComponent::split_inc
+  IL_00CA  stind.i4       
+  IL_00CB  leave.s        IL_00ee: ret
+  IL_00CD  leave.s        IL_00d9: ldloc.1
+  IL_00CF  ldloc.3        
+  IL_00D0  brfalse.s      IL_00d8: endfinally
+  IL_00D2  ldloc.2        
+  IL_00D3  call           Monitor::Exit
+  IL_00D8  endfinally     
+  IL_00D9  ldloc.1        
+  IL_00DA  ldc.i4.1       
+  IL_00DB  add            
+  IL_00DC  stloc.1        
+  IL_00DD  ldloc.1        
+  IL_00DE  ldloc.0        
+  IL_00DF  blt            IL_0023: ldarg.0
+  IL_00E4  ldarg.1        
+  IL_00E5  ldc.i4.0       
+  IL_00E6  stind.i4       
+  IL_00E7  ldarg.2        
+  IL_00E8  ldc.i4.0       
+  IL_00E9  stind.i4       
+  IL_00EA  ldarg.3        
+  IL_00EB  ldc.i4.0       
+  IL_00EC  stind.i4       
+  IL_00ED  ret            
+  IL_00EE  ret            
+===== StationComponent::TakeItem(System.Int32&,System.Int32&,System.Int32[],System.Int32&)
+  IL_0000  ldarg.s        _inc
+  IL_0002  ldc.i4.0       
+  IL_0003  stind.i4       
+  IL_0004  ldarg.1        
+  IL_0005  ldind.i4       
+  IL_0006  ldc.i4.0       
+  IL_0007  ble            IL_0116: ldarg.1
+  IL_000C  ldarg.2        
+  IL_000D  ldind.i4       
+  IL_000E  ldc.i4.0       
+  IL_000F  ble            IL_0116: ldarg.1
+  IL_0014  ldarg.3        
+  IL_0015  brfalse.s      IL_0044: ldarg.0
+  IL_0017  ldarg.3        
+  IL_0018  ldc.i4.0       
+  IL_0019  ldelem.i4      
+  IL_001A  ldarg.1        
+  IL_001B  ldind.i4       
+  IL_001C  beq.s          IL_0044: ldarg.0
+  IL_001E  ldarg.3        
+  IL_001F  ldc.i4.1       
+  IL_0020  ldelem.i4      
+  IL_0021  ldarg.1        
+  IL_0022  ldind.i4       
+  IL_0023  beq.s          IL_0044: ldarg.0
+  IL_0025  ldarg.3        
+  IL_0026  ldc.i4.2       
+  IL_0027  ldelem.i4      
+  IL_0028  ldarg.1        
+  IL_0029  ldind.i4       
+  IL_002A  beq.s          IL_0044: ldarg.0
+  IL_002C  ldarg.3        
+  IL_002D  ldc.i4.3       
+  IL_002E  ldelem.i4      
+  IL_002F  ldarg.1        
+  IL_0030  ldind.i4       
+  IL_0031  beq.s          IL_0044: ldarg.0
+  IL_0033  ldarg.3        
+  IL_0034  ldc.i4.4       
+  IL_0035  ldelem.i4      
+  IL_0036  ldarg.1        
+  IL_0037  ldind.i4       
+  IL_0038  beq.s          IL_0044: ldarg.0
+  IL_003A  ldarg.3        
+  IL_003B  ldc.i4.5       
+  IL_003C  ldelem.i4      
+  IL_003D  ldarg.1        
+  IL_003E  ldind.i4       
+  IL_003F  bne.un         IL_0116: ldarg.1
+  IL_0044  ldarg.0        
+  IL_0045  ldfld          StationComponent::storage
+  IL_004A  stloc.0        
+  IL_004B  ldc.i4.0       
+  IL_004C  stloc.1        
+  IL_004D  ldloc.0        
+  IL_004E  ldloca.s       V_1
+  IL_0050  call           Monitor::Enter
+  IL_0055  ldarg.0        
+  IL_0056  ldfld          StationComponent::storage
+  IL_005B  ldlen          
+  IL_005C  conv.i4        
+  IL_005D  stloc.2        
+  IL_005E  ldc.i4.0       
+  IL_005F  stloc.3        
+  IL_0060  br             IL_0103: ldloc.3
+  IL_0065  ldarg.0        
+  IL_0066  ldfld          StationComponent::storage
+  IL_006B  ldloc.3        
+  IL_006C  ldelema        StationStore
+  IL_0071  ldfld          StationStore::itemId
+  IL_0076  ldarg.1        
+  IL_0077  ldind.i4       
+  IL_0078  bne.un         IL_00ff: ldloc.3
+  IL_007D  ldarg.0        
+  IL_007E  ldfld          StationComponent::storage
+  IL_0083  ldloc.3        
+  IL_0084  ldelema        StationStore
+  IL_0089  ldfld          StationStore::count
+  IL_008E  ldc.i4.0       
+  IL_008F  ble.s          IL_00ff: ldloc.3
+  IL_0091  ldarg.2        
+  IL_0092  ldarg.2        
+  IL_0093  ldind.i4       
+  IL_0094  ldarg.0        
+  IL_0095  ldfld          StationComponent::storage
+  IL_009A  ldloc.3        
+  IL_009B  ldelema        StationStore
+  IL_00A0  ldfld          StationStore::count
+  IL_00A5  blt.s          IL_00ba: ldarg.2
+  IL_00A7  ldarg.0        
+  IL_00A8  ldfld          StationComponent::storage
+  IL_00AD  ldloc.3        
+  IL_00AE  ldelema        StationStore
+  IL_00B3  ldfld          StationStore::count
+  IL_00B8  br.s           IL_00bc: stind.i4
+  IL_00BA  ldarg.2        
+  IL_00BB  ldind.i4       
+  IL_00BC  stind.i4       
+  IL_00BD  ldarg.1        
+  IL_00BE  ldarg.0        
+  IL_00BF  ldfld          StationComponent::storage
+  IL_00C4  ldloc.3        
+  IL_00C5  ldelema        StationStore
+  IL_00CA  ldfld          StationStore::itemId
+  IL_00CF  stind.i4       
+  IL_00D0  ldarg.s        _inc
+  IL_00D2  ldarg.0        
+  IL_00D3  ldarg.0        
+  IL_00D4  ldfld          StationComponent::storage
+  IL_00D9  ldloc.3        
+  IL_00DA  ldelema        StationStore
+  IL_00DF  ldflda         StationStore::count
+  IL_00E4  ldarg.0        
+  IL_00E5  ldfld          StationComponent::storage
+  IL_00EA  ldloc.3        
+  IL_00EB  ldelema        StationStore
+  IL_00F0  ldflda         StationStore::inc
+  IL_00F5  ldarg.2        
+  IL_00F6  ldind.i4       
+  IL_00F7  call           StationComponent::split_inc
+  IL_00FC  stind.i4       
+  IL_00FD  leave.s        IL_0121: ret
+  IL_00FF  ldloc.3        
+  IL_0100  ldc.i4.1       
+  IL_0101  add            
+  IL_0102  stloc.3        
+  IL_0103  ldloc.3        
+  IL_0104  ldloc.2        
+  IL_0105  blt            IL_0065: ldarg.0
+  IL_010A  leave.s        IL_0116: ldarg.1
+  IL_010C  ldloc.1        
+  IL_010D  brfalse.s      IL_0115: endfinally
+  IL_010F  ldloc.0        
+  IL_0110  call           Monitor::Exit
+  IL_0115  endfinally     
+  IL_0116  ldarg.1        
+  IL_0117  ldc.i4.0       
+  IL_0118  stind.i4       
+  IL_0119  ldarg.2        
+  IL_011A  ldc.i4.0       
+  IL_011B  stind.i4       
+  IL_011C  ldarg.s        _inc
+  IL_011E  ldc.i4.0       
+  IL_011F  stind.i4       
+  IL_0120  ret            
+  IL_0121  ret            

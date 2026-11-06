@@ -1,0 +1,502 @@
+﻿===== LabComponent::InternalUpdateResearch(System.Single,System.Single,System.Int32[],TechState&,System.Int32&,System.Int64&,System.Int64&)
+  IL_0000  ldarg.1        
+  IL_0001  ldc.r4         0.1
+  IL_0006  bge.un.s       IL_000a: ldarg.2
+  IL_0008  ldc.i4.0       
+  IL_0009  ret            
+  IL_000A  ldarg.2        
+  IL_000B  ldc.r4         2
+  IL_0010  add            
+  IL_0011  conv.i4        
+  IL_0012  stloc.0        
+  IL_0013  ldc.i4.0       
+  IL_0014  stloc.1        
+  IL_0015  ldsfld         LabComponent::matrixPoints
+  IL_001A  ldc.i4.0       
+  IL_001B  ldelem.i4      
+  IL_001C  ldc.i4.0       
+  IL_001D  ble.s          IL_0042: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_001F  ldarg.0        
+  IL_0020  ldfld          LabComponent::matrixServed
+  IL_0025  ldc.i4.0       
+  IL_0026  ldelem.i4      
+  IL_0027  ldsfld         LabComponent::matrixPoints
+  IL_002C  ldc.i4.0       
+  IL_002D  ldelem.i4      
+  IL_002E  div            
+  IL_002F  stloc.1        
+  IL_0030  ldloc.1        
+  IL_0031  ldloc.0        
+  IL_0032  bge.s          IL_0042: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_0034  ldloc.1        
+  IL_0035  stloc.0        
+  IL_0036  ldloc.0        
+  IL_0037  brtrue.s       IL_0042: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_0039  ldarg.0        
+  IL_003A  ldc.i4.0       
+  IL_003B  stfld          LabComponent::replicating
+  IL_0040  ldc.i4.0       
+  IL_0041  ret            
+  IL_0042  ldsfld         LabComponent::matrixPoints
+  IL_0047  ldc.i4.1       
+  IL_0048  ldelem.i4      
+  IL_0049  ldc.i4.0       
+  IL_004A  ble.s          IL_006f: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_004C  ldarg.0        
+  IL_004D  ldfld          LabComponent::matrixServed
+  IL_0052  ldc.i4.1       
+  IL_0053  ldelem.i4      
+  IL_0054  ldsfld         LabComponent::matrixPoints
+  IL_0059  ldc.i4.1       
+  IL_005A  ldelem.i4      
+  IL_005B  div            
+  IL_005C  stloc.1        
+  IL_005D  ldloc.1        
+  IL_005E  ldloc.0        
+  IL_005F  bge.s          IL_006f: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_0061  ldloc.1        
+  IL_0062  stloc.0        
+  IL_0063  ldloc.0        
+  IL_0064  brtrue.s       IL_006f: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_0066  ldarg.0        
+  IL_0067  ldc.i4.0       
+  IL_0068  stfld          LabComponent::replicating
+  IL_006D  ldc.i4.0       
+  IL_006E  ret            
+  IL_006F  ldsfld         LabComponent::matrixPoints
+  IL_0074  ldc.i4.2       
+  IL_0075  ldelem.i4      
+  IL_0076  ldc.i4.0       
+  IL_0077  ble.s          IL_009c: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_0079  ldarg.0        
+  IL_007A  ldfld          LabComponent::matrixServed
+  IL_007F  ldc.i4.2       
+  IL_0080  ldelem.i4      
+  IL_0081  ldsfld         LabComponent::matrixPoints
+  IL_0086  ldc.i4.2       
+  IL_0087  ldelem.i4      
+  IL_0088  div            
+  IL_0089  stloc.1        
+  IL_008A  ldloc.1        
+  IL_008B  ldloc.0        
+  IL_008C  bge.s          IL_009c: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_008E  ldloc.1        
+  IL_008F  stloc.0        
+  IL_0090  ldloc.0        
+  IL_0091  brtrue.s       IL_009c: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_0093  ldarg.0        
+  IL_0094  ldc.i4.0       
+  IL_0095  stfld          LabComponent::replicating
+  IL_009A  ldc.i4.0       
+  IL_009B  ret            
+  IL_009C  ldsfld         LabComponent::matrixPoints
+  IL_00A1  ldc.i4.3       
+  IL_00A2  ldelem.i4      
+  IL_00A3  ldc.i4.0       
+  IL_00A4  ble.s          IL_00c9: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_00A6  ldarg.0        
+  IL_00A7  ldfld          LabComponent::matrixServed
+  IL_00AC  ldc.i4.3       
+  IL_00AD  ldelem.i4      
+  IL_00AE  ldsfld         LabComponent::matrixPoints
+  IL_00B3  ldc.i4.3       
+  IL_00B4  ldelem.i4      
+  IL_00B5  div            
+  IL_00B6  stloc.1        
+  IL_00B7  ldloc.1        
+  IL_00B8  ldloc.0        
+  IL_00B9  bge.s          IL_00c9: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_00BB  ldloc.1        
+  IL_00BC  stloc.0        
+  IL_00BD  ldloc.0        
+  IL_00BE  brtrue.s       IL_00c9: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_00C0  ldarg.0        
+  IL_00C1  ldc.i4.0       
+  IL_00C2  stfld          LabComponent::replicating
+  IL_00C7  ldc.i4.0       
+  IL_00C8  ret            
+  IL_00C9  ldsfld         LabComponent::matrixPoints
+  IL_00CE  ldc.i4.4       
+  IL_00CF  ldelem.i4      
+  IL_00D0  ldc.i4.0       
+  IL_00D1  ble.s          IL_00f6: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_00D3  ldarg.0        
+  IL_00D4  ldfld          LabComponent::matrixServed
+  IL_00D9  ldc.i4.4       
+  IL_00DA  ldelem.i4      
+  IL_00DB  ldsfld         LabComponent::matrixPoints
+  IL_00E0  ldc.i4.4       
+  IL_00E1  ldelem.i4      
+  IL_00E2  div            
+  IL_00E3  stloc.1        
+  IL_00E4  ldloc.1        
+  IL_00E5  ldloc.0        
+  IL_00E6  bge.s          IL_00f6: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_00E8  ldloc.1        
+  IL_00E9  stloc.0        
+  IL_00EA  ldloc.0        
+  IL_00EB  brtrue.s       IL_00f6: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_00ED  ldarg.0        
+  IL_00EE  ldc.i4.0       
+  IL_00EF  stfld          LabComponent::replicating
+  IL_00F4  ldc.i4.0       
+  IL_00F5  ret            
+  IL_00F6  ldsfld         LabComponent::matrixPoints
+  IL_00FB  ldc.i4.5       
+  IL_00FC  ldelem.i4      
+  IL_00FD  ldc.i4.0       
+  IL_00FE  ble.s          IL_0123: ldarg.0
+  IL_0100  ldarg.0        
+  IL_0101  ldfld          LabComponent::matrixServed
+  IL_0106  ldc.i4.5       
+  IL_0107  ldelem.i4      
+  IL_0108  ldsfld         LabComponent::matrixPoints
+  IL_010D  ldc.i4.5       
+  IL_010E  ldelem.i4      
+  IL_010F  div            
+  IL_0110  stloc.1        
+  IL_0111  ldloc.1        
+  IL_0112  ldloc.0        
+  IL_0113  bge.s          IL_0123: ldarg.0
+  IL_0115  ldloc.1        
+  IL_0116  stloc.0        
+  IL_0117  ldloc.0        
+  IL_0118  brtrue.s       IL_0123: ldarg.0
+  IL_011A  ldarg.0        
+  IL_011B  ldc.i4.0       
+  IL_011C  stfld          LabComponent::replicating
+  IL_0121  ldc.i4.0       
+  IL_0122  ret            
+  IL_0123  ldarg.0        
+  IL_0124  ldc.i4.1       
+  IL_0125  stfld          LabComponent::replicating
+  IL_012A  ldarg.2        
+  IL_012B  ldloc.0        
+  IL_012C  conv.r4        
+  IL_012D  blt.s          IL_0133: ldarg.2
+  IL_012F  ldloc.0        
+  IL_0130  conv.r4        
+  IL_0131  br.s           IL_0134: starg.s research_speed
+  IL_0133  ldarg.2        
+  IL_0134  starg.s        research_speed
+  IL_0136  ldarg.1        
+  IL_0137  ldc.r4         10000
+  IL_013C  mul            
+  IL_013D  ldarg.2        
+  IL_013E  mul            
+  IL_013F  ldc.r4         0.5
+  IL_0144  add            
+  IL_0145  conv.i4        
+  IL_0146  stloc.2        
+  IL_0147  ldarg.0        
+  IL_0148  ldarg.0        
+  IL_0149  ldfld          LabComponent::hashBytes
+  IL_014E  ldloc.2        
+  IL_014F  add            
+  IL_0150  stfld          LabComponent::hashBytes
+  IL_0155  ldarg.0        
+  IL_0156  ldfld          LabComponent::hashBytes
+  IL_015B  ldc.i4         10000
+  IL_0160  div            
+  IL_0161  conv.i8        
+  IL_0162  stloc.3        
+  IL_0163  ldarg.0        
+  IL_0164  ldarg.0        
+  IL_0165  ldfld          LabComponent::hashBytes
+  IL_016A  ldloc.3        
+  IL_016B  conv.i4        
+  IL_016C  ldc.i4         10000
+  IL_0171  mul            
+  IL_0172  sub            
+  IL_0173  stfld          LabComponent::hashBytes
+  IL_0178  ldarg.s        ts
+  IL_017A  ldfld          TechState::hashNeeded
+  IL_017F  ldarg.s        ts
+  IL_0181  ldfld          TechState::hashUploaded
+  IL_0186  sub            
+  IL_0187  stloc.s        V_4
+  IL_0189  ldloc.3        
+  IL_018A  ldloc.s        V_4
+  IL_018C  blt.s          IL_0192: ldloc.3
+  IL_018E  ldloc.s        V_4
+  IL_0190  br.s           IL_0193: stloc.3
+  IL_0192  ldloc.3        
+  IL_0193  stloc.3        
+  IL_0194  ldloc.3        
+  IL_0195  ldloc.0        
+  IL_0196  conv.i8        
+  IL_0197  blt.s          IL_019d: ldloc.3
+  IL_0199  ldloc.0        
+  IL_019A  conv.i8        
+  IL_019B  br.s           IL_019e: stloc.3
+  IL_019D  ldloc.3        
+  IL_019E  stloc.3        
+  IL_019F  ldloc.3        
+  IL_01A0  conv.i4        
+  IL_01A1  stloc.s        V_5
+  IL_01A3  ldloc.s        V_5
+  IL_01A5  ldc.i4.0       
+  IL_01A6  ble            IL_03fe: ldarg.0
+  IL_01AB  ldarg.0        
+  IL_01AC  ldfld          LabComponent::matrixServed
+  IL_01B1  ldlen          
+  IL_01B2  conv.i4        
+  IL_01B3  stloc.s        V_6
+  IL_01B5  ldloc.s        V_6
+  IL_01B7  brfalse.s      IL_01bd: ldc.i4.0
+  IL_01B9  ldc.i4.s       10
+  IL_01BB  br.s           IL_01be: stloc.s V_7
+  IL_01BD  ldc.i4.0       
+  IL_01BE  stloc.s        V_7
+  IL_01C0  ldc.i4.0       
+  IL_01C1  stloc.s        V_10
+  IL_01C3  br             IL_028a: ldloc.s V_10
+  IL_01C8  ldsfld         LabComponent::matrixPoints
+  IL_01CD  ldloc.s        V_10
+  IL_01CF  ldelem.i4      
+  IL_01D0  ldc.i4.0       
+  IL_01D1  ble            IL_0284: ldloc.s V_10
+  IL_01D6  ldarg.0        
+  IL_01D7  ldfld          LabComponent::matrixServed
+  IL_01DC  ldloc.s        V_10
+  IL_01DE  ldelem.i4      
+  IL_01DF  ldc.i4         3600
+  IL_01E4  div            
+  IL_01E5  ldarg.0        
+  IL_01E6  ldarg.0        
+  IL_01E7  ldfld          LabComponent::matrixServed
+  IL_01EC  ldloc.s        V_10
+  IL_01EE  ldelema        System.Int32
+  IL_01F3  ldarg.0        
+  IL_01F4  ldfld          LabComponent::matrixIncServed
+  IL_01F9  ldloc.s        V_10
+  IL_01FB  ldelema        System.Int32
+  IL_0200  ldsfld         LabComponent::matrixPoints
+  IL_0205  ldloc.s        V_10
+  IL_0207  ldelem.i4      
+  IL_0208  ldloc.s        V_5
+  IL_020A  mul            
+  IL_020B  call           LabComponent::split_inc_level
+  IL_0210  stloc.s        V_11
+  IL_0212  ldloc.s        V_7
+  IL_0214  ldloc.s        V_11
+  IL_0216  blt.s          IL_021c: ldloc.s V_7
+  IL_0218  ldloc.s        V_11
+  IL_021A  br.s           IL_021e: stloc.s V_7
+  IL_021C  ldloc.s        V_7
+  IL_021E  stloc.s        V_7
+  IL_0220  ldarg.0        
+  IL_0221  ldfld          LabComponent::matrixServed
+  IL_0226  ldloc.s        V_10
+  IL_0228  ldelem.i4      
+  IL_0229  ldc.i4         3600
+  IL_022E  div            
+  IL_022F  stloc.s        V_12
+  IL_0231  ldarg.0        
+  IL_0232  ldfld          LabComponent::matrixServed
+  IL_0237  ldloc.s        V_10
+  IL_0239  ldelem.i4      
+  IL_023A  ldc.i4.0       
+  IL_023B  ble.s          IL_0249: ldarg.0
+  IL_023D  ldarg.0        
+  IL_023E  ldfld          LabComponent::matrixIncServed
+  IL_0243  ldloc.s        V_10
+  IL_0245  ldelem.i4      
+  IL_0246  ldc.i4.0       
+  IL_0247  bge.s          IL_0253: ldloc.s V_12
+  IL_0249  ldarg.0        
+  IL_024A  ldfld          LabComponent::matrixIncServed
+  IL_024F  ldloc.s        V_10
+  IL_0251  ldc.i4.0       
+  IL_0252  stelem.i4      
+  IL_0253  ldloc.s        V_12
+  IL_0255  sub            
+  IL_0256  stloc.s        V_13
+  IL_0258  ldloc.s        V_13
+  IL_025A  ldc.i4.0       
+  IL_025B  ble.s          IL_0270: ldarg.3
+  IL_025D  ldarg.0        
+  IL_025E  ldfld          LabComponent::incUsed
+  IL_0263  brtrue.s       IL_0270: ldarg.3
+  IL_0265  ldarg.0        
+  IL_0266  ldloc.s        V_7
+  IL_0268  ldc.i4.0       
+  IL_0269  cgt            
+  IL_026B  stfld          LabComponent::incUsed
+  IL_0270  ldarg.3        
+  IL_0271  ldsfld         LabComponent::matrixIds
+  IL_0276  ldloc.s        V_10
+  IL_0278  ldelem.i4      
+  IL_0279  ldelema        System.Int32
+  IL_027E  dup            
+  IL_027F  ldind.i4       
+  IL_0280  ldloc.s        V_13
+  IL_0282  add            
+  IL_0283  stind.i4       
+  IL_0284  ldloc.s        V_10
+  IL_0286  ldc.i4.1       
+  IL_0287  add            
+  IL_0288  stloc.s        V_10
+  IL_028A  ldloc.s        V_10
+  IL_028C  ldloc.s        V_6
+  IL_028E  blt            IL_01c8: ldsfld System.Int32[] LabComponent::matrixPoints
+  IL_0293  ldloc.s        V_7
+  IL_0295  ldc.i4.0       
+  IL_0296  bge.s          IL_029b: ldc.i4.0
+  IL_0298  ldc.i4.0       
+  IL_0299  stloc.s        V_7
+  IL_029B  ldc.i4.0       
+  IL_029C  conv.i8        
+  IL_029D  stloc.s        V_8
+  IL_029F  ldc.i4.0       
+  IL_02A0  stloc.s        V_9
+  IL_02A2  ldarg.0        
+  IL_02A3  ldc.r8         10000
+  IL_02AC  ldsfld         Cargo::incTableMilli
+  IL_02B1  ldloc.s        V_7
+  IL_02B3  ldelem.r8      
+  IL_02B4  mul            
+  IL_02B5  ldc.r8         10
+  IL_02BE  mul            
+  IL_02BF  ldc.r8         0.1
+  IL_02C8  add            
+  IL_02C9  conv.i4        
+  IL_02CA  stfld          LabComponent::extraSpeed
+  IL_02CF  ldarg.0        
+  IL_02D0  ldsfld         Cargo::powerTable
+  IL_02D5  ldloc.s        V_7
+  IL_02D7  ldelem.i4      
+  IL_02D8  stfld          LabComponent::extraPowerRatio
+  IL_02DD  ldarg.0        
+  IL_02DE  ldarg.0        
+  IL_02DF  ldfld          LabComponent::extraHashBytes
+  IL_02E4  ldarg.1        
+  IL_02E5  ldarg.0        
+  IL_02E6  ldfld          LabComponent::extraSpeed
+  IL_02EB  conv.r4        
+  IL_02EC  mul            
+  IL_02ED  ldarg.2        
+  IL_02EE  mul            
+  IL_02EF  ldc.r4         0.5
+  IL_02F4  add            
+  IL_02F5  conv.i4        
+  IL_02F6  add            
+  IL_02F7  stfld          LabComponent::extraHashBytes
+  IL_02FC  ldarg.0        
+  IL_02FD  ldfld          LabComponent::extraHashBytes
+  IL_0302  ldc.i4         100000
+  IL_0307  div            
+  IL_0308  conv.i8        
+  IL_0309  stloc.s        V_8
+  IL_030B  ldarg.0        
+  IL_030C  ldarg.0        
+  IL_030D  ldfld          LabComponent::extraHashBytes
+  IL_0312  ldloc.s        V_8
+  IL_0314  conv.i4        
+  IL_0315  ldc.i4         100000
+  IL_031A  mul            
+  IL_031B  sub            
+  IL_031C  stfld          LabComponent::extraHashBytes
+  IL_0321  ldloc.s        V_8
+  IL_0323  ldc.i4.0       
+  IL_0324  conv.i8        
+  IL_0325  blt.s          IL_032b: ldc.i4.0
+  IL_0327  ldloc.s        V_8
+  IL_0329  br.s           IL_032d: stloc.s V_8
+  IL_032B  ldc.i4.0       
+  IL_032C  conv.i8        
+  IL_032D  stloc.s        V_8
+  IL_032F  ldloc.s        V_8
+  IL_0331  conv.i4        
+  IL_0332  stloc.s        V_9
+  IL_0334  ldarg.s        ts
+  IL_0336  ldflda         TechState::hashUploaded
+  IL_033B  dup            
+  IL_033C  ldind.i8       
+  IL_033D  ldloc.3        
+  IL_033E  ldloc.s        V_8
+  IL_0340  add            
+  IL_0341  add            
+  IL_0342  stind.i8       
+  IL_0343  ldarg.s        hashRegister
+  IL_0345  ldarg.s        hashRegister
+  IL_0347  ldind.i8       
+  IL_0348  ldloc.3        
+  IL_0349  ldloc.s        V_8
+  IL_034B  add            
+  IL_034C  add            
+  IL_034D  stind.i8       
+  IL_034E  ldarg.s        uMatrixPoint
+  IL_0350  ldarg.s        uMatrixPoint
+  IL_0352  ldind.i8       
+  IL_0353  ldarg.s        ts
+  IL_0355  ldfld          TechState::uPointPerHash
+  IL_035A  conv.i8        
+  IL_035B  ldloc.3        
+  IL_035C  mul            
+  IL_035D  add            
+  IL_035E  stind.i8       
+  IL_035F  ldarg.s        techHashedThisFrame
+  IL_0361  ldarg.s        techHashedThisFrame
+  IL_0363  ldind.i4       
+  IL_0364  ldloc.s        V_5
+  IL_0366  ldloc.s        V_9
+  IL_0368  add            
+  IL_0369  add            
+  IL_036A  stind.i4       
+  IL_036B  ldarg.s        ts
+  IL_036D  ldfld          TechState::hashUploaded
+  IL_0372  ldarg.s        ts
+  IL_0374  ldfld          TechState::hashNeeded
+  IL_0379  blt            IL_040c: ldc.i4.1
+  IL_037E  call           LDB::get_techs
+  IL_0383  ldarg.0        
+  IL_0384  ldfld          LabComponent::techId
+  IL_0389  callvirt       ProtoSet`1::Select
+  IL_038E  stloc.s        V_14
+  IL_0390  ldarg.s        ts
+  IL_0392  ldfld          TechState::curLevel
+  IL_0397  ldarg.s        ts
+  IL_0399  ldfld          TechState::maxLevel
+  IL_039E  blt.s          IL_03d2: ldarg.s ts
+  IL_03A0  ldarg.s        ts
+  IL_03A2  ldarg.s        ts
+  IL_03A4  ldfld          TechState::maxLevel
+  IL_03A9  stfld          TechState::curLevel
+  IL_03AE  ldarg.s        ts
+  IL_03B0  ldarg.s        ts
+  IL_03B2  ldfld          TechState::hashNeeded
+  IL_03B7  stfld          TechState::hashUploaded
+  IL_03BC  ldarg.s        ts
+  IL_03BE  ldc.i4.1       
+  IL_03BF  stfld          TechState::unlocked
+  IL_03C4  ldarg.s        ts
+  IL_03C6  call           GameMain::get_gameTick
+  IL_03CB  stfld          TechState::unlockTick
+  IL_03D0  br.s           IL_040c: ldc.i4.1
+  IL_03D2  ldarg.s        ts
+  IL_03D4  ldflda         TechState::curLevel
+  IL_03D9  dup            
+  IL_03DA  ldind.i4       
+  IL_03DB  ldc.i4.1       
+  IL_03DC  add            
+  IL_03DD  stind.i4       
+  IL_03DE  ldarg.s        ts
+  IL_03E0  ldc.i4.0       
+  IL_03E1  conv.i8        
+  IL_03E2  stfld          TechState::hashUploaded
+  IL_03E7  ldarg.s        ts
+  IL_03E9  ldloc.s        V_14
+  IL_03EB  ldarg.s        ts
+  IL_03ED  ldfld          TechState::curLevel
+  IL_03F2  callvirt       TechProto::GetHashNeeded
+  IL_03F7  stfld          TechState::hashNeeded
+  IL_03FC  br.s           IL_040c: ldc.i4.1
+  IL_03FE  ldarg.0        
+  IL_03FF  ldc.i4.0       
+  IL_0400  stfld          LabComponent::extraSpeed
+  IL_0405  ldarg.0        
+  IL_0406  ldc.i4.0       
+  IL_0407  stfld          LabComponent::extraPowerRatio
+  IL_040C  ldc.i4.1       
+  IL_040D  ret            

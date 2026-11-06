@@ -17,11 +17,12 @@ namespace CondensedProduction
     {
         public const string GUID = "com.mandao.CondensedProduction";
         public const string NAME = "CondensedProduction";
-        public const string VERSION = "1.0.0";
+        public const string VERSION = "1.4.0";
 
         public static ConfigEntry<int> MaxMultiplierEntry;
         public static ConfigEntry<bool> ScaleOutputStorageEntry;
         public static ConfigEntry<int> InputBufferMultiplierEntry;
+        public static ConfigEntry<int> EnergyBufferSecondsEntry;
         public static ConfigEntry<int> ContainerMultiplierEntry;
         public static ConfigEntry<bool> GlobalSupplyEnabledEntry;
         public static ConfigEntry<int> GlobalSupplyIntervalEntry;
@@ -36,6 +37,10 @@ namespace CondensedProduction
                 "单个建筑可设定的倍率上限（1~100000，0 表示不限制）。实际运行倍率始终受输入物品量与引擎速度上限自适应。");
             ScaleOutputStorageEntry = Config.Bind("通用", "ScaleOutputStorage", true,
                 "是否按设定倍率放大熔炉/装配机的产物缓存上限（熔炉100→100×N等）。");
+            EnergyBufferSecondsEntry = Config.Bind("电力", "EnergyBufferSeconds", 10,
+                new ConfigDescription("每栋倍率建筑的内部储能时长（秒，按满倍率功耗计）。电网按平均功率平稳充电，" +
+                    "瞬时消耗从储能扣除；电网不足时靠储能维持运行并逐步降速，而不是功率瞬间跳变。0 = 关闭储能",
+                    new AcceptableValueRange<int>(0, 120)));
             InputBufferMultiplierEntry = Config.Bind("通用", "InputBufferMultiplier", 3,
                 "原料缓存系数：缓存上限 = 原版上限 × 设定倍率 × 该值。越大越能囤料，供料波动时不易停机。");
             ContainerMultiplierEntry = Config.Bind("通用", "ContainerMultiplier", 100,
@@ -70,10 +75,14 @@ namespace CondensedProduction
             harmony.PatchAll(typeof(FactoryContextPatch));
             harmony.PatchAll(typeof(AssemblerBatchPatch));
             harmony.PatchAll(typeof(LabBatchPatch));
+            harmony.PatchAll(typeof(LabResearchPatch));
+            harmony.PatchAll(typeof(ResearchNeedsPatch));
             harmony.PatchAll(typeof(NeedsBufferPatch));
+            harmony.PatchAll(typeof(PowerSamplePatch));
             harmony.PatchAll(typeof(CopySettingPatch));
             harmony.PatchAll(typeof(VFInputGuardPatch));
             harmony.PatchAll(typeof(StorageCapPatch));
+            harmony.PatchAll(typeof(StationLimitPatch));
             harmony.PatchAll(typeof(BuildingGrabPatch));
             harmony.PatchAll(typeof(GlobalSupplyPatch));
             harmony.PatchAll(typeof(PilerStackPatch));

@@ -1,0 +1,640 @@
+﻿===== UIStationStorage::RefreshValues()
+  IL_0000  ldloca.s       V_0
+  IL_0002  initobj        StationStore
+  IL_0008  ldarg.0        
+  IL_0009  ldfld          UIStationStorage::station
+  IL_000E  brfalse.s      IL_003c: call ItemProtoSet LDB::get_items()
+  IL_0010  ldarg.0        
+  IL_0011  ldfld          UIStationStorage::index
+  IL_0016  ldarg.0        
+  IL_0017  ldfld          UIStationStorage::station
+  IL_001C  ldfld          StationComponent::storage
+  IL_0021  ldlen          
+  IL_0022  conv.i4        
+  IL_0023  bge.s          IL_003c: call ItemProtoSet LDB::get_items()
+  IL_0025  ldarg.0        
+  IL_0026  ldfld          UIStationStorage::station
+  IL_002B  ldfld          StationComponent::storage
+  IL_0030  ldarg.0        
+  IL_0031  ldfld          UIStationStorage::index
+  IL_0036  ldelem.any     StationStore
+  IL_003B  stloc.0        
+  IL_003C  call           LDB::get_items
+  IL_0041  ldloc.0        
+  IL_0042  ldfld          StationStore::itemId
+  IL_0047  callvirt       ProtoSet`1::Select
+  IL_004C  stloc.1        
+  IL_004D  call           LDB::get_items
+  IL_0052  ldarg.0        
+  IL_0053  ldfld          UIStationStorage::stationWindow
+  IL_0058  ldfld          UIStationWindow::factory
+  IL_005D  ldfld          PlanetFactory::entityPool
+  IL_0062  ldarg.0        
+  IL_0063  ldfld          UIStationStorage::station
+  IL_0068  ldfld          StationComponent::entityId
+  IL_006D  ldelema        EntityData
+  IL_0072  ldfld          EntityData::protoId
+  IL_0077  callvirt       ProtoSet`1::Select
+  IL_007C  stloc.2        
+  IL_007D  ldloc.1        
+  IL_007E  brfalse.s      IL_0086: ldarg.0
+  IL_0080  ldloc.2        
+  IL_0081  brtrue         IL_0117: ldarg.0
+  IL_0086  ldarg.0        
+  IL_0087  call           UIStationStorage::OnIconExit
+  IL_008C  ldarg.0        
+  IL_008D  ldfld          UIStationStorage::itemRelatedGos
+  IL_0092  stloc.3        
+  IL_0093  ldc.i4.0       
+  IL_0094  stloc.s        V_4
+  IL_0096  br.s           IL_00a8: ldloc.s V_4
+  IL_0098  ldloc.3        
+  IL_0099  ldloc.s        V_4
+  IL_009B  ldelem.ref     
+  IL_009C  ldc.i4.0       
+  IL_009D  callvirt       GameObject::SetActive
+  IL_00A2  ldloc.s        V_4
+  IL_00A4  ldc.i4.1       
+  IL_00A5  add            
+  IL_00A6  stloc.s        V_4
+  IL_00A8  ldloc.s        V_4
+  IL_00AA  ldloc.3        
+  IL_00AB  ldlen          
+  IL_00AC  conv.i4        
+  IL_00AD  blt.s          IL_0098: ldloc.3
+  IL_00AF  ldarg.0        
+  IL_00B0  ldfld          UIStationStorage::emptyRelatedGos
+  IL_00B5  stloc.3        
+  IL_00B6  ldc.i4.0       
+  IL_00B7  stloc.s        V_4
+  IL_00B9  br.s           IL_00cb: ldloc.s V_4
+  IL_00BB  ldloc.3        
+  IL_00BC  ldloc.s        V_4
+  IL_00BE  ldelem.ref     
+  IL_00BF  ldc.i4.1       
+  IL_00C0  callvirt       GameObject::SetActive
+  IL_00C5  ldloc.s        V_4
+  IL_00C7  ldc.i4.1       
+  IL_00C8  add            
+  IL_00C9  stloc.s        V_4
+  IL_00CB  ldloc.s        V_4
+  IL_00CD  ldloc.3        
+  IL_00CE  ldlen          
+  IL_00CF  conv.i4        
+  IL_00D0  blt.s          IL_00bb: ldloc.3
+  IL_00D2  ldarg.0        
+  IL_00D3  ldfld          UIStationStorage::remoteSdButton
+  IL_00D8  callvirt       Component::get_gameObject
+  IL_00DD  ldc.i4.0       
+  IL_00DE  callvirt       GameObject::SetActive
+  IL_00E3  ldarg.0        
+  IL_00E4  ldfld          UIStationStorage::popupBoxRect
+  IL_00E9  callvirt       Component::get_gameObject
+  IL_00EE  ldc.i4.0       
+  IL_00EF  callvirt       GameObject::SetActive
+  IL_00F4  ldarg.0        
+  IL_00F5  ldfld          UIStationStorage::leftBar
+  IL_00FA  ldarg.0        
+  IL_00FB  ldfld          UIStationStorage::noneSpColor
+  IL_0100  callvirt       Graphic::set_color
+  IL_0105  ldarg.0        
+  IL_0106  ldfld          UIStationStorage::keepModeButton
+  IL_010B  callvirt       Component::get_gameObject
+  IL_0110  ldc.i4.0       
+  IL_0111  callvirt       GameObject::SetActive
+  IL_0116  ret            
+  IL_0117  ldarg.0        
+  IL_0118  ldfld          UIStationStorage::keepModeButton
+  IL_011D  callvirt       Component::get_gameObject
+  IL_0122  call           GameMain::get_sandboxToolsEnabled
+  IL_0127  callvirt       GameObject::SetActive
+  IL_012C  ldarg.0        
+  IL_012D  ldfld          UIStationStorage::keepModeButton
+  IL_0132  ldloc.0        
+  IL_0133  ldfld          StationStore::keepMode
+  IL_0138  ldc.i4.0       
+  IL_0139  cgt            
+  IL_013B  stfld          UIButton::highlighted
+  IL_0140  ldarg.0        
+  IL_0141  ldfld          UIStationStorage::emptyRelatedGos
+  IL_0146  stloc.3        
+  IL_0147  ldc.i4.0       
+  IL_0148  stloc.s        V_4
+  IL_014A  br.s           IL_015c: ldloc.s V_4
+  IL_014C  ldloc.3        
+  IL_014D  ldloc.s        V_4
+  IL_014F  ldelem.ref     
+  IL_0150  ldc.i4.0       
+  IL_0151  callvirt       GameObject::SetActive
+  IL_0156  ldloc.s        V_4
+  IL_0158  ldc.i4.1       
+  IL_0159  add            
+  IL_015A  stloc.s        V_4
+  IL_015C  ldloc.s        V_4
+  IL_015E  ldloc.3        
+  IL_015F  ldlen          
+  IL_0160  conv.i4        
+  IL_0161  blt.s          IL_014c: ldloc.3
+  IL_0163  ldarg.0        
+  IL_0164  ldfld          UIStationStorage::itemButton
+  IL_0169  ldflda         UIButton::tips
+  IL_016E  ldloc.0        
+  IL_016F  ldfld          StationStore::itemId
+  IL_0174  stfld          TipSettings::itemId
+  IL_0179  ldarg.0        
+  IL_017A  ldfld          UIStationStorage::itemButton
+  IL_017F  ldflda         UIButton::tips
+  IL_0184  ldloc.0        
+  IL_0185  ldfld          StationStore::inc
+  IL_018A  stfld          TipSettings::itemInc
+  IL_018F  ldarg.0        
+  IL_0190  ldfld          UIStationStorage::itemButton
+  IL_0195  ldflda         UIButton::tips
+  IL_019A  ldloc.0        
+  IL_019B  ldfld          StationStore::count
+  IL_01A0  stfld          TipSettings::itemCount
+  IL_01A5  ldarg.0        
+  IL_01A6  ldfld          UIStationStorage::itemButton
+  IL_01AB  ldflda         UIButton::tips
+  IL_01B0  ldc.i4.0       
+  IL_01B1  stfld          TipSettings::type
+  IL_01B6  ldarg.0        
+  IL_01B7  ldfld          UIStationStorage::itemImage
+  IL_01BC  ldloc.1        
+  IL_01BD  callvirt       ItemProto::get_iconSprite
+  IL_01C2  callvirt       Image::set_sprite
+  IL_01C7  ldloc.0        
+  IL_01C8  ldfld          StationStore::count
+  IL_01CD  ldc.i4.0       
+  IL_01CE  ble.s          IL_01e8: ldc.i4.0
+  IL_01D0  ldloc.0        
+  IL_01D1  ldfld          StationStore::inc
+  IL_01D6  ldc.i4.0       
+  IL_01D7  ble.s          IL_01e8: ldc.i4.0
+  IL_01D9  ldloc.0        
+  IL_01DA  ldfld          StationStore::inc
+  IL_01DF  ldloc.0        
+  IL_01E0  ldfld          StationStore::count
+  IL_01E5  div            
+  IL_01E6  br.s           IL_01e9: stloc.s V_5
+  IL_01E8  ldc.i4.0       
+  IL_01E9  stloc.s        V_5
+  IL_01EB  ldsfld         Cargo::fastIncArrowTable
+  IL_01F0  ldloc.s        V_5
+  IL_01F2  ldc.i4.s       10
+  IL_01F4  bgt.s          IL_01fa: ldc.i4.s 10
+  IL_01F6  ldloc.s        V_5
+  IL_01F8  br.s           IL_01fc: ldelem.u1
+  IL_01FA  ldc.i4.s       10
+  IL_01FC  ldelem.u1      
+  IL_01FD  stloc.s        V_6
+  IL_01FF  ldarg.0        
+  IL_0200  ldfld          UIStationStorage::itemIncs
+  IL_0205  ldc.i4.0       
+  IL_0206  ldelem.ref     
+  IL_0207  ldloc.s        V_6
+  IL_0209  ldc.i4.1       
+  IL_020A  ceq            
+  IL_020C  callvirt       Behaviour::set_enabled
+  IL_0211  ldarg.0        
+  IL_0212  ldfld          UIStationStorage::itemIncs
+  IL_0217  ldc.i4.1       
+  IL_0218  ldelem.ref     
+  IL_0219  ldloc.s        V_6
+  IL_021B  ldc.i4.2       
+  IL_021C  ceq            
+  IL_021E  callvirt       Behaviour::set_enabled
+  IL_0223  ldarg.0        
+  IL_0224  ldfld          UIStationStorage::itemIncs
+  IL_0229  ldc.i4.2       
+  IL_022A  ldelem.ref     
+  IL_022B  ldloc.s        V_6
+  IL_022D  ldc.i4.3       
+  IL_022E  ceq            
+  IL_0230  callvirt       Behaviour::set_enabled
+  IL_0235  ldarg.0        
+  IL_0236  ldfld          UIStationStorage::countValueText
+  IL_023B  ldloca.s       V_0
+  IL_023D  ldflda         StationStore::count
+  IL_0242  call           Int32::ToString
+  IL_0247  callvirt       Text::set_text
+  IL_024C  ldloca.s       V_0
+  IL_024E  call           StationStore::get_totalOrdered
+  IL_0253  ldc.i4.0       
+  IL_0254  ble.s          IL_028e: ldloca.s V_0
+  IL_0256  ldarg.0        
+  IL_0257  ldfld          UIStationStorage::orderValueText
+  IL_025C  ldstr          +
+  IL_0261  ldloca.s       V_0
+  IL_0263  call           StationStore::get_totalOrdered
+  IL_0268  stloc.s        V_4
+  IL_026A  ldloca.s       V_4
+  IL_026C  call           Int32::ToString
+  IL_0271  call           String::Concat
+  IL_0276  callvirt       Text::set_text
+  IL_027B  ldarg.0        
+  IL_027C  ldfld          UIStationStorage::orderValueText
+  IL_0281  ldarg.0        
+  IL_0282  ldfld          UIStationStorage::orderInTextColor
+  IL_0287  callvirt       Graphic::set_color
+  IL_028C  br.s           IL_02f2: ldarg.0
+  IL_028E  ldloca.s       V_0
+  IL_0290  call           StationStore::get_totalOrdered
+  IL_0295  ldc.i4.0       
+  IL_0296  bge.s          IL_02d1: ldarg.0
+  IL_0298  ldarg.0        
+  IL_0299  ldfld          UIStationStorage::orderValueText
+  IL_029E  ldstr          -
+  IL_02A3  ldloca.s       V_0
+  IL_02A5  call           StationStore::get_totalOrdered
+  IL_02AA  neg            
+  IL_02AB  stloc.s        V_4
+  IL_02AD  ldloca.s       V_4
+  IL_02AF  call           Int32::ToString
+  IL_02B4  call           String::Concat
+  IL_02B9  callvirt       Text::set_text
+  IL_02BE  ldarg.0        
+  IL_02BF  ldfld          UIStationStorage::orderValueText
+  IL_02C4  ldarg.0        
+  IL_02C5  ldfld          UIStationStorage::orderOutTextColor
+  IL_02CA  callvirt       Graphic::set_color
+  IL_02CF  br.s           IL_02f2: ldarg.0
+  IL_02D1  ldarg.0        
+  IL_02D2  ldfld          UIStationStorage::orderValueText
+  IL_02D7  ldstr          0
+  IL_02DC  callvirt       Text::set_text
+  IL_02E1  ldarg.0        
+  IL_02E2  ldfld          UIStationStorage::orderValueText
+  IL_02E7  ldarg.0        
+  IL_02E8  ldfld          UIStationStorage::orderNoneTextColor
+  IL_02ED  callvirt       Graphic::set_color
+  IL_02F2  ldarg.0        
+  IL_02F3  ldfld          UIStationStorage::maxValueText
+  IL_02F8  ldloca.s       V_0
+  IL_02FA  ldflda         StationStore::max
+  IL_02FF  call           Int32::ToString
+  IL_0304  callvirt       Text::set_text
+  IL_0309  ldarg.0        
+  IL_030A  call           UIStationStorage::GetAdditionStorage
+  IL_030F  stloc.s        V_7
+  IL_0311  ldloc.2        
+  IL_0312  ldfld          ItemProto::prefabDesc
+  IL_0317  ldfld          PrefabDesc::stationMaxItemCount
+  IL_031C  ldloc.s        V_7
+  IL_031E  add            
+  IL_031F  stloc.s        V_8
+  IL_0321  ldloc.s        V_8
+  IL_0323  ldc.i4.s       100
+  IL_0325  div            
+  IL_0326  stloc.s        V_9
+  IL_0328  ldloc.0        
+  IL_0329  ldfld          StationStore::count
+  IL_032E  conv.r4        
+  IL_032F  ldloc.s        V_8
+  IL_0331  conv.r4        
+  IL_0332  div            
+  IL_0333  stloc.s        V_10
+  IL_0335  ldloca.s       V_0
+  IL_0337  call           StationStore::get_totalOrdered
+  IL_033C  conv.r4        
+  IL_033D  ldloc.s        V_8
+  IL_033F  conv.r4        
+  IL_0340  div            
+  IL_0341  stloc.s        V_11
+  IL_0343  ldc.r4         200
+  IL_0348  ldloc.s        V_10
+  IL_034A  mul            
+  IL_034B  ldc.r4         0.49
+  IL_0350  add            
+  IL_0351  conv.i4        
+  IL_0352  stloc.s        V_12
+  IL_0354  ldc.r4         200
+  IL_0359  ldloc.s        V_11
+  IL_035B  call           Mathf::Abs
+  IL_0360  ldloc.s        V_10
+  IL_0362  add            
+  IL_0363  mul            
+  IL_0364  ldc.r4         0.49
+  IL_0369  add            
+  IL_036A  conv.i4        
+  IL_036B  ldloc.s        V_12
+  IL_036D  sub            
+  IL_036E  stloc.s        V_13
+  IL_0370  ldloc.s        V_12
+  IL_0372  ldc.i4         200
+  IL_0377  ble.s          IL_0380: ldloc.s V_11
+  IL_0379  ldc.i4         200
+  IL_037E  stloc.s        V_12
+  IL_0380  ldloc.s        V_11
+  IL_0382  ldc.r4         0
+  IL_0387  ble.un.s       IL_03a1: ldloc.s V_11
+  IL_0389  ldloc.s        V_12
+  IL_038B  ldloc.s        V_13
+  IL_038D  add            
+  IL_038E  ldc.i4         200
+  IL_0393  ble.s          IL_03b6: ldarg.0
+  IL_0395  ldc.i4         200
+  IL_039A  ldloc.s        V_12
+  IL_039C  sub            
+  IL_039D  stloc.s        V_13
+  IL_039F  br.s           IL_03b6: ldarg.0
+  IL_03A1  ldloc.s        V_11
+  IL_03A3  ldc.r4         0
+  IL_03A8  bge.un.s       IL_03b6: ldarg.0
+  IL_03AA  ldloc.s        V_12
+  IL_03AC  ldloc.s        V_13
+  IL_03AE  sub            
+  IL_03AF  ldc.i4.0       
+  IL_03B0  bge.s          IL_03b6: ldarg.0
+  IL_03B2  ldloc.s        V_12
+  IL_03B4  stloc.s        V_13
+  IL_03B6  ldarg.0        
+  IL_03B7  ldfld          UIStationStorage::countBar
+  IL_03BC  callvirt       Graphic::get_rectTransform
+  IL_03C1  ldloc.s        V_12
+  IL_03C3  conv.r4        
+  IL_03C4  ldc.r4         0
+  IL_03C9  newobj         Vector2::.ctor
+  IL_03CE  callvirt       RectTransform::set_sizeDelta
+  IL_03D3  ldarg.0        
+  IL_03D4  ldfld          UIStationStorage::orderBar
+  IL_03D9  callvirt       Graphic::get_rectTransform
+  IL_03DE  ldloc.s        V_13
+  IL_03E0  conv.r4        
+  IL_03E1  ldc.r4         0
+  IL_03E6  newobj         Vector2::.ctor
+  IL_03EB  callvirt       RectTransform::set_sizeDelta
+  IL_03F0  ldloc.s        V_11
+  IL_03F2  ldc.r4         0
+  IL_03F7  ble.un.s       IL_0429: ldarg.0
+  IL_03F9  ldarg.0        
+  IL_03FA  ldfld          UIStationStorage::orderBar
+  IL_03FF  callvirt       Graphic::get_rectTransform
+  IL_0404  ldloc.s        V_12
+  IL_0406  conv.r4        
+  IL_0407  ldc.r4         0
+  IL_040C  newobj         Vector2::.ctor
+  IL_0411  callvirt       RectTransform::set_anchoredPosition
+  IL_0416  ldarg.0        
+  IL_0417  ldfld          UIStationStorage::orderBar
+  IL_041C  ldarg.0        
+  IL_041D  ldfld          UIStationStorage::orderInColor
+  IL_0422  callvirt       Graphic::set_color
+  IL_0427  br.s           IL_045a: ldarg.0
+  IL_0429  ldarg.0        
+  IL_042A  ldfld          UIStationStorage::orderBar
+  IL_042F  callvirt       Graphic::get_rectTransform
+  IL_0434  ldloc.s        V_12
+  IL_0436  ldloc.s        V_13
+  IL_0438  sub            
+  IL_0439  conv.r4        
+  IL_043A  ldc.r4         0
+  IL_043F  newobj         Vector2::.ctor
+  IL_0444  callvirt       RectTransform::set_anchoredPosition
+  IL_0449  ldarg.0        
+  IL_044A  ldfld          UIStationStorage::orderBar
+  IL_044F  ldarg.0        
+  IL_0450  ldfld          UIStationStorage::orderOutColor
+  IL_0455  callvirt       Graphic::set_color
+  IL_045A  ldarg.0        
+  IL_045B  ldfld          UIStationStorage::maxSlider
+  IL_0460  ldc.r4         0
+  IL_0465  callvirt       Slider::set_minValue
+  IL_046A  ldarg.0        
+  IL_046B  ldfld          UIStationStorage::maxSlider
+  IL_0470  ldloc.s        V_9
+  IL_0472  conv.r4        
+  IL_0473  callvirt       Slider::set_maxValue
+  IL_0478  ldarg.0        
+  IL_0479  ldfld          UIStationStorage::maxSlider
+  IL_047E  ldloc.0        
+  IL_047F  ldfld          StationStore::max
+  IL_0484  ldc.i4.s       100
+  IL_0486  div            
+  IL_0487  conv.r4        
+  IL_0488  callvirt       Slider::set_value
+  IL_048D  ldarg.0        
+  IL_048E  ldfld          UIStationStorage::station
+  IL_0493  ldfld          StationComponent::isStellar
+  IL_0498  brfalse        IL_05c6: ldarg.0
+  IL_049D  ldarg.0        
+  IL_049E  ldfld          UIStationStorage::remoteSdButton
+  IL_04A3  callvirt       Component::get_gameObject
+  IL_04A8  ldc.i4.1       
+  IL_04A9  callvirt       GameObject::SetActive
+  IL_04AE  ldarg.0        
+  IL_04AF  ldfld          UIStationStorage::localSdImage
+  IL_04B4  ldarg.0        
+  IL_04B5  ldloc.0        
+  IL_04B6  ldfld          StationStore::localLogic
+  IL_04BB  call           UIStationStorage::GetLogisticColor
+  IL_04C0  callvirt       Graphic::set_color
+  IL_04C5  ldarg.0        
+  IL_04C6  ldfld          UIStationStorage::remoteSdImage
+  IL_04CB  ldarg.0        
+  IL_04CC  ldloc.0        
+  IL_04CD  ldfld          StationStore::remoteLogic
+  IL_04D2  call           UIStationStorage::GetLogisticColor
+  IL_04D7  callvirt       Graphic::set_color
+  IL_04DC  ldarg.0        
+  IL_04DD  ldfld          UIStationStorage::localSdText
+  IL_04E2  ldarg.0        
+  IL_04E3  ldloc.0        
+  IL_04E4  ldfld          StationStore::localLogic
+  IL_04E9  ldc.i4.0       
+  IL_04EA  ldc.i4.1       
+  IL_04EB  call           UIStationStorage::GetLogisticText
+  IL_04F0  callvirt       Text::set_text
+  IL_04F5  ldarg.0        
+  IL_04F6  ldfld          UIStationStorage::remoteSdText
+  IL_04FB  ldarg.0        
+  IL_04FC  ldloc.0        
+  IL_04FD  ldfld          StationStore::remoteLogic
+  IL_0502  ldc.i4.1       
+  IL_0503  ldc.i4.1       
+  IL_0504  call           UIStationStorage::GetLogisticText
+  IL_0509  callvirt       Text::set_text
+  IL_050E  ldarg.0        
+  IL_050F  ldfld          UIStationStorage::leftBar
+  IL_0514  ldarg.0        
+  IL_0515  ldloc.0        
+  IL_0516  ldfld          StationStore::remoteLogic
+  IL_051B  call           UIStationStorage::GetLogisticColor
+  IL_0520  callvirt       Graphic::set_color
+  IL_0525  ldarg.0        
+  IL_0526  ldfld          UIStationStorage::localSdImage
+  IL_052B  callvirt       Graphic::get_rectTransform
+  IL_0530  ldc.r4         -12
+  IL_0535  ldc.r4         14
+  IL_053A  newobj         Vector2::.ctor
+  IL_053F  callvirt       RectTransform::set_anchoredPosition
+  IL_0544  ldarg.0        
+  IL_0545  ldfld          UIStationStorage::remoteSdImage
+  IL_054A  callvirt       Graphic::get_rectTransform
+  IL_054F  ldc.r4         -12
+  IL_0554  ldc.r4         -14
+  IL_0559  newobj         Vector2::.ctor
+  IL_055E  callvirt       RectTransform::set_anchoredPosition
+  IL_0563  ldarg.0        
+  IL_0564  ldfld          UIStationStorage::localSdImage
+  IL_0569  callvirt       Graphic::get_rectTransform
+  IL_056E  ldarg.0        
+  IL_056F  ldfld          UIStationStorage::localSdImage
+  IL_0574  callvirt       Graphic::get_rectTransform
+  IL_0579  callvirt       RectTransform::get_sizeDelta
+  IL_057E  ldfld          Vector2::x
+  IL_0583  ldc.r4         26
+  IL_0588  newobj         Vector2::.ctor
+  IL_058D  callvirt       RectTransform::set_sizeDelta
+  IL_0592  ldarg.0        
+  IL_0593  ldfld          UIStationStorage::remoteSdImage
+  IL_0598  callvirt       Graphic::get_rectTransform
+  IL_059D  ldarg.0        
+  IL_059E  ldfld          UIStationStorage::remoteSdImage
+  IL_05A3  callvirt       Graphic::get_rectTransform
+  IL_05A8  callvirt       RectTransform::get_sizeDelta
+  IL_05AD  ldfld          Vector2::x
+  IL_05B2  ldc.r4         26
+  IL_05B7  newobj         Vector2::.ctor
+  IL_05BC  callvirt       RectTransform::set_sizeDelta
+  IL_05C1  br             IL_066c: ldarg.0
+  IL_05C6  ldarg.0        
+  IL_05C7  ldfld          UIStationStorage::remoteSdButton
+  IL_05CC  callvirt       Component::get_gameObject
+  IL_05D1  ldc.i4.0       
+  IL_05D2  callvirt       GameObject::SetActive
+  IL_05D7  ldarg.0        
+  IL_05D8  ldfld          UIStationStorage::localSdImage
+  IL_05DD  ldarg.0        
+  IL_05DE  ldloc.0        
+  IL_05DF  ldfld          StationStore::localLogic
+  IL_05E4  call           UIStationStorage::GetLogisticColor
+  IL_05E9  callvirt       Graphic::set_color
+  IL_05EE  ldarg.0        
+  IL_05EF  ldfld          UIStationStorage::localSdText
+  IL_05F4  ldarg.0        
+  IL_05F5  ldloc.0        
+  IL_05F6  ldfld          StationStore::localLogic
+  IL_05FB  ldc.i4.0       
+  IL_05FC  ldc.i4.0       
+  IL_05FD  call           UIStationStorage::GetLogisticText
+  IL_0602  callvirt       Text::set_text
+  IL_0607  ldarg.0        
+  IL_0608  ldfld          UIStationStorage::leftBar
+  IL_060D  ldarg.0        
+  IL_060E  ldloc.0        
+  IL_060F  ldfld          StationStore::localLogic
+  IL_0614  call           UIStationStorage::GetLogisticColor
+  IL_0619  callvirt       Graphic::set_color
+  IL_061E  ldarg.0        
+  IL_061F  ldfld          UIStationStorage::localSdImage
+  IL_0624  callvirt       Graphic::get_rectTransform
+  IL_0629  ldc.r4         -12
+  IL_062E  ldc.r4         0
+  IL_0633  newobj         Vector2::.ctor
+  IL_0638  callvirt       RectTransform::set_anchoredPosition
+  IL_063D  ldarg.0        
+  IL_063E  ldfld          UIStationStorage::localSdImage
+  IL_0643  callvirt       Graphic::get_rectTransform
+  IL_0648  ldarg.0        
+  IL_0649  ldfld          UIStationStorage::localSdImage
+  IL_064E  callvirt       Graphic::get_rectTransform
+  IL_0653  callvirt       RectTransform::get_sizeDelta
+  IL_0658  ldfld          Vector2::x
+  IL_065D  ldc.r4         50
+  IL_0662  newobj         Vector2::.ctor
+  IL_0667  callvirt       RectTransform::set_sizeDelta
+  IL_066C  ldarg.0        
+  IL_066D  ldfld          UIStationStorage::itemRelatedGos
+  IL_0672  stloc.3        
+  IL_0673  ldc.i4.0       
+  IL_0674  stloc.s        V_4
+  IL_0676  br.s           IL_0688: ldloc.s V_4
+  IL_0678  ldloc.3        
+  IL_0679  ldloc.s        V_4
+  IL_067B  ldelem.ref     
+  IL_067C  ldc.i4.1       
+  IL_067D  callvirt       GameObject::SetActive
+  IL_0682  ldloc.s        V_4
+  IL_0684  ldc.i4.1       
+  IL_0685  add            
+  IL_0686  stloc.s        V_4
+  IL_0688  ldloc.s        V_4
+  IL_068A  ldloc.3        
+  IL_068B  ldlen          
+  IL_068C  conv.i4        
+  IL_068D  blt.s          IL_0678: ldloc.3
+  IL_068F  ldarg.0        
+  IL_0690  ldfld          UIStationStorage::speedText
+  IL_0695  callvirt       Component::get_gameObject
+  IL_069A  ldarg.0        
+  IL_069B  ldfld          UIStationStorage::station
+  IL_06A0  ldfld          StationComponent::isCollector
+  IL_06A5  callvirt       GameObject::SetActive
+  IL_06AA  ldarg.0        
+  IL_06AB  ldfld          UIStationStorage::station
+  IL_06B0  ldfld          StationComponent::isCollector
+  IL_06B5  brfalse        IL_0771: ret
+  IL_06BA  call           LDB::get_items
+  IL_06BF  ldsfld         ItemProto::stationCollectorId
+  IL_06C4  callvirt       ProtoSet`1::Select
+  IL_06C9  ldfld          ItemProto::prefabDesc
+  IL_06CE  stloc.s        V_14
+  IL_06D0  ldloc.s        V_14
+  IL_06D2  ldfld          PrefabDesc::workEnergyPerTick
+  IL_06D7  conv.r8        
+  IL_06D8  ldc.r8         60
+  IL_06E1  mul            
+  IL_06E2  ldloc.s        V_14
+  IL_06E4  ldfld          PrefabDesc::stationCollectSpeed
+  IL_06E9  conv.r8        
+  IL_06EA  div            
+  IL_06EB  call           GameMain::get_history
+  IL_06F0  ldfld          GameHistoryData::miningSpeedScale
+  IL_06F5  conv.r8        
+  IL_06F6  stloc.s        V_15
+  IL_06F8  stloc.s        V_16
+  IL_06FA  call           GameMain::get_localPlanet
+  IL_06FF  ldfld          PlanetData::gasTotalHeat
+  IL_0704  stloc.s        V_17
+  IL_0706  ldloc.s        V_17
+  IL_0708  ldloc.s        V_16
+  IL_070A  sub            
+  IL_070B  ldc.r8         0
+  IL_0714  ble.s          IL_0727: ldc.r4 1
+  IL_0716  ldloc.s        V_15
+  IL_0718  ldloc.s        V_17
+  IL_071A  mul            
+  IL_071B  ldloc.s        V_16
+  IL_071D  sub            
+  IL_071E  ldloc.s        V_17
+  IL_0720  ldloc.s        V_16
+  IL_0722  sub            
+  IL_0723  div            
+  IL_0724  conv.r4        
+  IL_0725  br.s           IL_072c: conv.r8
+  IL_0727  ldc.r4         1
+  IL_072C  conv.r8        
+  IL_072D  stloc.s        V_18
+  IL_072F  ldarg.0        
+  IL_0730  ldfld          UIStationStorage::station
+  IL_0735  ldfld          StationComponent::collectionPerTick
+  IL_073A  ldarg.0        
+  IL_073B  ldfld          UIStationStorage::index
+  IL_0740  ldelem.r4      
+  IL_0741  conv.r8        
+  IL_0742  ldloc.s        V_18
+  IL_0744  mul            
+  IL_0745  stloc.s        V_19
+  IL_0747  ldc.r8         3600
+  IL_0750  ldloc.s        V_19
+  IL_0752  mul            
+  IL_0753  stloc.s        V_20
+  IL_0755  ldarg.0        
+  IL_0756  ldfld          UIStationStorage::speedText
+  IL_075B  ldstr          {0:0.00}/min
+  IL_0760  ldloc.s        V_20
+  IL_0762  box            System.Double
+  IL_0767  call           String::Format
+  IL_076C  callvirt       Text::set_text
+  IL_0771  ret            

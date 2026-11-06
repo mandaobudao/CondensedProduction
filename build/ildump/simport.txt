@@ -1,0 +1,758 @@
+﻿===== StationComponent::Import(System.IO.BinaryReader)
+  IL_0000  ldarg.1        
+  IL_0001  callvirt       BinaryReader::ReadInt32
+  IL_0006  stloc.0        
+  IL_0007  ldarg.0        
+  IL_0008  ldarg.1        
+  IL_0009  callvirt       BinaryReader::ReadInt32
+  IL_000E  stfld          StationComponent::id
+  IL_0013  ldarg.0        
+  IL_0014  ldarg.1        
+  IL_0015  callvirt       BinaryReader::ReadInt32
+  IL_001A  stfld          StationComponent::gid
+  IL_001F  ldarg.0        
+  IL_0020  ldarg.1        
+  IL_0021  callvirt       BinaryReader::ReadInt32
+  IL_0026  stfld          StationComponent::entityId
+  IL_002B  ldarg.0        
+  IL_002C  ldarg.1        
+  IL_002D  callvirt       BinaryReader::ReadInt32
+  IL_0032  stfld          StationComponent::planetId
+  IL_0037  ldarg.0        
+  IL_0038  ldarg.1        
+  IL_0039  callvirt       BinaryReader::ReadInt32
+  IL_003E  stfld          StationComponent::pcId
+  IL_0043  ldloc.0        
+  IL_0044  ldc.i4.3       
+  IL_0045  blt.s          IL_0055: ldarg.0
+  IL_0047  ldarg.0        
+  IL_0048  ldarg.1        
+  IL_0049  callvirt       BinaryReader::ReadInt32
+  IL_004E  stfld          StationComponent::minerId
+  IL_0053  br.s           IL_005c: ldarg.0
+  IL_0055  ldarg.0        
+  IL_0056  ldc.i4.0       
+  IL_0057  stfld          StationComponent::minerId
+  IL_005C  ldarg.0        
+  IL_005D  ldarg.1        
+  IL_005E  callvirt       BinaryReader::ReadInt32
+  IL_0063  stfld          StationComponent::gene
+  IL_0068  ldarg.0        
+  IL_0069  ldflda         StationComponent::droneDock
+  IL_006E  ldarg.1        
+  IL_006F  callvirt       BinaryReader::ReadSingle
+  IL_0074  stfld          Vector3::x
+  IL_0079  ldarg.0        
+  IL_007A  ldflda         StationComponent::droneDock
+  IL_007F  ldarg.1        
+  IL_0080  callvirt       BinaryReader::ReadSingle
+  IL_0085  stfld          Vector3::y
+  IL_008A  ldarg.0        
+  IL_008B  ldflda         StationComponent::droneDock
+  IL_0090  ldarg.1        
+  IL_0091  callvirt       BinaryReader::ReadSingle
+  IL_0096  stfld          Vector3::z
+  IL_009B  ldarg.0        
+  IL_009C  ldflda         StationComponent::shipDockPos
+  IL_00A1  ldarg.1        
+  IL_00A2  callvirt       BinaryReader::ReadSingle
+  IL_00A7  stfld          Vector3::x
+  IL_00AC  ldarg.0        
+  IL_00AD  ldflda         StationComponent::shipDockPos
+  IL_00B2  ldarg.1        
+  IL_00B3  callvirt       BinaryReader::ReadSingle
+  IL_00B8  stfld          Vector3::y
+  IL_00BD  ldarg.0        
+  IL_00BE  ldflda         StationComponent::shipDockPos
+  IL_00C3  ldarg.1        
+  IL_00C4  callvirt       BinaryReader::ReadSingle
+  IL_00C9  stfld          Vector3::z
+  IL_00CE  ldarg.0        
+  IL_00CF  ldflda         StationComponent::shipDockRot
+  IL_00D4  ldarg.1        
+  IL_00D5  callvirt       BinaryReader::ReadSingle
+  IL_00DA  stfld          Quaternion::x
+  IL_00DF  ldarg.0        
+  IL_00E0  ldflda         StationComponent::shipDockRot
+  IL_00E5  ldarg.1        
+  IL_00E6  callvirt       BinaryReader::ReadSingle
+  IL_00EB  stfld          Quaternion::y
+  IL_00F0  ldarg.0        
+  IL_00F1  ldflda         StationComponent::shipDockRot
+  IL_00F6  ldarg.1        
+  IL_00F7  callvirt       BinaryReader::ReadSingle
+  IL_00FC  stfld          Quaternion::z
+  IL_0101  ldarg.0        
+  IL_0102  ldflda         StationComponent::shipDockRot
+  IL_0107  ldarg.1        
+  IL_0108  callvirt       BinaryReader::ReadSingle
+  IL_010D  stfld          Quaternion::w
+  IL_0112  ldarg.0        
+  IL_0113  ldarg.1        
+  IL_0114  callvirt       BinaryReader::ReadBoolean
+  IL_0119  stfld          StationComponent::isStellar
+  IL_011E  ldloc.0        
+  IL_011F  ldc.i4.6       
+  IL_0120  bge.s          IL_0132: ldarg.0
+  IL_0122  ldarg.1        
+  IL_0123  callvirt       BinaryReader::ReadInt32
+  IL_0128  ldc.i4.0       
+  IL_0129  ble.s          IL_0132: ldarg.0
+  IL_012B  ldarg.1        
+  IL_012C  callvirt       BinaryReader::ReadString
+  IL_0131  pop            
+  IL_0132  ldarg.0        
+  IL_0133  ldarg.1        
+  IL_0134  callvirt       BinaryReader::ReadInt64
+  IL_0139  stfld          StationComponent::energy
+  IL_013E  ldarg.0        
+  IL_013F  ldarg.1        
+  IL_0140  callvirt       BinaryReader::ReadInt64
+  IL_0145  stfld          StationComponent::energyPerTick
+  IL_014A  ldarg.0        
+  IL_014B  ldarg.1        
+  IL_014C  callvirt       BinaryReader::ReadInt64
+  IL_0151  stfld          StationComponent::energyMax
+  IL_0156  ldarg.0        
+  IL_0157  ldarg.1        
+  IL_0158  callvirt       BinaryReader::ReadInt32
+  IL_015D  stfld          StationComponent::warperCount
+  IL_0162  ldarg.0        
+  IL_0163  ldarg.1        
+  IL_0164  callvirt       BinaryReader::ReadInt32
+  IL_0169  stfld          StationComponent::warperMaxCount
+  IL_016E  ldarg.0        
+  IL_016F  ldarg.1        
+  IL_0170  callvirt       BinaryReader::ReadInt32
+  IL_0175  stfld          StationComponent::idleDroneCount
+  IL_017A  ldarg.0        
+  IL_017B  ldarg.1        
+  IL_017C  callvirt       BinaryReader::ReadInt32
+  IL_0181  stfld          StationComponent::workDroneCount
+  IL_0186  ldarg.1        
+  IL_0187  callvirt       BinaryReader::ReadInt32
+  IL_018C  stloc.1        
+  IL_018D  ldarg.0        
+  IL_018E  ldloc.1        
+  IL_018F  newarr         DroneData
+  IL_0194  stfld          StationComponent::workDroneDatas
+  IL_0199  ldarg.0        
+  IL_019A  ldloc.1        
+  IL_019B  newarr         LocalLogisticOrder
+  IL_01A0  stfld          StationComponent::workDroneOrders
+  IL_01A5  ldc.i4.0       
+  IL_01A6  stloc.2        
+  IL_01A7  br.s           IL_01bf: ldloc.2
+  IL_01A9  ldarg.0        
+  IL_01AA  ldfld          StationComponent::workDroneDatas
+  IL_01AF  ldloc.2        
+  IL_01B0  ldelema        DroneData
+  IL_01B5  ldarg.1        
+  IL_01B6  call           DroneData::Import
+  IL_01BB  ldloc.2        
+  IL_01BC  ldc.i4.1       
+  IL_01BD  add            
+  IL_01BE  stloc.2        
+  IL_01BF  ldloc.2        
+  IL_01C0  ldarg.0        
+  IL_01C1  ldfld          StationComponent::workDroneCount
+  IL_01C6  blt.s          IL_01a9: ldarg.0
+  IL_01C8  ldc.i4.0       
+  IL_01C9  stloc.3        
+  IL_01CA  br.s           IL_01e2: ldloc.3
+  IL_01CC  ldarg.0        
+  IL_01CD  ldfld          StationComponent::workDroneOrders
+  IL_01D2  ldloc.3        
+  IL_01D3  ldelema        LocalLogisticOrder
+  IL_01D8  ldarg.1        
+  IL_01D9  call           LocalLogisticOrder::Import
+  IL_01DE  ldloc.3        
+  IL_01DF  ldc.i4.1       
+  IL_01E0  add            
+  IL_01E1  stloc.3        
+  IL_01E2  ldloc.3        
+  IL_01E3  ldarg.0        
+  IL_01E4  ldfld          StationComponent::workDroneCount
+  IL_01E9  blt.s          IL_01cc: ldarg.0
+  IL_01EB  ldarg.0        
+  IL_01EC  ldarg.1        
+  IL_01ED  callvirt       BinaryReader::ReadInt32
+  IL_01F2  stfld          StationComponent::idleShipCount
+  IL_01F7  ldarg.0        
+  IL_01F8  ldarg.1        
+  IL_01F9  callvirt       BinaryReader::ReadInt32
+  IL_01FE  stfld          StationComponent::workShipCount
+  IL_0203  ldarg.0        
+  IL_0204  ldarg.1        
+  IL_0205  callvirt       BinaryReader::ReadUInt64
+  IL_020A  stfld          StationComponent::idleShipIndices
+  IL_020F  ldarg.0        
+  IL_0210  ldarg.1        
+  IL_0211  callvirt       BinaryReader::ReadUInt64
+  IL_0216  stfld          StationComponent::workShipIndices
+  IL_021B  ldarg.1        
+  IL_021C  callvirt       BinaryReader::ReadInt32
+  IL_0221  stloc.1        
+  IL_0222  ldarg.0        
+  IL_0223  ldloc.1        
+  IL_0224  newarr         ShipData
+  IL_0229  stfld          StationComponent::workShipDatas
+  IL_022E  ldarg.0        
+  IL_022F  ldloc.1        
+  IL_0230  newarr         ShipRenderingData
+  IL_0235  stfld          StationComponent::shipRenderers
+  IL_023A  ldarg.0        
+  IL_023B  ldloc.1        
+  IL_023C  newarr         ShipUIRenderingData
+  IL_0241  stfld          StationComponent::shipUIRenderers
+  IL_0246  ldarg.0        
+  IL_0247  ldloc.1        
+  IL_0248  newarr         RemoteLogisticOrder
+  IL_024D  stfld          StationComponent::workShipOrders
+  IL_0252  ldc.i4.0       
+  IL_0253  stloc.s        V_4
+  IL_0255  br.s           IL_0270: ldloc.s V_4
+  IL_0257  ldarg.0        
+  IL_0258  ldfld          StationComponent::workShipDatas
+  IL_025D  ldloc.s        V_4
+  IL_025F  ldelema        ShipData
+  IL_0264  ldarg.1        
+  IL_0265  call           ShipData::Import
+  IL_026A  ldloc.s        V_4
+  IL_026C  ldc.i4.1       
+  IL_026D  add            
+  IL_026E  stloc.s        V_4
+  IL_0270  ldloc.s        V_4
+  IL_0272  ldarg.0        
+  IL_0273  ldfld          StationComponent::workShipCount
+  IL_0278  blt.s          IL_0257: ldarg.0
+  IL_027A  ldc.i4.0       
+  IL_027B  stloc.s        V_5
+  IL_027D  br.s           IL_0298: ldloc.s V_5
+  IL_027F  ldarg.0        
+  IL_0280  ldfld          StationComponent::workShipOrders
+  IL_0285  ldloc.s        V_5
+  IL_0287  ldelema        RemoteLogisticOrder
+  IL_028C  ldarg.1        
+  IL_028D  call           RemoteLogisticOrder::Import
+  IL_0292  ldloc.s        V_5
+  IL_0294  ldc.i4.1       
+  IL_0295  add            
+  IL_0296  stloc.s        V_5
+  IL_0298  ldloc.s        V_5
+  IL_029A  ldarg.0        
+  IL_029B  ldfld          StationComponent::workShipCount
+  IL_02A0  blt.s          IL_027f: ldarg.0
+  IL_02A2  ldarg.1        
+  IL_02A3  callvirt       BinaryReader::ReadInt32
+  IL_02A8  stloc.1        
+  IL_02A9  ldarg.0        
+  IL_02AA  ldloc.1        
+  IL_02AB  newarr         StationStore
+  IL_02B0  stfld          StationComponent::storage
+  IL_02B5  ldc.i4.0       
+  IL_02B6  stloc.s        V_6
+  IL_02B8  br.s           IL_02d3: ldloc.s V_6
+  IL_02BA  ldarg.0        
+  IL_02BB  ldfld          StationComponent::storage
+  IL_02C0  ldloc.s        V_6
+  IL_02C2  ldelema        StationStore
+  IL_02C7  ldarg.1        
+  IL_02C8  call           StationStore::Import
+  IL_02CD  ldloc.s        V_6
+  IL_02CF  ldc.i4.1       
+  IL_02D0  add            
+  IL_02D1  stloc.s        V_6
+  IL_02D3  ldloc.s        V_6
+  IL_02D5  ldloc.1        
+  IL_02D6  blt.s          IL_02ba: ldarg.0
+  IL_02D8  ldloc.0        
+  IL_02D9  ldc.i4.7       
+  IL_02DA  blt.s          IL_0314: ldarg.0
+  IL_02DC  ldarg.1        
+  IL_02DD  callvirt       BinaryReader::ReadInt32
+  IL_02E2  stloc.1        
+  IL_02E3  ldarg.0        
+  IL_02E4  ldloc.1        
+  IL_02E5  newarr         StationPriorityLock
+  IL_02EA  stfld          StationComponent::priorityLocks
+  IL_02EF  ldc.i4.0       
+  IL_02F0  stloc.s        V_7
+  IL_02F2  br.s           IL_030d: ldloc.s V_7
+  IL_02F4  ldarg.0        
+  IL_02F5  ldfld          StationComponent::priorityLocks
+  IL_02FA  ldloc.s        V_7
+  IL_02FC  ldelema        StationPriorityLock
+  IL_0301  ldarg.1        
+  IL_0302  call           StationPriorityLock::Import
+  IL_0307  ldloc.s        V_7
+  IL_0309  ldc.i4.1       
+  IL_030A  add            
+  IL_030B  stloc.s        V_7
+  IL_030D  ldloc.s        V_7
+  IL_030F  ldloc.1        
+  IL_0310  blt.s          IL_02f4: ldarg.0
+  IL_0312  br.s           IL_0327: ldloc.0
+  IL_0314  ldarg.0        
+  IL_0315  ldarg.0        
+  IL_0316  ldfld          StationComponent::storage
+  IL_031B  ldlen          
+  IL_031C  conv.i4        
+  IL_031D  newarr         StationPriorityLock
+  IL_0322  stfld          StationComponent::priorityLocks
+  IL_0327  ldloc.0        
+  IL_0328  ldc.i4.1       
+  IL_0329  blt            IL_03b3: ldarg.0
+  IL_032E  ldarg.1        
+  IL_032F  callvirt       BinaryReader::ReadInt32
+  IL_0334  stloc.1        
+  IL_0335  ldarg.0        
+  IL_0336  ldloc.1        
+  IL_0337  newarr         SlotData
+  IL_033C  stfld          StationComponent::slots
+  IL_0341  ldc.i4.0       
+  IL_0342  stloc.s        V_8
+  IL_0344  br.s           IL_03ac: ldloc.s V_8
+  IL_0346  ldarg.0        
+  IL_0347  ldfld          StationComponent::slots
+  IL_034C  ldloc.s        V_8
+  IL_034E  ldelema        SlotData
+  IL_0353  ldarg.1        
+  IL_0354  callvirt       BinaryReader::ReadInt32
+  IL_0359  stfld          SlotData::dir
+  IL_035E  ldarg.0        
+  IL_035F  ldfld          StationComponent::slots
+  IL_0364  ldloc.s        V_8
+  IL_0366  ldelema        SlotData
+  IL_036B  ldarg.1        
+  IL_036C  callvirt       BinaryReader::ReadInt32
+  IL_0371  stfld          SlotData::beltId
+  IL_0376  ldarg.0        
+  IL_0377  ldfld          StationComponent::slots
+  IL_037C  ldloc.s        V_8
+  IL_037E  ldelema        SlotData
+  IL_0383  ldarg.1        
+  IL_0384  callvirt       BinaryReader::ReadInt32
+  IL_0389  stfld          SlotData::storageIdx
+  IL_038E  ldarg.0        
+  IL_038F  ldfld          StationComponent::slots
+  IL_0394  ldloc.s        V_8
+  IL_0396  ldelema        SlotData
+  IL_039B  ldarg.1        
+  IL_039C  callvirt       BinaryReader::ReadInt32
+  IL_03A1  stfld          SlotData::counter
+  IL_03A6  ldloc.s        V_8
+  IL_03A8  ldc.i4.1       
+  IL_03A9  add            
+  IL_03AA  stloc.s        V_8
+  IL_03AC  ldloc.s        V_8
+  IL_03AE  ldloc.1        
+  IL_03AF  blt.s          IL_0346: ldarg.0
+  IL_03B1  br.s           IL_03c0: ldarg.0
+  IL_03B3  ldarg.0        
+  IL_03B4  ldc.i4.s       12
+  IL_03B6  newarr         SlotData
+  IL_03BB  stfld          StationComponent::slots
+  IL_03C0  ldarg.0        
+  IL_03C1  ldarg.1        
+  IL_03C2  callvirt       BinaryReader::ReadInt32
+  IL_03C7  stfld          StationComponent::localPairProcess
+  IL_03CC  ldloc.0        
+  IL_03CD  ldc.i4.7       
+  IL_03CE  blt.s          IL_0404: ldarg.0
+  IL_03D0  ldarg.1        
+  IL_03D1  callvirt       BinaryReader::ReadInt32
+  IL_03D6  stloc.1        
+  IL_03D7  ldarg.0        
+  IL_03D8  ldloc.1        
+  IL_03D9  newarr         System.Int32
+  IL_03DE  stfld          StationComponent::remotePairProcesses
+  IL_03E3  ldc.i4.0       
+  IL_03E4  stloc.s        V_9
+  IL_03E6  br.s           IL_03fd: ldloc.s V_9
+  IL_03E8  ldarg.0        
+  IL_03E9  ldfld          StationComponent::remotePairProcesses
+  IL_03EE  ldloc.s        V_9
+  IL_03F0  ldarg.1        
+  IL_03F1  callvirt       BinaryReader::ReadInt32
+  IL_03F6  stelem.i4      
+  IL_03F7  ldloc.s        V_9
+  IL_03F9  ldc.i4.1       
+  IL_03FA  add            
+  IL_03FB  stloc.s        V_9
+  IL_03FD  ldloc.s        V_9
+  IL_03FF  ldloc.1        
+  IL_0400  blt.s          IL_03e8: ldarg.0
+  IL_0402  br.s           IL_041e: ldarg.0
+  IL_0404  ldarg.0        
+  IL_0405  ldc.i4.6       
+  IL_0406  newarr         System.Int32
+  IL_040B  stfld          StationComponent::remotePairProcesses
+  IL_0410  ldarg.0        
+  IL_0411  ldfld          StationComponent::remotePairProcesses
+  IL_0416  ldc.i4.0       
+  IL_0417  ldarg.1        
+  IL_0418  callvirt       BinaryReader::ReadInt32
+  IL_041D  stelem.i4      
+  IL_041E  ldarg.0        
+  IL_041F  ldarg.1        
+  IL_0420  callvirt       BinaryReader::ReadInt32
+  IL_0425  stfld          StationComponent::nextShipIndex
+  IL_042A  ldarg.0        
+  IL_042B  ldc.i4.6       
+  IL_042C  newarr         System.Int32
+  IL_0431  stfld          StationComponent::needs
+  IL_0436  ldarg.0        
+  IL_0437  ldnull         
+  IL_0438  stfld          StationComponent::localPairs
+  IL_043D  ldarg.0        
+  IL_043E  ldc.i4.0       
+  IL_043F  stfld          StationComponent::localPairCount
+  IL_0444  ldarg.0        
+  IL_0445  ldarg.0        
+  IL_0446  ldfld          StationComponent::workShipDatas
+  IL_044B  ldlen          
+  IL_044C  conv.i4        
+  IL_044D  newarr         UnityEngine.Vector3
+  IL_0452  stfld          StationComponent::shipDiskPos
+  IL_0457  ldarg.0        
+  IL_0458  ldarg.0        
+  IL_0459  ldfld          StationComponent::workShipDatas
+  IL_045E  ldlen          
+  IL_045F  conv.i4        
+  IL_0460  newarr         UnityEngine.Quaternion
+  IL_0465  stfld          StationComponent::shipDiskRot
+  IL_046A  ldarg.0        
+  IL_046B  ldfld          StationComponent::isStellar
+  IL_0470  brfalse        IL_0552: ldarg.0
+  IL_0475  ldarg.0        
+  IL_0476  ldfld          StationComponent::workShipDatas
+  IL_047B  ldlen          
+  IL_047C  conv.i4        
+  IL_047D  stloc.s        V_10
+  IL_047F  ldc.i4.0       
+  IL_0480  stloc.s        V_11
+  IL_0482  br.s           IL_04e6: ldloc.s V_11
+  IL_0484  ldarg.0        
+  IL_0485  ldfld          StationComponent::shipDiskRot
+  IL_048A  ldloc.s        V_11
+  IL_048C  ldc.r4         0
+  IL_0491  ldc.r4         360
+  IL_0496  ldloc.s        V_10
+  IL_0498  conv.r4        
+  IL_0499  div            
+  IL_049A  ldloc.s        V_11
+  IL_049C  conv.r4        
+  IL_049D  mul            
+  IL_049E  ldc.r4         0
+  IL_04A3  call           Quaternion::Euler
+  IL_04A8  stelem.any     UnityEngine.Quaternion
+  IL_04AD  ldarg.0        
+  IL_04AE  ldfld          StationComponent::shipDiskPos
+  IL_04B3  ldloc.s        V_11
+  IL_04B5  ldarg.0        
+  IL_04B6  ldfld          StationComponent::shipDiskRot
+  IL_04BB  ldloc.s        V_11
+  IL_04BD  ldelem.any     UnityEngine.Quaternion
+  IL_04C2  ldc.r4         0
+  IL_04C7  ldc.r4         0
+  IL_04CC  ldc.r4         11.5
+  IL_04D1  newobj         Vector3::.ctor
+  IL_04D6  call           Quaternion::op_Multiply
+  IL_04DB  stelem.any     UnityEngine.Vector3
+  IL_04E0  ldloc.s        V_11
+  IL_04E2  ldc.i4.1       
+  IL_04E3  add            
+  IL_04E4  stloc.s        V_11
+  IL_04E6  ldloc.s        V_11
+  IL_04E8  ldloc.s        V_10
+  IL_04EA  blt.s          IL_0484: ldarg.0
+  IL_04EC  ldc.i4.0       
+  IL_04ED  stloc.s        V_12
+  IL_04EF  br.s           IL_054c: ldloc.s V_12
+  IL_04F1  ldarg.0        
+  IL_04F2  ldfld          StationComponent::shipDiskRot
+  IL_04F7  ldloc.s        V_12
+  IL_04F9  ldarg.0        
+  IL_04FA  ldfld          StationComponent::shipDockRot
+  IL_04FF  ldarg.0        
+  IL_0500  ldfld          StationComponent::shipDiskRot
+  IL_0505  ldloc.s        V_12
+  IL_0507  ldelem.any     UnityEngine.Quaternion
+  IL_050C  call           Quaternion::op_Multiply
+  IL_0511  stelem.any     UnityEngine.Quaternion
+  IL_0516  ldarg.0        
+  IL_0517  ldfld          StationComponent::shipDiskPos
+  IL_051C  ldloc.s        V_12
+  IL_051E  ldarg.0        
+  IL_051F  ldfld          StationComponent::shipDockPos
+  IL_0524  ldarg.0        
+  IL_0525  ldfld          StationComponent::shipDockRot
+  IL_052A  ldarg.0        
+  IL_052B  ldfld          StationComponent::shipDiskPos
+  IL_0530  ldloc.s        V_12
+  IL_0532  ldelem.any     UnityEngine.Vector3
+  IL_0537  call           Quaternion::op_Multiply
+  IL_053C  call           Vector3::op_Addition
+  IL_0541  stelem.any     UnityEngine.Vector3
+  IL_0546  ldloc.s        V_12
+  IL_0548  ldc.i4.1       
+  IL_0549  add            
+  IL_054A  stloc.s        V_12
+  IL_054C  ldloc.s        V_12
+  IL_054E  ldloc.s        V_10
+  IL_0550  blt.s          IL_04f1: ldarg.0
+  IL_0552  ldarg.0        
+  IL_0553  ldarg.1        
+  IL_0554  callvirt       BinaryReader::ReadBoolean
+  IL_0559  stfld          StationComponent::isCollector
+  IL_055E  ldloc.0        
+  IL_055F  ldc.i4.3       
+  IL_0560  blt.s          IL_0570: ldarg.0
+  IL_0562  ldarg.0        
+  IL_0563  ldarg.1        
+  IL_0564  callvirt       BinaryReader::ReadBoolean
+  IL_0569  stfld          StationComponent::isVeinCollector
+  IL_056E  br.s           IL_0577: ldarg.1
+  IL_0570  ldarg.0        
+  IL_0571  ldc.i4.0       
+  IL_0572  stfld          StationComponent::isVeinCollector
+  IL_0577  ldarg.1        
+  IL_0578  callvirt       BinaryReader::ReadInt32
+  IL_057D  stloc.1        
+  IL_057E  ldloc.1        
+  IL_057F  brfalse.s      IL_05ac: ldarg.1
+  IL_0581  ldarg.0        
+  IL_0582  ldloc.1        
+  IL_0583  newarr         System.Int32
+  IL_0588  stfld          StationComponent::collectionIds
+  IL_058D  ldc.i4.0       
+  IL_058E  stloc.s        V_13
+  IL_0590  br.s           IL_05a7: ldloc.s V_13
+  IL_0592  ldarg.0        
+  IL_0593  ldfld          StationComponent::collectionIds
+  IL_0598  ldloc.s        V_13
+  IL_059A  ldarg.1        
+  IL_059B  callvirt       BinaryReader::ReadInt32
+  IL_05A0  stelem.i4      
+  IL_05A1  ldloc.s        V_13
+  IL_05A3  ldc.i4.1       
+  IL_05A4  add            
+  IL_05A5  stloc.s        V_13
+  IL_05A7  ldloc.s        V_13
+  IL_05A9  ldloc.1        
+  IL_05AA  blt.s          IL_0592: ldarg.0
+  IL_05AC  ldarg.1        
+  IL_05AD  callvirt       BinaryReader::ReadInt32
+  IL_05B2  stloc.1        
+  IL_05B3  ldloc.1        
+  IL_05B4  brfalse.s      IL_05e1: ldarg.1
+  IL_05B6  ldarg.0        
+  IL_05B7  ldloc.1        
+  IL_05B8  newarr         System.Single
+  IL_05BD  stfld          StationComponent::collectionPerTick
+  IL_05C2  ldc.i4.0       
+  IL_05C3  stloc.s        V_14
+  IL_05C5  br.s           IL_05dc: ldloc.s V_14
+  IL_05C7  ldarg.0        
+  IL_05C8  ldfld          StationComponent::collectionPerTick
+  IL_05CD  ldloc.s        V_14
+  IL_05CF  ldarg.1        
+  IL_05D0  callvirt       BinaryReader::ReadSingle
+  IL_05D5  stelem.r4      
+  IL_05D6  ldloc.s        V_14
+  IL_05D8  ldc.i4.1       
+  IL_05D9  add            
+  IL_05DA  stloc.s        V_14
+  IL_05DC  ldloc.s        V_14
+  IL_05DE  ldloc.1        
+  IL_05DF  blt.s          IL_05c7: ldarg.0
+  IL_05E1  ldarg.1        
+  IL_05E2  callvirt       BinaryReader::ReadInt32
+  IL_05E7  stloc.1        
+  IL_05E8  ldloc.1        
+  IL_05E9  brfalse.s      IL_0616: ldarg.0
+  IL_05EB  ldarg.0        
+  IL_05EC  ldloc.1        
+  IL_05ED  newarr         System.Single
+  IL_05F2  stfld          StationComponent::currentCollections
+  IL_05F7  ldc.i4.0       
+  IL_05F8  stloc.s        V_15
+  IL_05FA  br.s           IL_0611: ldloc.s V_15
+  IL_05FC  ldarg.0        
+  IL_05FD  ldfld          StationComponent::currentCollections
+  IL_0602  ldloc.s        V_15
+  IL_0604  ldarg.1        
+  IL_0605  callvirt       BinaryReader::ReadSingle
+  IL_060A  stelem.r4      
+  IL_060B  ldloc.s        V_15
+  IL_060D  ldc.i4.1       
+  IL_060E  add            
+  IL_060F  stloc.s        V_15
+  IL_0611  ldloc.s        V_15
+  IL_0613  ldloc.1        
+  IL_0614  blt.s          IL_05fc: ldarg.0
+  IL_0616  ldarg.0        
+  IL_0617  ldarg.1        
+  IL_0618  callvirt       BinaryReader::ReadInt32
+  IL_061D  stfld          StationComponent::collectSpeed
+  IL_0622  ldloc.0        
+  IL_0623  ldc.i4.8       
+  IL_0624  blt            IL_06b6: ldarg.0
+  IL_0629  ldarg.1        
+  IL_062A  callvirt       BinaryReader::ReadByte
+  IL_062F  stloc.1        
+  IL_0630  ldloc.1        
+  IL_0631  ldc.i4.0       
+  IL_0632  ble.s          IL_0641: ldloc.1
+  IL_0634  ldarg.0        
+  IL_0635  ldarg.1        
+  IL_0636  ldloc.1        
+  IL_0637  callvirt       BinaryReader::ReadBytes
+  IL_063C  stfld          StationComponent::droneDispatchStatus
+  IL_0641  ldloc.1        
+  IL_0642  ldc.i4.s       30
+  IL_0644  bge.s          IL_0653: ldarg.0
+  IL_0646  ldarg.0        
+  IL_0647  ldc.i4.s       30
+  IL_0649  newarr         System.Byte
+  IL_064E  stfld          StationComponent::droneDispatchStatus
+  IL_0653  ldarg.0        
+  IL_0654  ldarg.1        
+  IL_0655  callvirt       BinaryReader::ReadByte
+  IL_065A  stfld          StationComponent::droneStatusCursor
+  IL_065F  ldarg.0        
+  IL_0660  ldarg.1        
+  IL_0661  callvirt       BinaryReader::ReadByte
+  IL_0666  stfld          StationComponent::droneTaskInterval
+  IL_066B  ldarg.0        
+  IL_066C  ldfld          StationComponent::droneStatusCursor
+  IL_0671  ldc.i4.0       
+  IL_0672  bge.s          IL_067d: ldarg.0
+  IL_0674  ldarg.0        
+  IL_0675  ldc.i4.0       
+  IL_0676  stfld          StationComponent::droneStatusCursor
+  IL_067B  br.s           IL_068f: ldarg.0
+  IL_067D  ldarg.0        
+  IL_067E  ldfld          StationComponent::droneStatusCursor
+  IL_0683  ldloc.1        
+  IL_0684  blt.s          IL_068f: ldarg.0
+  IL_0686  ldarg.0        
+  IL_0687  ldloc.1        
+  IL_0688  ldc.i4.1       
+  IL_0689  sub            
+  IL_068A  stfld          StationComponent::droneStatusCursor
+  IL_068F  ldarg.0        
+  IL_0690  ldfld          StationComponent::droneTaskInterval
+  IL_0695  ldc.i4.1       
+  IL_0696  bge.s          IL_06a2: ldarg.0
+  IL_0698  ldarg.0        
+  IL_0699  ldc.i4.s       20
+  IL_069B  stfld          StationComponent::droneTaskInterval
+  IL_06A0  br.s           IL_06d2: ldloc.0
+  IL_06A2  ldarg.0        
+  IL_06A3  ldfld          StationComponent::droneTaskInterval
+  IL_06A8  ldc.i4.s       20
+  IL_06AA  ble.s          IL_06d2: ldloc.0
+  IL_06AC  ldarg.0        
+  IL_06AD  ldc.i4.s       20
+  IL_06AF  stfld          StationComponent::droneTaskInterval
+  IL_06B4  br.s           IL_06d2: ldloc.0
+  IL_06B6  ldarg.0        
+  IL_06B7  ldc.i4.s       30
+  IL_06B9  newarr         System.Byte
+  IL_06BE  stfld          StationComponent::droneDispatchStatus
+  IL_06C3  ldarg.0        
+  IL_06C4  ldc.i4.0       
+  IL_06C5  stfld          StationComponent::droneStatusCursor
+  IL_06CA  ldarg.0        
+  IL_06CB  ldc.i4.s       20
+  IL_06CD  stfld          StationComponent::droneTaskInterval
+  IL_06D2  ldloc.0        
+  IL_06D3  ldc.i4.2       
+  IL_06D4  blt            IL_07aa: ldarg.0
+  IL_06D9  ldarg.0        
+  IL_06DA  ldarg.1        
+  IL_06DB  callvirt       BinaryReader::ReadDouble
+  IL_06E0  stfld          StationComponent::tripRangeDrones
+  IL_06E5  ldarg.0        
+  IL_06E6  ldarg.1        
+  IL_06E7  callvirt       BinaryReader::ReadDouble
+  IL_06EC  stfld          StationComponent::tripRangeShips
+  IL_06F1  ldarg.0        
+  IL_06F2  ldarg.1        
+  IL_06F3  callvirt       BinaryReader::ReadBoolean
+  IL_06F8  stfld          StationComponent::includeOrbitCollector
+  IL_06FD  ldarg.0        
+  IL_06FE  ldarg.1        
+  IL_06FF  callvirt       BinaryReader::ReadDouble
+  IL_0704  stfld          StationComponent::warpEnableDist
+  IL_0709  ldarg.0        
+  IL_070A  ldarg.1        
+  IL_070B  callvirt       BinaryReader::ReadBoolean
+  IL_0710  stfld          StationComponent::warperNecessary
+  IL_0715  ldarg.0        
+  IL_0716  ldarg.1        
+  IL_0717  callvirt       BinaryReader::ReadInt32
+  IL_071C  stfld          StationComponent::deliveryDrones
+  IL_0721  ldarg.0        
+  IL_0722  ldarg.1        
+  IL_0723  callvirt       BinaryReader::ReadInt32
+  IL_0728  stfld          StationComponent::deliveryShips
+  IL_072D  ldloc.0        
+  IL_072E  ldc.i4.4       
+  IL_072F  blt.s          IL_073f: ldarg.0
+  IL_0731  ldarg.0        
+  IL_0732  ldarg.1        
+  IL_0733  callvirt       BinaryReader::ReadInt32
+  IL_0738  stfld          StationComponent::pilerCount
+  IL_073D  br.s           IL_0746: ldloc.0
+  IL_073F  ldarg.0        
+  IL_0740  ldc.i4.0       
+  IL_0741  stfld          StationComponent::pilerCount
+  IL_0746  ldloc.0        
+  IL_0747  ldc.i4.5       
+  IL_0748  blt.s          IL_0764: ldarg.0
+  IL_074A  ldarg.0        
+  IL_074B  ldarg.1        
+  IL_074C  callvirt       BinaryReader::ReadBoolean
+  IL_0751  stfld          StationComponent::droneAutoReplenish
+  IL_0756  ldarg.0        
+  IL_0757  ldarg.1        
+  IL_0758  callvirt       BinaryReader::ReadBoolean
+  IL_075D  stfld          StationComponent::shipAutoReplenish
+  IL_0762  br.s           IL_0772: ldloc.0
+  IL_0764  ldarg.0        
+  IL_0765  ldc.i4.0       
+  IL_0766  stfld          StationComponent::droneAutoReplenish
+  IL_076B  ldarg.0        
+  IL_076C  ldc.i4.0       
+  IL_076D  stfld          StationComponent::shipAutoReplenish
+  IL_0772  ldloc.0        
+  IL_0773  ldc.i4.7       
+  IL_0774  blt.s          IL_078f: ldarg.0
+  IL_0776  ldarg.0        
+  IL_0777  ldarg.1        
+  IL_0778  callvirt       BinaryReader::ReadInt64
+  IL_077D  stfld          StationComponent::remoteGroupMask
+  IL_0782  ldarg.0        
+  IL_0783  ldarg.1        
+  IL_0784  callvirt       BinaryReader::ReadInt32
+  IL_0789  stfld          StationComponent::routePriority
+  IL_078E  ret            
+  IL_078F  ldarg.0        
+  IL_0790  ldc.i4.0       
+  IL_0791  conv.i8        
+  IL_0792  stfld          StationComponent::remoteGroupMask
+  IL_0797  ldarg.0        
+  IL_0798  ldarg.0        
+  IL_0799  ldfld          StationComponent::isStellar
+  IL_079E  brtrue.s       IL_07a3: ldc.i4.2
+  IL_07A0  ldc.i4.1       
+  IL_07A1  br.s           IL_07a4: stfld ERemoteRoutePriority StationComponent::routePriority
+  IL_07A3  ldc.i4.2       
+  IL_07A4  stfld          StationComponent::routePriority
+  IL_07A9  ret            
+  IL_07AA  ldarg.0        
+  IL_07AB  call           StationComponent::InitSettings
+  IL_07B0  ret            

@@ -20,6 +20,7 @@ namespace CondensedProduction
     {
         private static long lastTick = long.MinValue;
         private static readonly HashSet<int> errLogged = new HashSet<int>();
+        private static readonly HashSet<int> diagLogged = new HashSet<int>();
 
         public static void Tick()
         {
@@ -33,7 +34,7 @@ namespace CondensedProduction
             if (interval < 1) interval = 1;
             // 读档后 GameMain.gameTick 会从头计数（比上一局的 lastTick 小），
             // 若直接用差值判断会得到负数，导致扫描永久停摆。回退时立即重置节流。
-            if (now < lastTick) lastTick = long.MinValue;
+            if (now < lastTick) { lastTick = long.MinValue; diagLogged.Clear(); }
             if (lastTick != long.MinValue && now - lastTick < interval) return;
             lastTick = now;
 
@@ -81,9 +82,89 @@ namespace CondensedProduction
                 int cursor = Math.Min(fs.labCursor, lpool.Length);
                 for (int i = 1; i < cursor; i++)
                 {
-                    if (lpool[i].entityId == 0 || lpool[i].researchMode) continue;
-                    ProcessLab(factory.planetId, ref lpool[i], stations, stationCount, collect);
+                    if (lpool[i].entityId == 0) continue;
+                    if (lpool[i].researchMode)
+                        ProcessResearchLab(factory, ref lpool[i], stations, stationCount);
+                    else
+                        ProcessLab(factory.planetId, ref lpool[i], stations, stationCount, collect);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 研究模式：从物流站直供矩阵到 matrixServed（上限 36000×倍率，与 needs 阈值一致）。
+        ///
+        /// 关键单位问题：matrixServed 存的不是「物品个数」，而是「物品数 × 3600」。
+        /// 原版 PlanetFactory.InsertInto 的研究分支是 matrixServed[i] += 3600 * itemCount；
+        /// needs 阈值 36000 正好等于 10 个物品。早期版本把原始件数直接写进 matrixServed，
+        /// 相当于只记了 1/3600 个物品——从物流站取出的矩阵被静默吞掉，看起来「凭空消失」。
+        /// 现在一律走 InsertInto，让游戏自己做单位换算。
+        /// </summary>
+        private static void ProcessResearchLab(PlanetFactory factory, ref LabComponent c,
+            StationComponent[] stations, int stationCount)
+        {
+            int planetId = factory.planetId;
+            if (!MultStore.GetWireless(planetId, c.entityId)) return;
+            if (c.matrixServed == null) return;
+
+            int k = MultStore.GetSet(planetId, c.entityId);
+            if (k < 1) k = 1;
+            long targetUnits = 36000L * k;
+
+            // 原版 needs 数组固定写死六种矩阵 ID（分拣器会同时喂所有 6 种，
+            // InternalUpdateResearch 内部再用 matrixPoints 决定哪些参与计算）。
+            // 这里直接补全部六种，和分拣器行为对齐，不过滤 matrixPoints。
+            int[] ids = LabComponent.matrixIds;
+            int n = Math.Min(c.matrixServed.Length, ids == null ? 6 : ids.Length);
+            if (n > 6) n = 6;
+            for (int i = 0; i < n; i++)
+            {
+                int itemId = ids != null ? ids[i] : (6001 + i);
+                if (itemId <= 0) continue;
+                long wantItems = (targetUnits - c.matrixServed[i]) / 3600L;
+                if (wantItems <= 0) continue;
+                // 防御：k 配置异常时不至于单次扫池循环过多
+                if (wantItems > 200000L) wantItems = 200000L;
+
+                int remaining = (int)wantItems;
+                while (remaining > 0)
+                {
+                    int chunk = remaining > 255 ? 255 : remaining;
+                    int got, incPts;
+                    TakeFromStations(stations, stationCount, itemId, chunk, out got, out incPts);
+                    if (got <= 0) break;
+
+                    int incLevel = incPts / got;
+                    if (incLevel < 0) incLevel = 0;
+                    if (incLevel > 4) incLevel = 4;
+
+                    byte remainInc;
+                    int inserted = factory.InsertInto(c.entityId, -1, itemId,
+                        (byte)got, (byte)incLevel, out remainInc);
+                    if (inserted <= 0)
+                    {
+                        // 插不进去（不匹配/已满），把取出的原样退回物流站，避免物品消失
+                        AddToStations(stations, stationCount, itemId, got, incPts);
+                        break;
+                    }
+                    remaining -= inserted;
+                    if (inserted < got)
+                        AddToStations(stations, stationCount, itemId, got - inserted,
+                            incPts * (got - inserted) / got);
+                }
+            }
+
+            // 首次诊断：确认研究模式直供路径是否被调用、是否有物流站
+            if (MultStore.Log != null && diagLogged.Add(c.entityId))
+            {
+                int stationWith = 0;
+                if (stations != null)
+                    for (int s = 0; s < stationCount; s++)
+                        if (stations[s] != null && stations[s].storage != null) stationWith++;
+                MultStore.Log.LogInfo(string.Format(
+                    "[CP] research-lab wireless planet={0} entity={1} kSet={2} matrix0={3} stationCount={4} withStorage={5}",
+                    planetId, c.entityId, k, c.matrixServed.Length > 0 ? c.matrixServed[0] : -1,
+                    stationCount, stationWith));
             }
         }
 

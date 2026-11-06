@@ -21,7 +21,6 @@ namespace CondensedProduction
 
         private static bool tableScaled;
         private static bool prefabScaled;
-        private static int minScaledStationMax;
         private static long lastMaintain = long.MinValue;
 
         /// <summary>周期校正入口（主线程，每 30 游戏刻一次，全部操作幂等）。</summary>
@@ -35,7 +34,6 @@ namespace CondensedProduction
             lastMaintain = now;
             EnsureStackTable();
             EnsureStationPrefabs();
-            NormalizeStations();
         }
 
         /// <summary>
@@ -47,18 +45,35 @@ namespace CondensedProduction
             if (prefabScaled) return;
             if (LDB.items == null || LDB.items.dataArray == null) return;
             int f = Factor;
+            // ItemProto 与 ModelProto 的 prefabDesc 可能是两个不同实例，必须两边都放大，
+            // 否则会出现「界面里一拖上限就从 ×100 掉回原版 5000」：
+            // 滑条显示用的是 ItemProto.prefabDesc，
+            // 而点击滑条时 PlanetTransport.SetStationStorage 的钳制用的是 ModelProto.prefabDesc。
+            var seen = new System.Collections.Generic.HashSet<PrefabDesc>();
+
             var items = LDB.items.dataArray;
-            int min = int.MaxValue;
             for (int i = 0; i < items.Length; i++)
+                ScaleStationMax(items[i].prefabDesc, f, seen);
+
+            if (LDB.models != null && LDB.models.dataArray != null)
             {
-                PrefabDesc pd = items[i].prefabDesc;
-                if (pd == null || !pd.isStation) continue;
-                long v = (long)pd.stationMaxItemCount * f;
-                pd.stationMaxItemCount = (int)Math.Min(int.MaxValue, v);
-                if (pd.stationMaxItemCount < min) min = pd.stationMaxItemCount;
+                var models = LDB.models.dataArray;
+                for (int i = 0; i < models.Length; i++)
+                    ScaleStationMax(models[i].prefabDesc, f, seen);
             }
+
             prefabScaled = true;
-            minScaledStationMax = min == int.MaxValue ? 0 : min;
+        }
+
+        private static void ScaleStationMax(PrefabDesc pd, int f,
+            System.Collections.Generic.HashSet<PrefabDesc> seen)
+        {
+            // 不依赖 isStation：物流站模型侧的 isStation 可能并未置位，
+            // 用「有每格容量上限」判定最稳。
+            if (pd == null || pd.stationMaxItemCount <= 0) return;
+            if (!seen.Add(pd)) return; // 若是同一实例则只放大一次
+            long v = (long)pd.stationMaxItemCount * f;
+            pd.stationMaxItemCount = (int)Math.Min(int.MaxValue, v);
         }
 
         /// <summary>
@@ -85,7 +100,6 @@ namespace CondensedProduction
         private static void StationInitPrefix()
         {
             EnsureStationPrefabs();
-            NormalizeStations();
         }
 
         [HarmonyPatch(typeof(StorageComponent), "LoadStatic")]
@@ -115,36 +129,49 @@ namespace CondensedProduction
             }
         }
 
-        /// <summary>
-        /// 旧存档里的物流站每格上限是按原版容量存盘的，读档后不会自动变大。
-        /// 这里用「上限低于最小预制体放大值」判定未放大，并补乘系数（幂等）。
-        /// </summary>
-        private static void NormalizeStations()
+        // 注意：不再对物流站已有的 storage[i].max 做任何「放大」或「校正」。
+        // 放大只发生在容量来源（PrefabDesc.stationMaxItemCount 与静态堆叠表），
+        // 玩家在界面里设置的物品上限完全由玩家决定，mod 不会再改写它。
+    }
+
+    /// <summary>
+    /// 修复物流站「物品限制」被原版钳回基础值的问题。
+    ///
+    /// 原版 PlanetTransport.SetStationStorage 会用 PrefabDesc.stationMaxItemCount
+    /// 对滑条请求值做上限钳制。站容量被本 mod 放大后，如果钳制侧读到的仍是
+    /// 未放大的那份预制体，玩家一拖滑条上限就会掉回原版值（例如 5000）。
+    /// 这里在调用后把玩家实际拖到的值写回：滑条范围本身已按放大后的容量给出，
+    /// 因此请求值就是合法上限，不需要再钳一次。
+    /// </summary>
+    [HarmonyPatch]
+    public static class StationLimitPatch
+    {
+        private static int requested;
+        private static int requestedItem;
+
+        [HarmonyPatch(typeof(PlanetTransport), "SetStationStorage")]
+        [HarmonyPrefix]
+        private static void PreSet(int itemId, int itemCountMax)
         {
-            if (minScaledStationMax <= 0) return;
-            int f = Factor;
-            if (f <= 1) return;
-            if (GameMain.data == null || GameMain.data.factories == null) return;
-            var factories = GameMain.data.factories;
-            for (int i = 0; i < factories.Length; i++)
+            requested = itemCountMax;
+            requestedItem = itemId;
+        }
+
+        [HarmonyPatch(typeof(PlanetTransport), "SetStationStorage")]
+        [HarmonyPostfix]
+        private static void PostSet(PlanetTransport __instance, int stationId, int storageIdx, int itemId)
+        {
+            if (itemId <= 0 || itemId != requestedItem) return;
+            var pool = __instance.stationPool;
+            if (pool == null) return;
+            for (int i = 0; i < pool.Length; i++)
             {
-                var factory = factories[i];
-                if (factory == null || factory.transport == null || factory.transport.stationPool == null) continue;
-                var stations = factory.transport.stationPool;
-                int count = Math.Min(factory.transport.stationCount, stations.Length);
-                for (int s = 0; s < count; s++)
-                {
-                    StationComponent st = stations[s];
-                    if (st == null || st.storage == null) continue;
-                    StationStore[] storage = st.storage;
-                    for (int g = 0; g < storage.Length; g++)
-                    {
-                        if (storage[g].itemId == 0 || storage[g].max <= 0) continue;
-                        if (storage[g].max >= minScaledStationMax) continue;
-                        long v = (long)storage[g].max * f;
-                        storage[g].max = (int)Math.Min(int.MaxValue, v);
-                    }
-                }
+                var st = pool[i];
+                if (st == null || st.id != stationId || st.storage == null) continue;
+                if (storageIdx < 0 || storageIdx >= st.storage.Length) return;
+                if (st.storage[storageIdx].itemId == itemId && requested > st.storage[storageIdx].max)
+                    st.storage[storageIdx].max = requested;
+                return;
             }
         }
     }

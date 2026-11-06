@@ -108,9 +108,28 @@ namespace CondensedProduction
                     if (can < avail) avail = can;
                 }
             }
+            // 电网不足时限电：k 不超过「充电速率 + 储能均摊」可支撑的水平（电网健康时不限）
+            int energyCap = MultStore.GetEnergyCapK(planet, entityId);
+            if (avail > energyCap) avail = energyCap;
             // 料不足一个周期时用 1：原版检查 served >= require 自然不满足，机器正常待料
             if (avail < 1) avail = 1;
             if (avail > kSet) avail = kSet;
+
+            // 关键：k 变化加 delta clamp。直接按缓存算的 avail 可能在相邻周期之间大幅跳变
+            // （缓存被分拣器/无线供料瞬时刷新），让能耗扫池跟着阶跃跳——这是电网抖动
+            // 的主要根源。每次只允许 k 变最多 kSet/20（至少 1），缓存变化被缓慢过滤。
+            int prev = planet >= 0 ? MultStore.GetEff(planet, entityId) : 0;
+            if (prev > 0)
+            {
+                int step = kSet / 20;
+                if (step < 1) step = 1;
+                int diff = avail - prev;
+                if (diff > step) avail = prev + step;
+                else if (diff < -step) avail = prev - step;
+                if (avail < 1) avail = 1;
+                if (avail > kSet) avail = kSet;
+            }
+
             tlsK[key] = avail;
             MultStore.SetEff(planet, entityId, avail);
             fallbackEff[entityId] = avail;
@@ -136,6 +155,14 @@ namespace CondensedProduction
             int k = KFor(c.entityId);
             if (k <= 1) return 1;
             return (int)Math.Min(int.MaxValue, (long)k * BufferFactor());
+        }
+
+        /// <summary>研究模式倍率：直接用设定值（研究没有批量缓存概念，吞吐由可用矩阵套数自适应）。</summary>
+        private static int GetLabKSet(ref LabComponent c)
+        {
+            int planet = MultStore.CurrentPlanetId;
+            int k = planet >= 0 ? MultStore.GetSet(planet, c.entityId) : 1;
+            return k < 1 ? 1 : k;
         }
 
         private static int BufferFactor()
@@ -169,11 +196,13 @@ namespace CondensedProduction
                 for (int i = 1; i < cursor; i++)
                 {
                     if (apool[i].entityId == 0 || !apool[i].replicating) continue;
-                    int k = MultStore.GetEff(planet, apool[i].entityId);
+                    // 能耗用平滑倍率：动态 k 随缓存每周期跳变，直接乘会让电网需求锯齿波动
+                    int k = MultStore.GetEnergyK(planet, apool[i].entityId);
                     if (k <= 1) continue;
                     int pcId = apool[i].pcId;
                     if (pcId <= 0 || pcId >= consumers.Length) continue;
                     if (!MultStore.TryMarkEnergy(planet, apool[i].entityId, frame)) continue;
+                    AccountEnergy(planet, apool[i].entityId, consumers, pcId, k);
                     consumers[pcId].requiredEnergy *= k;
                 }
             }
@@ -184,12 +213,17 @@ namespace CondensedProduction
                 int cursor = Math.Min(fs.labCursor, lpool.Length);
                 for (int i = 1; i < cursor; i++)
                 {
-                    if (lpool[i].entityId == 0 || lpool[i].researchMode || !lpool[i].replicating) continue;
-                    int k = MultStore.GetEff(planet, lpool[i].entityId);
+                    if (lpool[i].entityId == 0 || !lpool[i].replicating) continue;
+                    // 制造模式用平滑后的动态值；研究模式没有批量概念，直接用设定倍率
+                    int k = lpool[i].researchMode
+                        ? MultStore.GetSet(planet, lpool[i].entityId)
+                        : MultStore.GetEnergyK(planet, lpool[i].entityId);
                     if (k <= 1) continue;
                     int pcId = lpool[i].pcId;
                     if (pcId <= 0 || pcId >= consumers.Length) continue;
                     if (!MultStore.TryMarkEnergy(planet, lpool[i].entityId, frame)) continue;
+                    if (!lpool[i].researchMode)
+                        AccountEnergy(planet, lpool[i].entityId, consumers, pcId, k);
                     consumers[pcId].requiredEnergy *= k;
                 }
             }
@@ -210,6 +244,90 @@ namespace CondensedProduction
                     if (MultStore.Log != null) MultStore.Log.LogError("[CP] energy sweep error: " + e);
                 }
             }
+        }
+
+        private static int BufferSeconds()
+        {
+            int s = Plugin.EnergyBufferSecondsEntry == null ? 10 : Plugin.EnergyBufferSecondsEntry.Value;
+            return s < 0 ? 0 : s;
+        }
+
+        /// <summary>
+        /// 建筑内置电容账务（每帧一次，跟随能耗扫池）：
+        /// 到账 = 平滑充电功率 × 上帧电网满足率；支出 = 本帧实际批量 × 基准功耗；
+        /// 差额存入/扣除储能。电网不足（满足率 &lt; 98%）时给出限电倍率上限
+        /// （充电速率 + 储能在储能时长内的均摊），下個周期边界生效；电网健康时不限。
+        /// </summary>
+        private static void AccountEnergy(int planet, int entityId,
+            PowerConsumerComponent[] consumers, int pcId, int kSmooth)
+        {
+            long baseE = consumers[pcId].requiredEnergy;
+            if (baseE <= 0) baseE = consumers[pcId].workEnergyPerTick;
+            if (baseE <= 0) return;
+
+            int bufTicks = BufferSeconds() * 60;
+            float sat = MultStore.GetSat(planet, entityId);
+            if (sat > 1f) sat = 1f;
+            long served = (long)(baseE * (double)kSmooth * sat);
+            long consumed = (long)MultStore.GetEff(planet, entityId) * baseE;
+            int kSet = MultStore.GetSet(planet, entityId);
+            long bufCap = (long)kSet * baseE * bufTicks;
+            long buf = MultStore.ChargeBuffer(planet, entityId, served - consumed, bufCap);
+            MultStore.SetBufferCap(planet, entityId, bufCap);
+
+            int capK;
+            if (sat < 0.95f && bufTicks > 0)
+            {
+                // 电网不足：立即限电（充电速率 + 储能均摊），快速下压
+                long spread = buf / ((long)bufTicks * baseE);
+                capK = kSmooth + (int)spread;
+                if (capK < 1) capK = 1;
+                if (capK > kSet) capK = kSet;
+                MultStore.ResetHealthyCount(planet, entityId);
+            }
+            else
+            {
+                // 电网恢复：需要连续满足率 ≥98% 且储能 >20% 才开始爬坡，
+                // 且每帧只升 kSet/360（比之前慢三倍），彻底阻尼阈值附近的抖动
+                MultStore.TickHealthyCount(planet, entityId);
+                int prev = MultStore.GetEnergyCapK(planet, entityId);
+                if (prev == int.MaxValue) capK = int.MaxValue;
+                else if (MultStore.GetHealthyCount(planet, entityId) < 30
+                         || (bufTicks > 0 && bufCap > 0 && (double)buf / bufCap < 0.20))
+                    capK = prev; // 还没满足恢复条件，维持当前上限
+                else
+                {
+                    int stepUp = kSet / 360 + 1;
+                    capK = prev + stepUp;
+                    if (capK >= kSet) capK = int.MaxValue;
+                }
+            }
+            MultStore.SetEnergyCapK(planet, entityId, capK);
+        }
+    }
+
+    /// <summary>
+    /// 电网满足率采样：机器 tick 的 power 参数即该建筑实际拿到的功率比，
+    /// 写入样本供电容账务与限电判断使用（只采样设了倍率的建筑，开销可忽略）。
+    /// </summary>
+    public static class PowerSamplePatch
+    {
+        [HarmonyPatch(typeof(AssemblerComponent), "InternalUpdate")]
+        [HarmonyPrefix]
+        private static void PreAsm(ref AssemblerComponent __instance, float power)
+        {
+            int planet = MultStore.CurrentPlanetId;
+            if (planet < 0 || MultStore.GetSet(planet, __instance.entityId) <= 1) return;
+            MultStore.SamplePower(planet, __instance.entityId, power);
+        }
+
+        [HarmonyPatch(typeof(LabComponent), "InternalUpdateAssemble")]
+        [HarmonyPrefix]
+        private static void PreLab(ref LabComponent __instance, float power)
+        {
+            int planet = MultStore.CurrentPlanetId;
+            if (planet < 0 || MultStore.GetSet(planet, __instance.entityId) <= 1) return;
+            MultStore.SamplePower(planet, __instance.entityId, power);
         }
     }
 
@@ -436,6 +554,70 @@ namespace CondensedProduction
     }
 
     /// <summary>
+    /// 研究模式（矩阵）倍率：每 tick 把原版研究流程连续执行 k 次，
+    /// 等价于 k 座科研站同时研究——矩阵消耗、哈希产出、增产剂效果全部 ×k。
+    /// 原版每次调用前会把 research_speed 钳制到当前可用矩阵套数，
+    /// 因此循环调用不会透支矩阵（不够时自动停下），天然自适应。
+    /// </summary>
+    public static class LabResearchPatch
+    {
+        // 循环体内对原方法的调用会再次触发本前缀，用该标志放行，避免无限递归
+        [ThreadStatic] private static bool inLoop;
+
+        [HarmonyPatch(typeof(LabComponent), "InternalUpdateResearch")]
+        [HarmonyPrefix]
+        private static bool Prefix(ref LabComponent __instance, float power, float research_speed,
+            int[] consumeRegister, ref TechState ts, ref int techHashedThisFrame,
+            ref long uMatrixPoint, ref long hashRegister, ref uint __result)
+        {
+            if (inLoop) return true;
+            int planet = MultStore.CurrentPlanetId;
+            int k = planet >= 0 ? MultStore.GetSet(planet, __instance.entityId) : 1;
+            if (k <= 1) return true;
+
+            inLoop = true;
+            try
+            {
+                __result = __instance.InternalUpdateResearch(power, research_speed, consumeRegister,
+                    ref ts, ref techHashedThisFrame, ref uMatrixPoint, ref hashRegister);
+                for (int i = 1; i < k && __instance.replicating; i++)
+                {
+                    __instance.InternalUpdateResearch(power, research_speed, consumeRegister,
+                        ref ts, ref techHashedThisFrame, ref uMatrixPoint, ref hashRegister);
+                }
+            }
+            finally { inLoop = false; }
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 研究模式矩阵缓存上限：原版 needs 阈值硬编码 36000（matrixServed[i] &lt; 36000 才继续要料）。
+    /// 研究 ×k 后矩阵消耗 ×k，缓存同步放大为 36000×k，否则高速研究一直处在断料边缘。
+    /// </summary>
+    public static class ResearchNeedsPatch
+    {
+        private static readonly MethodInfo GetK =
+            typeof(MultEngine).GetMethod("GetLabKSet", BindingFlags.Static | BindingFlags.NonPublic);
+
+        [HarmonyPatch(typeof(LabComponent), "UpdateNeedsResearch")]
+        [HarmonyTranspiler]
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            foreach (var ci in instructions)
+            {
+                yield return ci;
+                if (ci.opcode == OpCodes.Ldc_I4 && ci.operand is int v && v == 36000)
+                {
+                    yield return new CodeInstruction(OpCodes.Ldarg_0);
+                    yield return new CodeInstruction(OpCodes.Call, GetK);
+                    yield return new CodeInstruction(OpCodes.Mul);
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// 并行 tick 上下文注入：在 _assembler_parallel / _lab_produce_parallel
     /// 切换到新行星工厂时（factories[..] 取出存入局部变量处），
     /// 把该工厂行星写入 ThreadStatic，供批量转译器精确查 k。
@@ -538,6 +720,18 @@ namespace CondensedProduction
 
         [HarmonyPostfix, HarmonyPatch(typeof(FactorySystem), "GameTickLabProduceMode")]
         private static void PostLabProduce()
+        {
+            MultStore.CurrentPlanetId = -1;
+        }
+
+        [HarmonyPrefix, HarmonyPatch(typeof(FactorySystem), "GameTickLabResearchMode")]
+        private static void PreLabResearch(FactorySystem __instance)
+        {
+            MultStore.CurrentPlanetId = __instance.factory != null ? __instance.factory.planetId : -1;
+        }
+
+        [HarmonyPostfix, HarmonyPatch(typeof(FactorySystem), "GameTickLabResearchMode")]
+        private static void PostLabResearch()
         {
             MultStore.CurrentPlanetId = -1;
         }

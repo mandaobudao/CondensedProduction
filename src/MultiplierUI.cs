@@ -144,7 +144,7 @@ namespace CondensedProduction
                 bool wl = MultStore.GetWireless(planetId, entityId);
                 if (GUILayout.Button(wl ? "无线：开" : "无线：关"))
                 {
-                    MultStore.SetWireless(planetId, entityId, !wl);
+                    SetWirelessOnStack(factory, entityId, !wl);
                 }
                 int kSet = MultStore.GetSet(planetId, entityId);
                 int kEff = MultStore.GetEff(planetId, entityId);
@@ -207,24 +207,47 @@ namespace CondensedProduction
         private static void Apply(PlanetFactory factory, int entityId, int k)
         {
             if (k < 1) k = 1;
-            MultStore.SetMult(factory.planetId, entityId, k);
-            // 堆叠建筑是同一逻辑单元：设置一台 = 整堆同步，免去逐台点
-            PropagateToStack(factory, entityId, k);
+            SetMultOnStack(factory, entityId, k);
             inputText = MultStore.GetSet(factory.planetId, entityId).ToString();
         }
 
         /// <summary>
-        /// 堆叠科研站共用一个倍率：沿原版 nextLabId 链把设置同步到同一堆的全部科研站。
-        /// 原版堆叠链是「下层向上下层传递」，所以既向上遍历 nextLabId，
-        /// 也反向扫描池把指向本链的下层 lab 一起纳入。
+        /// 把倍率写到指定建筑；若它属于一个堆叠单元（上下叠放的科研站），整堆一起写。
+        /// 单独摆放的建筑只影响自己，需要逐栋设置。
         /// </summary>
-        private static void PropagateToStack(PlanetFactory factory, int entityId, int k)
+        public static void SetMultOnStack(PlanetFactory factory, int entityId, int k)
         {
+            foreach (int eid in StackEntityIds(factory, entityId))
+            {
+                if (factory != null) MultStore.SetMult(factory.planetId, eid, k);
+            }
+        }
+
+        /// <summary>无线开关与倍率同规则：同一堆整堆同步，独立建筑各自独立。</summary>
+        public static void SetWirelessOnStack(PlanetFactory factory, int entityId, bool on)
+        {
+            foreach (int eid in StackEntityIds(factory, entityId))
+            {
+                if (factory != null) MultStore.SetWireless(factory.planetId, eid, on);
+            }
+        }
+
+        /// <summary>
+        /// 收集同一堆叠单元内的所有建筑实体，至少包含 entityId 自身。
+        /// 原版科研站堆叠链是「下层向上下层传递」，所以既沿 nextLabId 向上遍历，
+        /// 也反向扫描池把指向本链的下层 lab 一起纳入。非科研站只返回自身。
+        /// </summary>
+        private static HashSet<int> StackEntityIds(PlanetFactory factory, int entityId)
+        {
+            var result = new HashSet<int>();
+            if (entityId <= 0) return result;
+            result.Add(entityId);
+
             var fsys = factory == null ? null : factory.factorySystem;
-            if (fsys == null || fsys.labPool == null) return;
+            if (fsys == null || fsys.labPool == null) return result;
             var pool = fsys.labPool;
             int cursor = Math.Min(fsys.labCursor, pool.Length);
-            if (cursor <= 1) return;
+            if (cursor <= 1) return result;
 
             int selfId = -1;
             for (int i = 1; i < cursor; i++)
@@ -235,7 +258,7 @@ namespace CondensedProduction
                     break;
                 }
             }
-            if (selfId <= 0) return;
+            if (selfId <= 0) return result;
 
             var chain = new HashSet<int>();
             int cur = selfId, guard = 0;
@@ -264,8 +287,9 @@ namespace CondensedProduction
             foreach (int id in chain)
             {
                 if (id > 0 && id < cursor && pool[id].entityId != 0)
-                    MultStore.SetMult(factory.planetId, pool[id].entityId, k);
+                    result.Add(pool[id].entityId);
             }
+            return result;
         }
     }
 

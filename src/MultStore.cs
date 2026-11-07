@@ -14,16 +14,16 @@ namespace CondensedProduction
     /// </summary>
     public static class MultStore
     {
-        public const int SaveVersion = 3; // v3: wirelessMap 改成星球级 HashSet
+        public const int SaveVersion = 4; // v4: wirelessMap 改成「按建筑独立」
 
         private static readonly Dictionary<int, Dictionary<int, int>> setMap =
             new Dictionary<int, Dictionary<int, int>>();
 
-        // 无线供料开关：**星球级**（任一建筑开即全站生效）。
-        // 堆叠在一起的科研站/组装机属同一逻辑单元，不该每栋独立开——
-        // 玩家只要给其中一台开无线，整颗星球的倍率建筑都自动参与直供直收。
-        private static readonly HashSet<int> wirelessMap =
-            new HashSet<int>();
+        // 无线供料开关：**按建筑独立**（planetId -> entityId 集合）。
+        // 单独摆放的建筑各自设置、互不影响；只有同一堆（上下叠放的科研站）
+        // 在 UI 里会整堆同步，和倍率同步规则一致。
+        private static readonly Dictionary<int, HashSet<int>> wirelessMap =
+            new Dictionary<int, HashSet<int>>();
 
         // 实际批量（可被工作线程写入，必须线程安全）：key = (planetId + 2) * 1000000 + entityId
         private static readonly ConcurrentDictionary<long, int> effMap =
@@ -203,20 +203,40 @@ namespace CondensedProduction
 
         public static bool GetWireless(int planetId, int entityId)
         {
-            return wirelessMap.Contains(planetId);
+            HashSet<int> set;
+            return wirelessMap.TryGetValue(planetId, out set) && set.Contains(entityId);
         }
 
-        /// <summary>开/关星球级无线供料（任一建筑的按钮操作都会同步到整颗星球）。</summary>
+        /// <summary>开/关单座建筑的无线供料（同一堆的统一由 UI 在整堆上逐个调用）。</summary>
         public static void SetWireless(int planetId, int entityId, bool on)
         {
-            if (planetId < 0) return;
-            if (on) wirelessMap.Add(planetId);
-            else wirelessMap.Remove(planetId);
+            if (planetId < 0 || entityId <= 0) return;
+            if (on)
+            {
+                HashSet<int> set;
+                if (!wirelessMap.TryGetValue(planetId, out set))
+                {
+                    set = new HashSet<int>();
+                    wirelessMap[planetId] = set;
+                }
+                set.Add(entityId);
+            }
+            else
+            {
+                HashSet<int> set;
+                if (wirelessMap.TryGetValue(planetId, out set))
+                {
+                    set.Remove(entityId);
+                    if (set.Count == 0) wirelessMap.Remove(planetId);
+                }
+            }
         }
 
+        /// <summary>该行星是否有任意建筑开启了无线（供扫池提前跳过整颗无开关的行星）。</summary>
         public static bool PlanetHasWireless(int planetId)
         {
-            return wirelessMap.Contains(planetId);
+            HashSet<int> set;
+            return wirelessMap.TryGetValue(planetId, out set) && set.Count > 0;
         }
 
         // 能耗按帧去重：key = planetId * 1000000 + entityId，value = 最后应用的游戏帧
@@ -300,9 +320,14 @@ namespace CondensedProduction
                     w.Write(e.Value);
                 }
             }
-            // 星球级无线开关（v3+：HashSet<planetId>；v2 格式旧存档仍可读取并自动合并）
+            // 无线开关（v4+：planetId -> entityId 集合）
             w.Write(wirelessMap.Count);
-            foreach (int planetId in wirelessMap) w.Write(planetId);
+            foreach (var pk in wirelessMap)
+            {
+                w.Write(pk.Key);
+                w.Write(pk.Value.Count);
+                foreach (int entityId in pk.Value) w.Write(entityId);
+            }
         }
 
         public static void Import(BinaryReader r)
@@ -327,23 +352,29 @@ namespace CondensedProduction
                 }
                 if (planet.Count > 0) setMap[planetId] = planet;
             }
-            if (version >= 3)
+            if (version >= 4)
             {
-                // 新格式：直接 planetId 列表
-                int wCount = r.ReadInt32();
-                for (int i = 0; i < wCount; i++) wirelessMap.Add(r.ReadInt32());
-            }
-            else if (version >= 2)
-            {
-                // 旧格式：planetId -> entityId 集合。合并成星球级：
-                // 该星球任一建筑开过无线就视为整星球开启
                 int wCount = r.ReadInt32();
                 for (int p = 0; p < wCount; p++)
                 {
                     int planetId = r.ReadInt32();
                     int count = r.ReadInt32();
-                    for (int i = 0; i < count; i++) r.ReadInt32(); // 跳过 entityId
-                    wirelessMap.Add(planetId);
+                    var set = new HashSet<int>(count);
+                    for (int i = 0; i < count; i++) set.Add(r.ReadInt32());
+                    if (set.Count > 0) wirelessMap[planetId] = set;
+                }
+            }
+            else if (version >= 2)
+            {
+                // v2/v3 的无线开关是星球级的，无法精确还原到具体建筑，读取后丢弃
+                // （旧数据只影响开关，重新在面板上打开即可）。
+                int wCount = r.ReadInt32();
+                for (int p = 0; p < wCount; p++)
+                {
+                    r.ReadInt32(); // planetId
+                    if (version >= 3) continue; // v3 只有 planetId 列表
+                    int count = r.ReadInt32();
+                    for (int i = 0; i < count; i++) r.ReadInt32(); // entityId
                 }
             }
         }

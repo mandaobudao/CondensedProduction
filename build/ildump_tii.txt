@@ -1,0 +1,169 @@
+﻿===== CargoPath::TryInsertItemAtHeadAndFillBlank(System.Int32,System.Byte,System.Byte)
+  IL_0000  ldarg.0        
+  IL_0001  ldfld          CargoPath::buffer
+  IL_0006  stloc.0        
+  IL_0007  ldc.i4.0       
+  IL_0008  stloc.1        
+  IL_0009  ldloc.0        
+  IL_000A  ldloca.s       V_1
+  IL_000C  call           Monitor::Enter
+  IL_0011  ldarg.0        
+  IL_0012  call           CargoPath::TestBlankAtHead
+  IL_0017  stloc.2        
+  IL_0018  ldloc.2        
+  IL_0019  ldc.i4.0       
+  IL_001A  bge.s          IL_0024: ldloc.2
+  IL_001C  ldc.i4.0       
+  IL_001D  stloc.s        V_5
+  IL_001F  leave          IL_0125: ldloc.s V_5
+  IL_0024  ldloc.2        
+  IL_0025  ldc.i4.s       9
+  IL_0027  add            
+  IL_0028  stloc.3        
+  IL_0029  ldarg.0        
+  IL_002A  ldfld          CargoPath::bufferLength
+  IL_002F  ldloc.3        
+  IL_0030  bgt.s          IL_003a: ldarg.0
+  IL_0032  ldc.i4.0       
+  IL_0033  stloc.s        V_5
+  IL_0035  leave          IL_0125: ldloc.s V_5
+  IL_003A  ldarg.0        
+  IL_003B  ldfld          CargoPath::cargoContainer
+  IL_0040  ldarg.1        
+  IL_0041  conv.i2        
+  IL_0042  ldarg.2        
+  IL_0043  ldarg.3        
+  IL_0044  callvirt       CargoContainer::AddCargo
+  IL_0049  stloc.s        V_4
+  IL_004B  ldarg.0        
+  IL_004C  ldfld          CargoPath::buffer
+  IL_0051  ldloc.2        
+  IL_0052  dup            
+  IL_0053  ldc.i4.1       
+  IL_0054  add            
+  IL_0055  stloc.2        
+  IL_0056  ldc.i4         246
+  IL_005B  stelem.i1      
+  IL_005C  ldarg.0        
+  IL_005D  ldfld          CargoPath::buffer
+  IL_0062  ldloc.2        
+  IL_0063  dup            
+  IL_0064  ldc.i4.1       
+  IL_0065  add            
+  IL_0066  stloc.2        
+  IL_0067  ldc.i4         247
+  IL_006C  stelem.i1      
+  IL_006D  ldarg.0        
+  IL_006E  ldfld          CargoPath::buffer
+  IL_0073  ldloc.2        
+  IL_0074  dup            
+  IL_0075  ldc.i4.1       
+  IL_0076  add            
+  IL_0077  stloc.2        
+  IL_0078  ldc.i4         248
+  IL_007D  stelem.i1      
+  IL_007E  ldarg.0        
+  IL_007F  ldfld          CargoPath::buffer
+  IL_0084  ldloc.2        
+  IL_0085  dup            
+  IL_0086  ldc.i4.1       
+  IL_0087  add            
+  IL_0088  stloc.2        
+  IL_0089  ldc.i4         249
+  IL_008E  stelem.i1      
+  IL_008F  ldarg.0        
+  IL_0090  ldfld          CargoPath::buffer
+  IL_0095  ldloc.2        
+  IL_0096  dup            
+  IL_0097  ldc.i4.1       
+  IL_0098  add            
+  IL_0099  stloc.2        
+  IL_009A  ldc.i4         250
+  IL_009F  stelem.i1      
+  IL_00A0  ldarg.0        
+  IL_00A1  ldfld          CargoPath::buffer
+  IL_00A6  ldloc.2        
+  IL_00A7  dup            
+  IL_00A8  ldc.i4.1       
+  IL_00A9  add            
+  IL_00AA  stloc.2        
+  IL_00AB  ldloc.s        V_4
+  IL_00AD  ldc.i4.s       100
+  IL_00AF  rem            
+  IL_00B0  ldc.i4.1       
+  IL_00B1  add            
+  IL_00B2  conv.u1        
+  IL_00B3  stelem.i1      
+  IL_00B4  ldloc.s        V_4
+  IL_00B6  ldc.i4.s       100
+  IL_00B8  div            
+  IL_00B9  stloc.s        V_4
+  IL_00BB  ldarg.0        
+  IL_00BC  ldfld          CargoPath::buffer
+  IL_00C1  ldloc.2        
+  IL_00C2  dup            
+  IL_00C3  ldc.i4.1       
+  IL_00C4  add            
+  IL_00C5  stloc.2        
+  IL_00C6  ldloc.s        V_4
+  IL_00C8  ldc.i4.s       100
+  IL_00CA  rem            
+  IL_00CB  ldc.i4.1       
+  IL_00CC  add            
+  IL_00CD  conv.u1        
+  IL_00CE  stelem.i1      
+  IL_00CF  ldloc.s        V_4
+  IL_00D1  ldc.i4.s       100
+  IL_00D3  div            
+  IL_00D4  stloc.s        V_4
+  IL_00D6  ldarg.0        
+  IL_00D7  ldfld          CargoPath::buffer
+  IL_00DC  ldloc.2        
+  IL_00DD  dup            
+  IL_00DE  ldc.i4.1       
+  IL_00DF  add            
+  IL_00E0  stloc.2        
+  IL_00E1  ldloc.s        V_4
+  IL_00E3  ldc.i4.s       100
+  IL_00E5  rem            
+  IL_00E6  ldc.i4.1       
+  IL_00E7  add            
+  IL_00E8  conv.u1        
+  IL_00E9  stelem.i1      
+  IL_00EA  ldloc.s        V_4
+  IL_00EC  ldc.i4.s       100
+  IL_00EE  div            
+  IL_00EF  stloc.s        V_4
+  IL_00F1  ldarg.0        
+  IL_00F2  ldfld          CargoPath::buffer
+  IL_00F7  ldloc.2        
+  IL_00F8  dup            
+  IL_00F9  ldc.i4.1       
+  IL_00FA  add            
+  IL_00FB  stloc.2        
+  IL_00FC  ldloc.s        V_4
+  IL_00FE  ldc.i4.s       100
+  IL_0100  rem            
+  IL_0101  ldc.i4.1       
+  IL_0102  add            
+  IL_0103  conv.u1        
+  IL_0104  stelem.i1      
+  IL_0105  ldarg.0        
+  IL_0106  ldfld          CargoPath::buffer
+  IL_010B  ldloc.2        
+  IL_010C  dup            
+  IL_010D  ldc.i4.1       
+  IL_010E  add            
+  IL_010F  stloc.2        
+  IL_0110  ldc.i4         255
+  IL_0115  stelem.i1      
+  IL_0116  ldc.i4.1       
+  IL_0117  stloc.s        V_5
+  IL_0119  leave.s        IL_0125: ldloc.s V_5
+  IL_011B  ldloc.1        
+  IL_011C  brfalse.s      IL_0124: endfinally
+  IL_011E  ldloc.0        
+  IL_011F  call           Monitor::Exit
+  IL_0124  endfinally     
+  IL_0125  ldloc.s        V_5
+  IL_0127  ret            

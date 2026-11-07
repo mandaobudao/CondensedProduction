@@ -95,11 +95,17 @@ namespace CondensedProduction
         private static void Prefix(StationComponent __instance)
         {
             if (!BeltStack.Enabled) return;
-            // planetId<=0 的是其他 mod 的虚拟/幽灵物流站，原版逻辑按科技层数运行正常，
-            // 强行 255 会让其出料路径崩溃，跳过
-            if (__instance.planetId <= 0) return;
             int max = BeltStack.MaxStack;
-            if (max > 4 && __instance.pilerCount != max)
+
+            // 原来这里是「planetId<=0 就跳过」，但那样会把某些 mod 生成、planetId 为 0 的
+            // 真实物流塔也一起跳过（那些塔照样有出料带，结果堆叠一直是原版层数）。
+            // 改成按「是否真的接了传送带」判断：没有出料带的虚拟/幽灵站不动它。
+            bool hasBelt = false;
+            var slotArr = __instance.slots;
+            if (slotArr != null)
+                for (int i = 0; i < slotArr.Length; i++)
+                    if (slotArr[i].beltId > 0) { hasBelt = true; break; }
+            if (hasBelt && max > 4 && __instance.pilerCount != max)
                 __instance.pilerCount = max;
         }
     }

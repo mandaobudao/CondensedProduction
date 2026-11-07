@@ -1,0 +1,385 @@
+﻿===== StationComponent::UpdateOutputSlots(CargoTraffic,SignData[],System.Int32,System.Boolean)
+  IL_0000  ldarg.0        
+  IL_0001  ldfld          StationComponent::storage
+  IL_0006  stloc.0        
+  IL_0007  ldc.i4.0       
+  IL_0008  stloc.1        
+  IL_0009  ldloc.0        
+  IL_000A  ldloca.s       V_1
+  IL_000C  call           Monitor::Enter
+  IL_0011  ldarg.0        
+  IL_0012  ldfld          StationComponent::pilerCount
+  IL_0017  brfalse.s      IL_0021: ldarg.3
+  IL_0019  ldarg.0        
+  IL_001A  ldfld          StationComponent::pilerCount
+  IL_001F  br.s           IL_0022: stloc.2
+  IL_0021  ldarg.3        
+  IL_0022  stloc.2        
+  IL_0023  ldarg.0        
+  IL_0024  ldfld          StationComponent::slots
+  IL_0029  ldlen          
+  IL_002A  conv.i4        
+  IL_002B  stloc.3        
+  IL_002C  ldarg.0        
+  IL_002D  ldfld          StationComponent::storage
+  IL_0032  ldlen          
+  IL_0033  conv.i4        
+  IL_0034  stloc.s        V_4
+  IL_0036  ldc.i4.m1      
+  IL_0037  stloc.s        V_5
+  IL_0039  ldarg.0        
+  IL_003A  ldfld          StationComponent::isVeinCollector
+  IL_003F  brtrue         IL_0258: ldc.i4.0
+  IL_0044  ldc.i4.0       
+  IL_0045  stloc.s        V_6
+  IL_0047  br             IL_024b: ldloc.s V_6
+  IL_004C  ldarg.0        
+  IL_004D  ldfld          StationComponent::slots
+  IL_0052  ldloc.s        V_6
+  IL_0054  ldelema        SlotData
+  IL_0059  stloc.s        V_7
+  IL_005B  ldloc.s        V_7
+  IL_005D  ldfld          SlotData::dir
+  IL_0062  ldc.i4.1       
+  IL_0063  bne.un         IL_022b: ldloc.s V_7
+  IL_0068  ldloc.s        V_7
+  IL_006A  ldfld          SlotData::counter
+  IL_006F  ldc.i4.0       
+  IL_0070  ble.s          IL_0083: ldloc.s V_7
+  IL_0072  ldloc.s        V_7
+  IL_0074  ldflda         SlotData::counter
+  IL_0079  dup            
+  IL_007A  ldind.i4       
+  IL_007B  ldc.i4.1       
+  IL_007C  sub            
+  IL_007D  stind.i4       
+  IL_007E  br             IL_0245: ldloc.s V_6
+  IL_0083  ldloc.s        V_7
+  IL_0085  ldfld          SlotData::beltId
+  IL_008A  brfalse        IL_0245: ldloc.s V_6
+  IL_008F  ldarg.1        
+  IL_0090  ldarg.1        
+  IL_0091  ldfld          CargoTraffic::beltPool
+  IL_0096  ldloc.s        V_7
+  IL_0098  ldfld          SlotData::beltId
+  IL_009D  ldelema        BeltComponent
+  IL_00A2  ldfld          BeltComponent::segPathId
+  IL_00A7  callvirt       CargoTraffic::GetCargoPath
+  IL_00AC  stloc.s        V_8
+  IL_00AE  ldloc.s        V_8
+  IL_00B0  brfalse        IL_0245: ldloc.s V_6
+  IL_00B5  ldloc.s        V_8
+  IL_00B7  ldfld          CargoPath::buffer
+  IL_00BC  ldc.i4.s       9
+  IL_00BE  ldelem.u1      
+  IL_00BF  brtrue         IL_0245: ldloc.s V_6
+  IL_00C4  ldloc.s        V_7
+  IL_00C6  ldfld          SlotData::storageIdx
+  IL_00CB  ldc.i4.1       
+  IL_00CC  sub            
+  IL_00CD  stloc.s        V_9
+  IL_00CF  ldc.i4.0       
+  IL_00D0  stloc.s        V_10
+  IL_00D2  ldloc.s        V_9
+  IL_00D4  ldc.i4.0       
+  IL_00D5  blt            IL_01ef: ldarg.s active
+  IL_00DA  ldloc.s        V_9
+  IL_00DC  ldloc.s        V_4
+  IL_00DE  bge            IL_01bc: ldc.i4 1210
+  IL_00E3  ldarg.0        
+  IL_00E4  ldfld          StationComponent::storage
+  IL_00E9  ldloc.s        V_9
+  IL_00EB  ldelema        StationStore
+  IL_00F0  ldfld          StationStore::itemId
+  IL_00F5  stloc.s        V_10
+  IL_00F7  ldloc.s        V_10
+  IL_00F9  ldc.i4.0       
+  IL_00FA  ble            IL_01ef: ldarg.s active
+  IL_00FF  ldarg.0        
+  IL_0100  ldfld          StationComponent::storage
+  IL_0105  ldloc.s        V_9
+  IL_0107  ldelema        StationStore
+  IL_010C  ldfld          StationStore::count
+  IL_0111  ldc.i4.0       
+  IL_0112  ble            IL_01ef: ldarg.s active
+  IL_0117  ldarg.0        
+  IL_0118  ldfld          StationComponent::storage
+  IL_011D  ldloc.s        V_9
+  IL_011F  ldelema        StationStore
+  IL_0124  ldfld          StationStore::count
+  IL_0129  ldloc.2        
+  IL_012A  blt.s          IL_012f: ldarg.0
+  IL_012C  ldloc.2        
+  IL_012D  br.s           IL_0141: stloc.s V_11
+  IL_012F  ldarg.0        
+  IL_0130  ldfld          StationComponent::storage
+  IL_0135  ldloc.s        V_9
+  IL_0137  ldelema        StationStore
+  IL_013C  ldfld          StationStore::count
+  IL_0141  stloc.s        V_11
+  IL_0143  ldarg.0        
+  IL_0144  ldfld          StationComponent::storage
+  IL_0149  ldloc.s        V_9
+  IL_014B  ldelema        StationStore
+  IL_0150  ldfld          StationStore::count
+  IL_0155  stloc.s        V_12
+  IL_0157  ldarg.0        
+  IL_0158  ldfld          StationComponent::storage
+  IL_015D  ldloc.s        V_9
+  IL_015F  ldelema        StationStore
+  IL_0164  ldfld          StationStore::inc
+  IL_0169  stloc.s        V_13
+  IL_016B  ldarg.0        
+  IL_016C  ldloca.s       V_12
+  IL_016E  ldloca.s       V_13
+  IL_0170  ldloc.s        V_11
+  IL_0172  call           StationComponent::split_inc
+  IL_0177  stloc.s        V_14
+  IL_0179  ldloc.s        V_8
+  IL_017B  ldloc.s        V_10
+  IL_017D  ldloc.s        V_11
+  IL_017F  conv.u1        
+  IL_0180  ldloc.s        V_14
+  IL_0182  conv.u1        
+  IL_0183  callvirt       CargoPath::TryInsertItemAtHeadAndFillBlank
+  IL_0188  brfalse.s      IL_01ef: ldarg.s active
+  IL_018A  ldarg.0        
+  IL_018B  ldfld          StationComponent::storage
+  IL_0190  ldloc.s        V_9
+  IL_0192  ldelema        StationStore
+  IL_0197  ldloc.s        V_12
+  IL_0199  stfld          StationStore::count
+  IL_019E  ldarg.0        
+  IL_019F  ldfld          StationComponent::storage
+  IL_01A4  ldloc.s        V_9
+  IL_01A6  ldelema        StationStore
+  IL_01AB  ldloc.s        V_13
+  IL_01AD  stfld          StationStore::inc
+  IL_01B2  ldloc.s        V_7
+  IL_01B4  ldc.i4.1       
+  IL_01B5  stfld          SlotData::counter
+  IL_01BA  br.s           IL_01ef: ldarg.s active
+  IL_01BC  ldc.i4         1210
+  IL_01C1  stloc.s        V_10
+  IL_01C3  ldarg.0        
+  IL_01C4  ldfld          StationComponent::warperCount
+  IL_01C9  ldc.i4.0       
+  IL_01CA  ble.s          IL_01ef: ldarg.s active
+  IL_01CC  ldloc.s        V_8
+  IL_01CE  ldloc.s        V_10
+  IL_01D0  ldc.i4.1       
+  IL_01D1  ldc.i4.0       
+  IL_01D2  callvirt       CargoPath::TryInsertItemAtHeadAndFillBlank
+  IL_01D7  brfalse.s      IL_01ef: ldarg.s active
+  IL_01D9  ldarg.0        
+  IL_01DA  ldarg.0        
+  IL_01DB  ldfld          StationComponent::warperCount
+  IL_01E0  ldc.i4.1       
+  IL_01E1  sub            
+  IL_01E2  stfld          StationComponent::warperCount
+  IL_01E7  ldloc.s        V_7
+  IL_01E9  ldc.i4.1       
+  IL_01EA  stfld          SlotData::counter
+  IL_01EF  ldarg.s        active
+  IL_01F1  brfalse.s      IL_0245: ldloc.s V_6
+  IL_01F3  ldarg.1        
+  IL_01F4  ldfld          CargoTraffic::beltPool
+  IL_01F9  ldloc.s        V_7
+  IL_01FB  ldfld          SlotData::beltId
+  IL_0200  ldelema        BeltComponent
+  IL_0205  ldfld          BeltComponent::entityId
+  IL_020A  stloc.s        V_15
+  IL_020C  ldarg.2        
+  IL_020D  ldloc.s        V_15
+  IL_020F  ldelema        SignData
+  IL_0214  ldc.i4.1       
+  IL_0215  stfld          SignData::iconType
+  IL_021A  ldarg.2        
+  IL_021B  ldloc.s        V_15
+  IL_021D  ldelema        SignData
+  IL_0222  ldloc.s        V_10
+  IL_0224  stfld          SignData::iconId0
+  IL_0229  br.s           IL_0245: ldloc.s V_6
+  IL_022B  ldloc.s        V_7
+  IL_022D  ldfld          SlotData::dir
+  IL_0232  ldc.i4.2       
+  IL_0233  beq.s          IL_0245: ldloc.s V_6
+  IL_0235  ldloc.s        V_7
+  IL_0237  ldc.i4.0       
+  IL_0238  stfld          SlotData::beltId
+  IL_023D  ldloc.s        V_7
+  IL_023F  ldc.i4.0       
+  IL_0240  stfld          SlotData::counter
+  IL_0245  ldloc.s        V_6
+  IL_0247  ldc.i4.1       
+  IL_0248  add            
+  IL_0249  stloc.s        V_6
+  IL_024B  ldloc.s        V_6
+  IL_024D  ldloc.3        
+  IL_024E  blt            IL_004c: ldarg.0
+  IL_0253  leave          IL_0403: ret
+  IL_0258  ldc.i4.0       
+  IL_0259  stloc.s        V_16
+  IL_025B  br             IL_03e2: ldloc.s V_16
+  IL_0260  ldc.i4.0       
+  IL_0261  stloc.s        V_17
+  IL_0263  br             IL_03d4: ldloc.s V_17
+  IL_0268  ldarg.0        
+  IL_0269  ldfld          StationComponent::outSlotOffset
+  IL_026E  ldloc.s        V_17
+  IL_0270  add            
+  IL_0271  ldloc.3        
+  IL_0272  rem            
+  IL_0273  stloc.s        V_18
+  IL_0275  ldarg.0        
+  IL_0276  ldfld          StationComponent::slots
+  IL_027B  ldloc.s        V_18
+  IL_027D  ldelema        SlotData
+  IL_0282  stloc.s        V_19
+  IL_0284  ldloc.s        V_19
+  IL_0286  ldfld          SlotData::dir
+  IL_028B  ldc.i4.1       
+  IL_028C  bne.un         IL_03b4: ldloc.s V_19
+  IL_0291  ldloc.s        V_19
+  IL_0293  ldfld          SlotData::beltId
+  IL_0298  brfalse        IL_03ce: ldloc.s V_17
+  IL_029D  ldarg.1        
+  IL_029E  ldarg.1        
+  IL_029F  ldfld          CargoTraffic::beltPool
+  IL_02A4  ldloc.s        V_19
+  IL_02A6  ldfld          SlotData::beltId
+  IL_02AB  ldelema        BeltComponent
+  IL_02B0  ldfld          BeltComponent::segPathId
+  IL_02B5  callvirt       CargoTraffic::GetCargoPath
+  IL_02BA  stloc.s        V_20
+  IL_02BC  ldloc.s        V_20
+  IL_02BE  brfalse        IL_03ce: ldloc.s V_17
+  IL_02C3  ldc.i4.0       
+  IL_02C4  stloc.s        V_21
+  IL_02C6  ldc.i4.0       
+  IL_02C7  stloc.s        V_22
+  IL_02C9  ldloc.s        V_21
+  IL_02CB  ldc.i4.0       
+  IL_02CC  blt            IL_0379: ldarg.s active
+  IL_02D1  ldloc.s        V_21
+  IL_02D3  ldloc.s        V_4
+  IL_02D5  bge            IL_0379: ldarg.s active
+  IL_02DA  ldarg.0        
+  IL_02DB  ldfld          StationComponent::storage
+  IL_02E0  ldloc.s        V_21
+  IL_02E2  ldelema        StationStore
+  IL_02E7  ldfld          StationStore::itemId
+  IL_02EC  stloc.s        V_22
+  IL_02EE  ldloc.s        V_22
+  IL_02F0  ldc.i4.0       
+  IL_02F1  ble            IL_0379: ldarg.s active
+  IL_02F6  ldarg.0        
+  IL_02F7  ldfld          StationComponent::storage
+  IL_02FC  ldloc.s        V_21
+  IL_02FE  ldelema        StationStore
+  IL_0303  ldfld          StationStore::count
+  IL_0308  ldc.i4.0       
+  IL_0309  ble.s          IL_0379: ldarg.s active
+  IL_030B  ldarg.0        
+  IL_030C  ldfld          StationComponent::storage
+  IL_0311  ldloc.s        V_21
+  IL_0313  ldelema        StationStore
+  IL_0318  ldfld          StationStore::inc
+  IL_031D  ldarg.0        
+  IL_031E  ldfld          StationComponent::storage
+  IL_0323  ldloc.s        V_21
+  IL_0325  ldelema        StationStore
+  IL_032A  ldfld          StationStore::count
+  IL_032F  div            
+  IL_0330  stloc.s        V_23
+  IL_0332  ldloc.s        V_20
+  IL_0334  ldloc.s        V_22
+  IL_0336  ldloc.2        
+  IL_0337  ldc.i4.1       
+  IL_0338  ldloc.s        V_23
+  IL_033A  conv.u1        
+  IL_033B  callvirt       CargoPath::TryUpdateItemAtHeadAndFillBlank
+  IL_0340  brfalse.s      IL_0379: ldarg.s active
+  IL_0342  ldarg.0        
+  IL_0343  ldfld          StationComponent::storage
+  IL_0348  ldloc.s        V_21
+  IL_034A  ldelema        StationStore
+  IL_034F  ldflda         StationStore::count
+  IL_0354  dup            
+  IL_0355  ldind.i4       
+  IL_0356  ldc.i4.1       
+  IL_0357  sub            
+  IL_0358  stind.i4       
+  IL_0359  ldarg.0        
+  IL_035A  ldfld          StationComponent::storage
+  IL_035F  ldloc.s        V_21
+  IL_0361  ldelema        StationStore
+  IL_0366  ldflda         StationStore::inc
+  IL_036B  dup            
+  IL_036C  ldind.i4       
+  IL_036D  ldloc.s        V_23
+  IL_036F  sub            
+  IL_0370  stind.i4       
+  IL_0371  ldloc.s        V_18
+  IL_0373  ldc.i4.1       
+  IL_0374  add            
+  IL_0375  ldloc.3        
+  IL_0376  rem            
+  IL_0377  stloc.s        V_5
+  IL_0379  ldarg.s        active
+  IL_037B  brfalse.s      IL_03ce: ldloc.s V_17
+  IL_037D  ldarg.1        
+  IL_037E  ldfld          CargoTraffic::beltPool
+  IL_0383  ldloc.s        V_19
+  IL_0385  ldfld          SlotData::beltId
+  IL_038A  ldelema        BeltComponent
+  IL_038F  ldfld          BeltComponent::entityId
+  IL_0394  stloc.s        V_24
+  IL_0396  ldarg.2        
+  IL_0397  ldloc.s        V_24
+  IL_0399  ldelema        SignData
+  IL_039E  ldc.i4.0       
+  IL_039F  stfld          SignData::iconType
+  IL_03A4  ldarg.2        
+  IL_03A5  ldloc.s        V_24
+  IL_03A7  ldelema        SignData
+  IL_03AC  ldc.i4.0       
+  IL_03AD  stfld          SignData::iconId0
+  IL_03B2  br.s           IL_03ce: ldloc.s V_17
+  IL_03B4  ldloc.s        V_19
+  IL_03B6  ldfld          SlotData::dir
+  IL_03BB  ldc.i4.2       
+  IL_03BC  beq.s          IL_03ce: ldloc.s V_17
+  IL_03BE  ldloc.s        V_19
+  IL_03C0  ldc.i4.0       
+  IL_03C1  stfld          SlotData::beltId
+  IL_03C6  ldloc.s        V_19
+  IL_03C8  ldc.i4.0       
+  IL_03C9  stfld          SlotData::counter
+  IL_03CE  ldloc.s        V_17
+  IL_03D0  ldc.i4.1       
+  IL_03D1  add            
+  IL_03D2  stloc.s        V_17
+  IL_03D4  ldloc.s        V_17
+  IL_03D6  ldloc.3        
+  IL_03D7  blt            IL_0268: ldarg.0
+  IL_03DC  ldloc.s        V_16
+  IL_03DE  ldc.i4.1       
+  IL_03DF  add            
+  IL_03E0  stloc.s        V_16
+  IL_03E2  ldloc.s        V_16
+  IL_03E4  ldloc.2        
+  IL_03E5  blt            IL_0260: ldc.i4.0
+  IL_03EA  ldloc.s        V_5
+  IL_03EC  ldc.i4.0       
+  IL_03ED  blt.s          IL_03f7: leave.s IL_0403
+  IL_03EF  ldarg.0        
+  IL_03F0  ldloc.s        V_5
+  IL_03F2  stfld          StationComponent::outSlotOffset
+  IL_03F7  leave.s        IL_0403: ret
+  IL_03F9  ldloc.1        
+  IL_03FA  brfalse.s      IL_0402: endfinally
+  IL_03FC  ldloc.0        
+  IL_03FD  call           Monitor::Exit
+  IL_0402  endfinally     
+  IL_0403  ret            

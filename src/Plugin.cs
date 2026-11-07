@@ -17,7 +17,7 @@ namespace CondensedProduction
     {
         public const string GUID = "com.mandao.CondensedProduction";
         public const string NAME = "CondensedProduction";
-        public const string VERSION = "1.4.0";
+        public const string VERSION = "1.5.1";
 
         public static ConfigEntry<int> MaxMultiplierEntry;
         public static ConfigEntry<bool> ScaleOutputStorageEntry;
@@ -83,12 +83,17 @@ namespace CondensedProduction
             harmony.PatchAll(typeof(VFInputGuardPatch));
             harmony.PatchAll(typeof(StorageCapPatch));
             harmony.PatchAll(typeof(StationLimitPatch));
+            harmony.PatchAll(typeof(StationCapTechPatch));
             harmony.PatchAll(typeof(BuildingGrabPatch));
             harmony.PatchAll(typeof(GlobalSupplyPatch));
             harmony.PatchAll(typeof(PilerStackPatch));
             harmony.PatchAll(typeof(InserterStackPatch));
             harmony.PatchAll(typeof(StationOutputPatch));
             harmony.PatchAll(typeof(CargoVisualClampPatch));
+            harmony.PatchAll(typeof(FractionatorPatch));
+            harmony.PatchAll(typeof(MinerPatch));
+            harmony.PatchAll(typeof(ContainerOutputPatch));
+            harmony.PatchAll(typeof(TankPatch));
 
             MultiplierUI.Init();
             MultStore.Log = Logger;

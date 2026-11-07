@@ -19,7 +19,7 @@ $src      = Join-Path $root "src"
 $build    = Join-Path $root "build"
 $dist     = Join-Path $root "dist"
 $pkg      = Join-Path $build "package"
-$livePlug = Join-Path $plugins "CondensedProduction"
+$livePlug = Join-Path $plugins "mandao-CondensedProduction"
 
 $rsp = Join-Path $build "build.rsp"
 $utf8Bom = New-Object System.Text.UTF8Encoding($true)
@@ -98,8 +98,19 @@ Write-Host "Upload zip: $zip"
 if (-not $SkipDeploy) {
     Write-Host "=== Deploying to Thunderstore profile ==="
     New-Item -ItemType Directory -Force -Path $livePlug | Out-Null
-    Copy-Item -Force (Join-Path $build "CondensedProduction.dll") $livePlug
-    Write-Host "Deployed to: $livePlug"
+    $dll     = Join-Path $livePlug "CondensedProduction.dll"
+    $dllOld  = "$dll.old"
+    $built   = Join-Path $build "CondensedProduction.dll"
+    if ((Test-Path $dllOld) -and -not (Test-Path $dll)) {
+        # mod 在管理器中处于禁用状态（文件被改名为 .old）：
+        # 覆盖 .old，这样用户在管理器里 Enable 后恢复的就是新版本
+        Copy-Item -Force $built $dllOld
+        Write-Host "Deployed (mod is DISABLED in manager, updated .old file): $dllOld"
+        Write-Host ">>> 请在 Thunderstore Mod Manager 里启用 CondensedProduction 后再进游戏 <<<"
+    } else {
+        Copy-Item -Force $built $dll
+        Write-Host "Deployed to: $dll"
+    }
 }
 
 Write-Host "BUILD OK"

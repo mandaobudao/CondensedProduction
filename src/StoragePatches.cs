@@ -1,5 +1,6 @@
 using HarmonyLib;
 using System;
+using System.Collections.Generic;
 
 namespace CondensedProduction
 {
@@ -22,6 +23,9 @@ namespace CondensedProduction
         private static bool tableScaled;
         private static bool prefabScaled;
         private static long lastMaintain = long.MinValue;
+        // 放大前的原版基础容量。科技升级重算时用「(基础 + 科技加成) × 倍数」，
+        // 因为记的是固定基础值，重复调用不会复利。
+        private static readonly Dictionary<PrefabDesc, int> prefabBaseMax = new Dictionary<PrefabDesc, int>();
 
         /// <summary>周期校正入口（主线程，每 30 游戏刻一次，全部操作幂等）。</summary>
         public static void Maintain()
@@ -72,6 +76,7 @@ namespace CondensedProduction
             // 用「有每格容量上限」判定最稳。
             if (pd == null || pd.stationMaxItemCount <= 0) return;
             if (!seen.Add(pd)) return; // 若是同一实例则只放大一次
+            if (!prefabBaseMax.ContainsKey(pd)) prefabBaseMax[pd] = pd.stationMaxItemCount;
             long v = (long)pd.stationMaxItemCount * f;
             pd.stationMaxItemCount = (int)Math.Min(int.MaxValue, v);
         }
@@ -132,6 +137,54 @@ namespace CondensedProduction
         // 注意：不再对物流站已有的 storage[i].max 做任何「放大」或「校正」。
         // 放大只发生在容量来源（PrefabDesc.stationMaxItemCount 与静态堆叠表），
         // 玩家在界面里设置的物品上限完全由玩家决定，mod 不会再改写它。
+
+        /// <summary>
+        /// 按「(原版基础容量 + 科技加成) × 倍数」重算一座物流站所有格子的上限（只升不降）。
+        ///
+        /// 原版科技升级（PlanetTransport.OnTechFunctionUnlocked）是用比例
+        /// (容量+加成)/(容量+加成-本次提升) 去放大已有格子。容量本身已被本 mod ×100，
+        /// 而科技加成是原版的绝对值，所以升级后上限只涨了原版那一点，相对 ×100 的基数几乎看不见。
+        /// 这里在升级后按固定基础值重算，让每次升级都完整地 ×倍数。
+        /// 基础值只在启动放大时记录一次，重复调用不会复利。
+        /// </summary>
+        public static void RecomputeStationCaps(PlanetTransport transport)
+        {
+            int f = Factor;
+            if (f <= 1 || transport == null) return;
+            var factory = transport.factory;
+            var pool = transport.stationPool;
+            var hist = GameMain.history;
+            if (factory == null || pool == null || hist == null || LDB.models == null) return;
+            var entityPool = factory.entityPool;
+            if (entityPool == null) return;
+
+            for (int i = 1; i < pool.Length; i++)
+            {
+                var st = pool[i];
+                if (st == null || st.id != i || st.storage == null) continue;
+                if (st.entityId <= 0 || st.entityId >= entityPool.Length) continue;
+                var proto = LDB.models.Select(entityPool[st.entityId].modelIndex);
+                if (proto == null || proto.prefabDesc == null) continue;
+                var prefab = proto.prefabDesc;
+
+                int baseMax;
+                if (!prefabBaseMax.TryGetValue(prefab, out baseMax))
+                {
+                    // 兜底：预制体可能已被放大过，用除法还原基础值
+                    baseMax = prefab.stationMaxItemCount / f;
+                }
+                int extra = st.isStellar ? hist.remoteStationExtraStorage : hist.localStationExtraStorage;
+                long target = (long)(baseMax + extra) * f;
+                if (target > int.MaxValue) target = int.MaxValue;
+                int rounded = UnityEngine.Mathf.RoundToInt((float)target / 50f) * 50;
+                if (rounded < 50) rounded = 50;
+
+                for (int k = 0; k < st.storage.Length; k++)
+                {
+                    if (st.storage[k].max < rounded) st.storage[k].max = rounded;
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -173,6 +226,28 @@ namespace CondensedProduction
                     st.storage[storageIdx].max = requested;
                 return;
             }
+        }
+    }
+
+    /// <summary>
+    /// 科技「物流站容量」升级后按 ×倍数 重算，让每次升级都完整生效；
+    /// 读档时也重算一次，把旧存档里「只放大了基础值、科技加成没放大」的格子补上。
+    /// </summary>
+    [HarmonyPatch]
+    public static class StationCapTechPatch
+    {
+        [HarmonyPatch(typeof(PlanetTransport), "OnTechFunctionUnlocked")]
+        [HarmonyPostfix]
+        private static void TechPostfix(PlanetTransport __instance)
+        {
+            try { StorageCapPatch.RecomputeStationCaps(__instance); } catch (Exception) { }
+        }
+
+        [HarmonyPatch(typeof(PlanetTransport), "Import")]
+        [HarmonyPostfix]
+        private static void ImportPostfix(PlanetTransport __instance)
+        {
+            try { StorageCapPatch.RecomputeStationCaps(__instance); } catch (Exception) { }
         }
     }
 }

@@ -759,8 +759,8 @@ namespace CondensedProduction
         private static void BpPaste(int entityId, PlanetFactory factory)
         {
             if (factory == null || entityId <= 0) return;
-            MultStore.SetMult(factory.planetId, entityId, MultStore.ClipboardK);
-            MultStore.SetWireless(factory.planetId, entityId, MultStore.ClipboardWireless);
+            MultiplierUI.SetMultOnStack(factory, entityId, MultStore.ClipboardK);
+            MultiplierUI.SetWirelessOnStack(factory, entityId, MultStore.ClipboardWireless);
         }
 
         [HarmonyPatch(typeof(PlanetFactory), "OnCopyBuildingSetting")]
@@ -775,8 +775,8 @@ namespace CondensedProduction
         [HarmonyPostfix]
         private static void OnPaste(PlanetFactory __instance, int entityId)
         {
-            MultStore.SetMult(__instance.planetId, entityId, MultStore.ClipboardK);
-            MultStore.SetWireless(__instance.planetId, entityId, MultStore.ClipboardWireless);
+            MultiplierUI.SetMultOnStack(__instance, entityId, MultStore.ClipboardK);
+            MultiplierUI.SetWirelessOnStack(__instance, entityId, MultStore.ClipboardWireless);
         }
     }
 }
